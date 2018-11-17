@@ -1,0 +1,374 @@
+<?xml version="1.0"?>
+<NodeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Arthor>bushyao</Arthor>
+  <HID />
+  <SQLiteIO>
+    <DbFullName>Tf7a031249f5240bbb2e9189a9e92ddb9.bcdb</DbFullName>
+    <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
+    <DmsFullName>D:\MyWorks\geoist-master\pfm\test\新建流程1.DMS</DmsFullName>
+  </SQLiteIO>
+  <FieldFormats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Integer</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:#.##}</DisplayFormatEx>
+      <DecimalPlaces>2</DecimalPlaces>
+      <DataType>Real</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Text</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Boolean</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:G}</DisplayFormatEx>
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>DateTime</DataType>
+      <Visible>true</Visible>
+    </Formats>
+  </FieldFormats>
+  <Title>Stream</Title>
+  <Subject>2018/11/14 11:28:19</Subject>
+  <Arthor2>chenshi-X1</Arthor2>
+  <Manager />
+  <Company>DSS</Company>
+  <Category />
+  <Description />
+  <KeyWords />
+  <StreamID />
+  <ReportTitleName />
+  <ListReportTitles />
+  <AttachFiles />
+  <Price>0</Price>
+  <PrivilegeType>公开</PrivilegeType>
+  <Parameters />
+  <Items>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>3b8aa671-67a3-4b35-9fbe-430c5ce37956</Guid>
+      <CenterY>102.5</CenterY>
+      <CenterX>230</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>重力固体潮</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>26e33ff2-02b8-4fed-88f1-c71b6638c5f9</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\chens\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"tidex":"2","unit":"0"},"allfields":true,"names":{"tidex":"2","unit":"0"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>26e33ff2-02b8-4fed-88f1-c71b6638c5f9</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>Longitude</PriorFieldName>
+              <FieldName>Longitude</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Latitude</PriorFieldName>
+              <FieldName>Latitude</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Elevation</PriorFieldName>
+              <FieldName>Elevation</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Times</PriorFieldName>
+              <FieldName>Datetime</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Gravity</PriorFieldName>
+              <FieldName>Gravity</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>EarthTide_chenshi</PluginPath>
+      <Author>chenshi</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_EarthTide.html</UiFileName>
+      <ScriptFileName>main_EarthTide.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>true</ExportTable>
+      <HasViewer>false</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodeExcelSheet">
+      <Guid>26e33ff2-02b8-4fed-88f1-c71b6638c5f9</Guid>
+      <CenterY>127.5</CenterY>
+      <CenterX>65</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>gradata</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FileName>D:\MyWorks\geoist-master\pfm\test\gradata.csv</FileName>
+      <SheetById>false</SheetById>
+      <SheetId>0</SheetId>
+      <SheetName>Sheet1</SheetName>
+      <HasTitle>true</HasTitle>
+      <CustomRange>false</CustomRange>
+      <RowStart>0</RowStart>
+      <RowEnd>-1</RowEnd>
+      <ColumnStart>0</ColumnStart>
+      <ColumnEnd>-1</ColumnEnd>
+      <Cell2String>true</Cell2String>
+      <Exts>
+        <string>.xls</string>
+        <string>.xlsx</string>
+      </Exts>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTable">
+      <Guid>8e63ea99-d491-41e6-abee-f530dc04f638</Guid>
+      <CenterY>132.5</CenterY>
+      <CenterX>470</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>浏览数据</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>3222fd56-32be-47cd-844f-cd02d4117672</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFormats />
+      <AutoWidthFit>true</AutoWidthFit>
+      <Expression />
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>3222fd56-32be-47cd-844f-cd02d4117672</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>360</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>3b8aa671-67a3-4b35-9fbe-430c5ce37956</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFilters />
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTable">
+      <Guid>bfa11d89-0af2-44a7-bd29-bc30e0382075</Guid>
+      <CenterY>227.5</CenterY>
+      <CenterX>470</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title>浏览数据#1</Title>
+      <Name>浏览数据</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>fd6ffc3c-c513-456a-b105-a1381d857d24</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFormats />
+      <AutoWidthFit>true</AutoWidthFit>
+      <Expression />
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>a3f796a4-b63e-43f3-82c2-c13f4aa30a80</Guid>
+      <CenterY>212.5</CenterY>
+      <CenterX>175</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>地磁参考场</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>26e33ff2-02b8-4fed-88f1-c71b6638c5f9</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\chens\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"magmod":"0","unit":"0"},"allfields":true,"names":{"magmod":"0","unit":"0"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>magdata</NodeName>
+          <NodeId>26e33ff2-02b8-4fed-88f1-c71b6638c5f9</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>Longitude</PriorFieldName>
+              <FieldName>Longitude</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Latitude</PriorFieldName>
+              <FieldName>Latitude</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>Elevation</PriorFieldName>
+              <FieldName>Elevation</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName />
+              <FieldName>Datetime</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName />
+              <FieldName>Magnetism</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>MagMod_chenshi</PluginPath>
+      <Author>chenshi</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_MagMod.html</UiFileName>
+      <ScriptFileName>main_MagMod.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>true</ExportTable>
+      <HasViewer>false</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>fd6ffc3c-c513-456a-b105-a1381d857d24</Guid>
+      <CenterY>212.5</CenterY>
+      <CenterX>305</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title>过滤#1</Title>
+      <Name>过滤</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>a3f796a4-b63e-43f3-82c2-c13f4aa30a80</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFilters />
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+  </Items>
+  <ParNames />
+  <EvalNodeNames>重力固体潮;浏览数据;浏览数据#1;地磁参考场</EvalNodeNames>
+  <OffsetX>0</OffsetX>
+  <OffsetY>0</OffsetY>
+  <Scale>1</Scale>
+</NodeCollection>
