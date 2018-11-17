@@ -3,6 +3,7 @@ channels:
         - conda-forge
         - defaults
 dependencies:
+        - python>=3.5
         - numpy
         - h5py
         - impactutils
@@ -10,7 +11,6 @@ dependencies:
         - libcomcat
         - matplotlib
         - pandas
-        - python>=3.5
         - pytest
         - pytest-cov
         - rasterio
@@ -19,4 +19,8 @@ dependencies:
         - obspy
         - cartopy
         - gdal
-        - pygmi
+        - argparse
+        - pip:
+                - pygmi
+                - MarkDown
+                - rasterio
