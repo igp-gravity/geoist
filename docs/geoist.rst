@@ -8,6 +8,7 @@ Subpackages
 
     geoist.earthquake
     geoist.gridder
+    geoist.others
     geoist.pfm
     geoist.raster
 
