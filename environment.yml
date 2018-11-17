@@ -19,8 +19,8 @@ dependencies:
         - obspy
         - cartopy
         - gdal
-        - argparse
         - pip:
+                - argparse
                 - pygmi
                 - MarkDown
                 - rasterio
