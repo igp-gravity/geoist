@@ -6,4 +6,4 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 
 > Our Missions
 
--- test
+-- The MIT License
