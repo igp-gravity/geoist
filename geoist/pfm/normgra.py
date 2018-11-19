@@ -76,8 +76,8 @@ and geophysics, Geophysics, 66(6), p. 1660-1668, doi: 10.1190/1.1487109
 import math
 import numpy
 
-import giutils
-from giconstants import G
+import .giutils
+from .giconstants import G
 
 
 class ReferenceEllipsoid(object):

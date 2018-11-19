@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from obspy.geodetics.base import gps2dist_azimuth
 
-from decorators import retry
+from .decorators import retry
 
 # Python 2
 try:

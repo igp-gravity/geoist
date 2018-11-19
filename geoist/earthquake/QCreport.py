@@ -26,8 +26,8 @@ try:
 except ImportError:
     from urllib.request import urlopen, HTTPError
 
-import QCutils as qcu
-from decorators import retry, printstatus
+import .QCutils as qcu
+from .decorators import retry, printstatus
 
 
 ###############################################################################
@@ -512,7 +512,7 @@ def med_mag(catalog, dirname):
         plt.title('Monthly Median Magnitude', fontsize=20)
         plt.xlim(min(months) - pd.Timedelta(days=15),
                  max(months) + pd.Timedelta(days=15))
-    else: 
+    else:
         year_max = catalog.resample('1Y', on='convtime').max()['mag']
         years = year_max.index.map(lambda x: x.strftime('%Y')).tolist()
         years = [date(int(x[:4]), 1, 1) for x in years]
@@ -528,7 +528,7 @@ def med_mag(catalog, dirname):
         plt.title('Yearly Median Magnitude', fontsize=20)
         plt.xlim(min(years) - pd.Timedelta(days=183),
                  max(years) - pd.Timedelta(days=183))
-    
+
     plt.savefig('%s_medianmag' % dirname, dpi=300)
     plt.close()
 
@@ -943,7 +943,7 @@ def generate_html(dirname):
         largest = '\t\t' + '\t\t'.join(tenfile.readlines())
     with open('{0}_duplicates.txt'.format(dirname)) as dupfile:
         duplist = '\t\t' + '\t\t'.join(dupfile.readlines())
-    
+
     toc = ('## Contents\n'
            '- [Basic Catalog Summary](#catsum)\n'
            '- [Seismicity Map](#seismap)\n'

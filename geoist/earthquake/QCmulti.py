@@ -27,8 +27,8 @@ try:
 except ImportError:
     from urllib.request import urlopen, HTTPError
 
-import QCutils as qcu
-from decorators import retry, printstatus
+import .QCutils as qcu
+from .decorators import retry, printstatus
 
 
 ###############################################################################
