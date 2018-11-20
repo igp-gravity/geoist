@@ -76,7 +76,7 @@ and geophysics, Geophysics, 66(6), p. 1660-1668, doi: 10.1190/1.1487109
 import math
 import numpy
 
-import .giutils
+from . import giutils
 from .giconstants import G
 
 

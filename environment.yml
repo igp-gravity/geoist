@@ -4,23 +4,21 @@ channels:
         - defaults
 dependencies:
         - python>=3.5
-        - numpy
-        - h5py
         - impactutils
         - ipython
         - libcomcat
-        - matplotlib
-        - pandas
-        - pytest
-        - pytest-cov
-        - rasterio
-        - scipy
-        - shapely
-        - obspy
-        - cartopy
         - gdal
         - pip:
-                - argparse
-                - pygmi
-                - MarkDown
-                - rasterio
+          - Cartopy
+          - obspy
+          - Shapely
+          - scipy
+          - pytest
+          - pandas
+          - matplotlib
+          - h5py
+          - numpy
+          - argparse
+          - pygmi
+          - MarkDown
+          - rasterio
