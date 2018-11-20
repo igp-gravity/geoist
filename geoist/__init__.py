@@ -7,6 +7,10 @@ classes defined by it.
 """
 
 from ._version import get_versions
+import glob
+from os.path import dirname,basename,isfile
+modules = glob.glob(dirname(__file__)+"*.py")
+__all__ = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
 
 
 __version__ = get_versions()['version']
@@ -52,3 +56,7 @@ def test(doctest=True, verbose=False, coverage=False):
     args.append('geoist')
     status = pytest.main(args)
     assert status == 0, "Some tests have failed."
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

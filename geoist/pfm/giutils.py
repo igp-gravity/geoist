@@ -21,7 +21,7 @@ import numpy
 import scipy.sparse
 import scipy.sparse.linalg
 import scipy.misc
-from ../other import giconstants
+from ..other import giconstants
 
 def gi_inverse(matrix):
     """

@@ -1,0 +1,2 @@
+include versioneer.py
+include ./geoist/_version.py

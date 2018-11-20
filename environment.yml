@@ -1,0 +1,24 @@
+name: geoist
+channels:
+        - conda-forge
+        - defaults
+dependencies:
+        - python>=3.5
+        - impactutils
+        - ipython
+        - libcomcat
+        - gdal
+        - pip:
+          - Cartopy
+          - obspy
+          - Shapely
+          - scipy
+          - pytest
+          - pandas
+          - matplotlib
+          - h5py
+          - numpy
+          - argparse
+          - pygmi
+          - MarkDown
+          - rasterio
