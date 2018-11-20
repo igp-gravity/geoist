@@ -56,3 +56,7 @@ def test(doctest=True, verbose=False, coverage=False):
     args.append('geoist')
     status = pytest.main(args)
     assert status == 0, "Some tests have failed."
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
