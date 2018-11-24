@@ -13,7 +13,6 @@ cx_Freeze==5.1.1
 obspy==1.1.0
 other==1.0.0
 py2exe==0.9.2.2
-pygmi==2.4.1
 pytest==4.0.0
 rasterio==1.0.10
 Shapely==1.6.4.post2
