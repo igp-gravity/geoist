@@ -1,3 +1,4 @@
+pip
 Markdown==2.6.11
 pandas==0.23.4
 matplotlib==3.0.2
