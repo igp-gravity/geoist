@@ -1,8 +1,23 @@
 geoist.pfm package
 ==================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    geoist.pfm.test
+
 Submodules
 ----------
+
+geoist.pfm.euler module
+-----------------------
+
+.. automodule:: geoist.pfm.euler
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 geoist.pfm.giconstants module
 -----------------------------
@@ -16,6 +31,14 @@ geoist.pfm.giutils module
 -------------------------
 
 .. automodule:: geoist.pfm.giutils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+geoist.pfm.grdio module
+-----------------------
+
+.. automodule:: geoist.pfm.grdio
     :members:
     :undoc-members:
     :show-inheritance:

@@ -4,6 +4,14 @@ geoist.gridder.tests package
 Submodules
 ----------
 
+geoist.gridder.tests.test\_genpnt module
+----------------------------------------
+
+.. automodule:: geoist.gridder.tests.test_genpnt
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 geoist.gridder.tests.test\_interpolation module
 -----------------------------------------------
 
@@ -20,26 +28,10 @@ geoist.gridder.tests.test\_padding module
     :undoc-members:
     :show-inheritance:
 
-geoist.gridder.tests.test\_point\_generation module
----------------------------------------------------
-
-.. automodule:: geoist.gridder.tests.test_point_generation
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 geoist.gridder.tests.test\_slicing module
 -----------------------------------------
 
 .. automodule:: geoist.gridder.tests.test_slicing
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-geoist.gridder.tests.test\_utils module
----------------------------------------
-
-.. automodule:: geoist.gridder.tests.test_utils
     :members:
     :undoc-members:
     :show-inheritance:

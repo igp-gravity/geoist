@@ -1,10 +1,10 @@
-geoist.others package
-=====================
+geoist.inversion package
+========================
 
 Module contents
 ---------------
 
-.. automodule:: geoist.others
+.. automodule:: geoist.inversion
     :members:
     :undoc-members:
     :show-inheritance:

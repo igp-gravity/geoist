@@ -12,14 +12,6 @@ geoist.raster.dataset module
     :undoc-members:
     :show-inheritance:
 
-geoist.raster.datatypes module
-------------------------------
-
-.. automodule:: geoist.raster.datatypes
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 geoist.raster.gdal module
 -------------------------
 
@@ -68,26 +60,10 @@ geoist.raster.gridcontainer module
     :undoc-members:
     :show-inheritance:
 
-geoist.raster.iodefs module
----------------------------
-
-.. automodule:: geoist.raster.iodefs
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 geoist.raster.reader module
 ---------------------------
 
 .. automodule:: geoist.raster.reader
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-geoist.raster.smooth module
----------------------------
-
-.. automodule:: geoist.raster.smooth
     :members:
     :undoc-members:
     :show-inheritance:

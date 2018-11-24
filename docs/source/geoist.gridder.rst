@@ -11,6 +11,14 @@ Subpackages
 Submodules
 ----------
 
+geoist.gridder.genpnt module
+----------------------------
+
+.. automodule:: geoist.gridder.genpnt
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 geoist.gridder.interpolation module
 -----------------------------------
 
@@ -27,26 +35,10 @@ geoist.gridder.padding module
     :undoc-members:
     :show-inheritance:
 
-geoist.gridder.point\_generation module
----------------------------------------
-
-.. automodule:: geoist.gridder.point_generation
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 geoist.gridder.slicing module
 -----------------------------
 
 .. automodule:: geoist.gridder.slicing
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-geoist.gridder.utils module
----------------------------
-
-.. automodule:: geoist.gridder.utils
     :members:
     :undoc-members:
     :show-inheritance:

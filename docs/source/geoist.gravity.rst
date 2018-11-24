@@ -1,10 +1,10 @@
-geoist.others package
-=====================
+geoist.gravity package
+======================
 
 Module contents
 ---------------
 
-.. automodule:: geoist.others
+.. automodule:: geoist.gravity
     :members:
     :undoc-members:
     :show-inheritance:
