@@ -515,6 +515,6 @@ def get_versions():
     except NotThisMethod:
         pass
 
-    return {"version": "0+unknown", "full-revisionid": None,
+    return {"version": "0+unknown", "full": None,
             "dirty": None,
             "error": "unable to compute version", "date": None}
