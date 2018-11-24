@@ -4,6 +4,7 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 
 [logo]: ./geoist.png "Geoist"
 
+[![Build Status](https://travis-ci.org/igp-gravity/geoist.svg?branch=master)](https://travis-ci.org/igp-gravity/geoist)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rular099/geoist.git/master)
 [![Build Status](https://dev.azure.com/chenshi1980/geoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/chenshi1980/geoist/_build/latest?definitionId=1)
 
