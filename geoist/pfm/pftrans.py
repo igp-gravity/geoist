@@ -1,39 +1,23 @@
+# -*- coding: utf-8 -*-
 """
-Potential field transformations, like upward continuation and derivatives.
-
+ -------------------------------------------------------------------------------
+ Name        : pftrans.py
+ Created on  : 2018/11/24 17:00
+ Author      : Steve Chen <chenshi@cea-igp.ac.cn>
+ Affiliation : Institute of Geophysics, CEA.
+ Version     : 0.1.0
+ Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+ License     : Distributed under the MIT License. See LICENSE.txt for more info.
+ Github      : https://igp-gravity.github.io/
+ Description : 
+     Potential field transformations, like upward continuation and derivatives.
 .. note:: Most, if not all, functions here required gridded data.
-
-**Transformations**
-
-* :func:`~fatiando.gravmag.transform.upcontinue`: Upward continuation of
-  gridded potential field data on a level surface.
-* :func:`~fatiando.gravmag.transform.reduce_to_pole`: Reduce the total field
-  magnetic anomaly to the pole.
-* :func:`~fatiando.gravmag.transform.tga`: Calculate the amplitude of the
-  total gradient (also called the analytic signal)
-* :func:`~fatiando.gravmag.transform.tilt`: Calculates the tilt angle
-* :func:`~fatiando.gravmag.transform.power_density_spectra`: Calculates
-  the Power Density Spectra of a gridded potential field data.
-* :func:`~fatiando.gravmag.transform.radial_average`: Calculates the
-  the radial average of a Power Density Spectra using concentring rings.
-
-**Derivatives**
-
-* :func:`~fatiando.gravmag.transform.derivx`: Calculate the n-th order
-  derivative of a potential field in the x-direction (North-South)
-* :func:`~fatiando.gravmag.transform.derivy`: Calculate the n-th order
-  derivative of a potential field in the y-direction (East-West)
-* :func:`~fatiando.gravmag.transform.derivz`: Calculate the n-th order
-  derivative of a potential field in the z-direction
-
-----
-
 """
-from __future__ import division, absolute_import
+
 import warnings
 import numpy
 
-from .. import utils
+import giutils
 
 
 def reduce_to_pole(x, y, data, shape, inc, dec, sinc, sdec):
@@ -106,11 +90,11 @@ def reduce_to_pole(x, y, data, shape, inc, dec, sinc, sdec):
     Applications, Cambridge University Press.
 
     """
-    fx, fy, fz = utils.ang2vec(1, inc, dec)
+    fx, fy, fz = giutils.ang2vec(1, inc, dec)
     if sinc is None or sdec is None:
         mx, my, mz = fx, fy, fz
     else:
-        mx, my, mz = utils.ang2vec(1, sinc, sdec)
+        mx, my, mz = giutils.ang2vec(1, sinc, sdec)
     kx, ky = [k for k in _fftfreqs(x, y, shape, shape)]
     kz_sqr = kx**2 + ky**2
     a1 = mz*fz - mx*fx
@@ -150,7 +134,7 @@ def upcontinue(x, y, data, shape, height):
     .. note::
 
         It is not possible to get the FFT of a masked grid. The default
-        :func:`fatiando.gridder.interp` call using minimum curvature will not
+        :func:`geoist.gridder.interp` call using minimum curvature will not
         be suitable.  Use ``extrapolate=True`` or ``algorithm='nearest'`` to
         get an unmasked grid.
 
@@ -238,7 +222,7 @@ def tga(x, y, data, shape, method='fd'):
         strange units and so will the total gradient amplitude! I strongly
         recommend converting the data to SI **before** calculating the
         TGA is you need the gradient in Eotvos (use one of the unit conversion
-        functions of :mod:`fatiando.utils`).
+        functions of :mod:`geoist.utils`).
 
     Parameters:
 
@@ -313,15 +297,15 @@ def tilt(x, y, data, shape, xderiv=None, yderiv=None, zderiv=None):
     * xderiv : 1D-array or None
         Optional. Values of the derivative in the x direction.
         If ``None``, will calculated using the default options of
-        :func:`~fatiando.gravmag.transform.derivx`
+        :func:`~geoist.gravmag.transform.derivx`
     * yderiv : 1D-array or None
         Optional. Values of the derivative in the y direction.
         If ``None``, will calculated using the default options of
-        :func:`~fatiando.gravmag.transform.derivy`
+        :func:`~geoist.gravmag.transform.derivy`
     * zderiv : 1D-array or None
         Optional. Values of the derivative in the z direction.
         If ``None``, will calculated using the default options of
-        :func:`~fatiando.gravmag.transform.derivz`
+        :func:`~geoist.gravmag.transform.derivz`
 
     Returns:
 
@@ -358,7 +342,7 @@ def derivx(x, y, data, shape, order=1, method='fd'):
         If the data is not in SI units, the derivative will be in
         strange units! I strongly recommend converting the data to SI
         **before** calculating the derivative (use one of the unit conversion
-        functions of :mod:`fatiando.utils`). This way the derivative will be in
+        functions of :mod:`geoist.utils`). This way the derivative will be in
         SI units and can be easily converted to what unit you want.
 
     Parameters:
@@ -416,7 +400,7 @@ def derivy(x, y, data, shape, order=1, method='fd'):
         If the data is not in SI units, the derivative will be in
         strange units! I strongly recommend converting the data to SI
         **before** calculating the derivative (use one of the unit conversion
-        functions of :mod:`fatiando.utils`). This way the derivative will be in
+        functions of :mod:`geoist.utils`). This way the derivative will be in
         SI units and can be easily converted to what unit you want.
 
     Parameters:
@@ -474,7 +458,7 @@ def derivz(x, y, data, shape, order=1, method='fft'):
         If the data is not in SI units, the derivative will be in
         strange units! I strongly recommend converting the data to SI
         **before** calculating the derivative (use one of the unit conversion
-        functions of :mod:`fatiando.utils`). This way the derivative will be in
+        functions of :mod:`geoist.utils`). This way the derivative will be in
         SI units and can be easily converted to what unit you want.
 
     Parameters:

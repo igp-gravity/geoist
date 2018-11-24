@@ -1,8 +1,15 @@
+# -*- coding: utf-8 -*-
 """
-Functions for segmenting spacial data (windowing, cutting, etc).
+ Name        : slicing.py
+ Created on  : 2018/11/24 08:57
+ Author      : Steve Chen <chenshi@cea-igp.ac.cn>
+ Affiliation : Institute of Geophysics, CEA.
+ Version     : 0.1.0
+ Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+ License     : Distributed under the MIT License. See LICENSE.txt for more info.
+ Github      : https://igp-gravity.github.io/
+ Description : Functions for segmenting spacial data (windowing, cutting, etc).
 """
-from __future__ import division, absolute_import, print_function
-
 
 def inside(x, y, area):
     """

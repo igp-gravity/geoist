@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
- Name        : tri.py
+ Name        : dataset.py
  Created on  : 2018/09/11 17:00
  Author      : Steve Chen<chenshi@cea-igp.ac.cn>
  Affiliation : Institute of Geophysics, CEA.

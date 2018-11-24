@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
- Name        : tri.py
+ Name        : gridbase.py
  Created on  : 2018/09/11 17:00
  Author      : Steve Chen<chenshi@cea-igp.ac.cn>
  Affiliation : Institute of Geophysics, CEA.

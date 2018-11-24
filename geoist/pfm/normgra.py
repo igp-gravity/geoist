@@ -1,10 +1,20 @@
+# -*- coding: utf-8 -*-
 """
-Gravity of ellipsoid models and common reductions (Bouguer, free-air)
-
+-----------------------------------------------------------------------------------
+ Name        : normgra.py
+ Created on  : 2018/11/24 08:57
+ Author      : Steve Chen <chenshi@cea-igp.ac.cn>
+ Affiliation : Institute of Geophysics, CEA.
+ Version     : 0.1.0
+ Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+ License     : Distributed under the MIT License. See LICENSE.txt for more info.
+ Github      : https://igp-gravity.github.io/
+ Description : Gravity of ellipsoid models and common reductions (Bouguer, free-air).
+-----------------------------------------------------------------------------------
 **Reference ellipsoids**
 
 This module uses instances of
-:class:`~fatiando.gravmag.normal_gravity.ReferenceEllipsoid` to store the
+:class:`~geoist.pfm.normgra.ReferenceEllipsoid` to store the
 physical constants of ellipsoids.
 To create a new ellipsoid, just instantiate ``ReferenceEllipsoid`` and give it
 the semimajor axis ``a``, the flattening ``f``, the geocentric gravitational
@@ -16,7 +26,7 @@ Available ellipsoids:
 
 * ``WGS84`` (values taken from Hofmann-Wellenhof and Moritz, 2005)::
 
-    >>> from fatiando.gravmag.normal_gravity import WGS84
+    >>> from geoist.pfm.normgra import WGS84
     >>> print(WGS84.name)
     World Geodetic System 1984
     >>> print('{:.0f}'.format(WGS84.a))
@@ -43,19 +53,19 @@ Available ellipsoids:
 
 **Normal gravity**
 
-* :func:`~pfm.normal_gravity.gamma_somigliana`: compute the normal
+* :func:`~geoist.pfm.normgra.gamma_somigliana`: compute the normal
   gravity using the Somigliana formula (Hofmann-Wellenhof and Moritz, 2005).
   Calculated **on** the ellipsoid.
-* :func:`~fatiando.gravmag.normal_gravity.gamma_somigliana_free_air`: compute
+* :func:`~geoist.pfm.normgra.gamma_somigliana_free_air`: compute
   normal gravity at a height using the Somigliana formula plus the free-air
   correction :math:`-0.3086H\ mGal/m`.
-* :func:`~fatiando.gravmag.normal_gravity.gamma_closed_form`: compute normal
+* :func:`~geoist.pfm.normgra.gamma_closed_form`: compute normal
   gravity using the closed form expression from Li and Gotze (2001). Can
   compute anywhere (on, above, under the ellipsoid).
 
 **Bouguer**
 
-* :func:`~pfm.normal_gravity.bouguer_plate`: compute the
+* :func:`~pfm.normgra.bouguer_plate`: compute the
   gravitational attraction of an infinite plate (Bouguer plate). Calculated
   **on top** of the plate.
 
@@ -76,8 +86,8 @@ and geophysics, Geophysics, 66(6), p. 1660-1668, doi: 10.1190/1.1487109
 import math
 import numpy
 
-from . import giutils
-from .giconstants import G
+import giutils
+from giconstants import G
 
 
 class ReferenceEllipsoid(object):
@@ -185,7 +195,7 @@ def gamma_somigliana(latitude, ellipsoid=WGS84):
 
     * latitude : float or numpy array
         The latitude where the normal gravity will be computed (in degrees)
-    * ellipsoid : :class:`~fatiando.gravmag.normal_gravity.ReferenceEllipsoid`
+    * ellipsoid : :class:`~geoist.pfm.normgra.ReferenceEllipsoid`
         The reference ellipsoid used.
 
     Returns:
@@ -216,7 +226,7 @@ def gamma_somigliana_free_air(latitude, height, ellipsoid=WGS84):
     * height : float or numpy array
         The height of computation (in meters). Should be ellipsoidal
         (geometric) heights for geophysical purposes.
-    * ellipsoid : :class:`~fatiando.gravmag.normal_gravity.ReferenceEllipsoid`
+    * ellipsoid : :class:`~geoist.pfm.normgra.ReferenceEllipsoid`
         The reference ellipsoid used.
 
     Returns:
@@ -242,7 +252,7 @@ def gamma_closed_form(latitude, height, ellipsoid=WGS84):
     * height : float or numpy array
         The height of computation (in meters). Should be ellipsoidal
         (geometric) heights for geophysical purposes.
-    * ellipsoid : :class:`~pfm.normal_gravity.ReferenceEllipsoid`
+    * ellipsoid : :class:`~pfm.normgra.ReferenceEllipsoid`
         The reference ellipsoid used.
 
     Returns:

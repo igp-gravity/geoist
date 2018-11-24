@@ -58,8 +58,7 @@ class GrdData(object):
         self.gtr = (0.0, 1.0, 0.0, 0.0, -1.0)
         self.wkt = ''
         self.units = ''
-        
-           
+                 
 def export_surfer(file_out, grd):
     """
     Export a surfer binary grid

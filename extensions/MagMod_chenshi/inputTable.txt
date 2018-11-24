@@ -1,0 +1,6 @@
+﻿table:magdata,重力固体潮
+Longitude,经度(度),string
+Latitude,纬度(度),string
+Elevation,高程(m),string
+Datetime,时间,string
+Magnetism,磁数据,string
