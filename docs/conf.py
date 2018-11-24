@@ -43,7 +43,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
 ]
-
+autodoc_mock_imports = ["gdal","pygmi","cartopy"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 

@@ -1,6 +1,5 @@
 formats: []
-conda:
-  file: environment.yml
+requirements_file: .readthedocs_requirements.txt
 build:
   image: latest
 python:
