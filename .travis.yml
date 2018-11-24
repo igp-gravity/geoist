@@ -1,0 +1,5 @@
+language: python
+script: true
+
+after_success:
+  - npm run coveralls
