@@ -1,0 +1,1 @@
+﻿{"pluginname":"MagMod","copyright":1,"author":"chenshi","Items":[{"name":"地磁参考场","desc":"地磁参考场，度分秒格式的经纬度需换算成度。","icon":"icon.png","language":"py","ui":"index_MagMod.html","pnodefieldname":"inputTable.txt","script":"main_MagMod.py","fieldfile":"outputFields.txt","hasviewer":false,"issourcenode":false,"isbase64":false}],"appendfiles":[],"dnpfile":""}

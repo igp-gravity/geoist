@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
- Name        : tri.py
+ Name        : gdal.py
  Created on  : 2018/09/11 17:00
  Author      : Steve Chen<chenshi@cea-igp.ac.cn>
  Affiliation : Institute of Geophysics, CEA.
@@ -8,11 +8,8 @@
  Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
  License     : Distributed under the MIT License. See LICENSE.txt for more info.
  Github      : https://igp-gravity.github.io/
- Description : Application for ***.
+ Description : functions for GDAL drivers
 """
-
-#python 3 compatibility
-from __future__ import print_function
 
 #stdlib imports
 import os.path

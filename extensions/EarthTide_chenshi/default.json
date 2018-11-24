@@ -1,0 +1,1 @@
+﻿{"pluginname":"EarthTide","copyright":1,"author":"chenshi","Items":[{"name":"重力固体潮","desc":"重力固体潮，度分秒格式的经纬度需要换算成度。","icon":"icon.png","language":"py","ui":"index_EarthTide.html","pnodefieldname":"inputTable.txt","script":"main_EarthTide.py","fieldfile":"outputFields.txt","hasviewer":false,"issourcenode":false,"isbase64":false}],"appendfiles":[],"dnpfile":""}

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
  -------------------------------------------------------------------------------
- Name        : utils.py
+ Name        : giutils.py
  Created on  : 2018/11/03 17:00
  Author      : Steve Chen <chenshi@cea-igp.ac.cn>
  Affiliation : Institute of Geophysics, CEA.
@@ -9,19 +9,16 @@
  Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
  License     : Distributed under the MIT License. See LICENSE.txt for more info.
  Github      : https://igp-gravity.github.io/
- Description : Application for ***.
+ Description : Miscellaneous utility functions.
  -------------------------------------------------------------------------------
-"""
-"""
-Miscellaneous utility functions.
-"""
-import math
 
+"""
+#import math
 import numpy
 import scipy.sparse
 import scipy.sparse.linalg
 import scipy.misc
-from ..other import giconstants
+import giconstants
 
 def gi_inverse(matrix):
     """
@@ -144,7 +141,7 @@ def sph2cart(lon, lat, height):
 
     """
     d2r = numpy.pi / 180.0
-    radius = constants.MEAN_EARTH_RADIUS + height
+    radius = giconstants.MEAN_EARTH_RADIUS + height
     x = numpy.cos(d2r * lat) * numpy.cos(d2r * lon) * radius
     y = numpy.cos(d2r * lat) * numpy.sin(d2r * lon) * radius
     z = numpy.sin(d2r * lat) * radius
@@ -166,7 +163,7 @@ def si2nt(value):
         The value in nanoTesla
 
     """
-    return value * constants.T2NT
+    return value * giconstants.T2NT
 
 
 def nt2si(value):
@@ -184,7 +181,7 @@ def nt2si(value):
         The value in SI
 
     """
-    return value / constants.T2NT
+    return value / giconstants.T2NT
 
 
 def si2eotvos(value):
@@ -202,7 +199,7 @@ def si2eotvos(value):
         The value in Eotvos
 
     """
-    return value * constants.SI2EOTVOS
+    return value * giconstants.SI2EOTVOS
 
 
 def eotvos2si(value):
@@ -220,7 +217,7 @@ def eotvos2si(value):
         The value in SI
 
     """
-    return value / constants.SI2EOTVOS
+    return value / giconstants.SI2EOTVOS
 
 
 def si2mgal(value):
@@ -238,7 +235,7 @@ def si2mgal(value):
         The value in mGal
 
     """
-    return value * constants.SI2MGAL
+    return value * giconstants.SI2MGAL
 
 
 def mgal2si(value):
@@ -256,7 +253,7 @@ def mgal2si(value):
         The value in SI
 
     """
-    return value / constants.SI2MGAL
+    return value / giconstants.SI2MGAL
 
 
 def vec2ang(vector):

@@ -1,4 +1,15 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+ Name        : gridcontainer.py
+ Created on  : 2018/09/11 17:00
+ Author      : Steve Chen<chenshi@cea-igp.ac.cn>
+ Affiliation : Institute of Geophysics, CEA.
+ Version     : 0.1.0
+ Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+ License     : Distributed under the MIT License. See LICENSE.txt for more info.
+ Github      : https://igp-gravity.github.io/
+ Description : Application for grid processing.
+"""
 
 # stdlib imports
 from datetime import datetime

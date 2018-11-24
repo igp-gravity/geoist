@@ -1,11 +1,21 @@
+# -*- coding: utf-8 -*-
 """
-2D interpolation, griding, and profile extraction.
+ Name        : interpolation.py
+ Created on  : 2018/11/24 08:57
+ Author      : Steve Chen <chenshi@cea-igp.ac.cn>
+ Affiliation : Institute of Geophysics, CEA.
+ Version     : 0.1.0
+ Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+ License     : Distributed under the MIT License. See LICENSE.txt for more info.
+ Github      : https://igp-gravity.github.io/
+ Description : 2D interpolation, griding, and profile extraction.
+
 """
-from __future__ import division, absolute_import, print_function
+
 import numpy as np
 import scipy.interpolate
 
-from .point_generation import regular
+from .genpnt import regular
 
 
 def fill_nans(x, y, v, xp, yp, vp):

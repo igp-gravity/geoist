@@ -1,4 +1,3 @@
-from __future__ import division, absolute_import, print_function
 import numpy.testing as npt
 import numpy as np
 from pytest import raises
