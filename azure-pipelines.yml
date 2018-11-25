@@ -23,11 +23,11 @@ jobs:
       architecture: 'x64'
 
   - script: |
-    sudo chmod -R 777 /usr/local/miniconda/envs
+      sudo chmod -R 777 /usr/local/miniconda/envs
     displayName: 'Fix for conda error'
 
   - script: |
-    conda config --add channels conda-forge
+      conda config --add channels conda-forge
     displayName: 'add conda-forge'
 
   - task: CondaEnvironment@1
