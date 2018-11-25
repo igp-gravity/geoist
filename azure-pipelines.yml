@@ -25,7 +25,7 @@ jobs:
   - task: CondaEnvironment@1
     inputs:
       Environmentname: geoist
-      Packagespecs: impactutils libcomcat gdal Cartopy obspy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
+      Packagespecs: gdal Cartopy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
 
   - script: |
       conda config --add channels conda-forge
