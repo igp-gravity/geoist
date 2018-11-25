@@ -1,0 +1,37 @@
+package:
+  name: geoist
+  version: 0.0.1
+
+source:
+  path: ../
+
+build:
+  noarch_python: True
+
+requirements:
+  build:
+    - python >=3.5
+    - setuptools
+
+  run:
+    - python >=3.5
+    - impactutils
+    - ipython
+    - libcomcat
+    - gdal
+    - Cartopy
+    - obspy
+    - Shapely
+    - scipy
+    - pytest
+    - pandas
+    - matplotlib
+    - h5py
+    - numpy
+#    - pygmi
+    - MarkDown
+    - rasterio
+
+about:
+  home: https://github.com/igp-gravity/geoist
+  license: MIT License
