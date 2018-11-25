@@ -12,9 +12,10 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 
 ## Functionalities
 
-* Gravity adjustment
-* Gravity inversion
-* Gravity modelling
+* Potential Field analysis method
+* Gravity data process and adjustment
+* Geophysics inversion
+* Geological modelling
 
 ## Features
 
@@ -26,4 +27,4 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 License
 -------
 
-`MIT`_ © 2018-2020 Gravity Team of Institute of Geophysics, CEA
+`MIT`  © 2018-2020 Gravity Team of Institute of Geophysics, CEA
