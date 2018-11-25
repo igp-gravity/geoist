@@ -22,22 +22,19 @@ jobs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
 
+  - task: CondaEnvironment@1
+    inputs:
+      Environmentname: geoist
+      Packagespecs: impactutils libcomcat gdal Cartopy obspy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
+
   - script: |
-      sudo chmod -R 777 /usr/local/miniconda/envs
-    displayName: 'Fix for conda error'
+      conda activate geoist
+      pip install pygmi
+    displayName: 'activate conda'
 
   - script: |
       conda config --add channels conda-forge
     displayName: 'add conda-forge'
-
-  - task: CondaEnvironment@1
-    inputs:
-      Createcustomenvironment: true
-      Environmentname: geoist
-      Packagespecs: impactutils libcomcat gdal Cartopy obspy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
-
-  - script: python -m pip install --upgrade pip && pip install pygmi
-    displayName: 'Install dependencies'
 
   - script: |
       pytest tests --doctest-modules --junitxml=junit/test-results.xml
