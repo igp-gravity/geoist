@@ -25,6 +25,7 @@ jobs:
   - script: |
     sudo chmod -R 777 /usr/local/miniconda/envs
     displayName: 'Fix for conda error'
+
   - script: |
     conda config --add channels conda-forge
     displayName: 'add conda-forge'
