@@ -29,9 +29,10 @@ jobs:
 
   - script: |
       conda config --add channels conda-forge
+      sudo ln -s /usr/share/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
       conda activate geoist
       conda install -y impactutils obspy libcomcat
-      pip install pygmi
+      pip install --upgrade pip && pip install pygmi
     displayName: 'activate conda and install additional packages'
 
   - script: |
