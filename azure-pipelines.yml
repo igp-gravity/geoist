@@ -28,7 +28,7 @@ jobs:
       Environmentname: 'geoist'
       Packagespecs: 'python=3'
 
-  - script: conda install -n geoist scipy
+  - script: conda install -n environment scipy
     displayName: 'Install dependencies'
 
   - script: |
