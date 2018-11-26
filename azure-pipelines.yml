@@ -25,8 +25,8 @@ jobs:
   - task: CondaEnvironment@1
     inputs:
       Createcustomenvironment: true
-      Environmentname: geoist
-      Packagespecs: impactutils libcomcat gdal Cartopy obspy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
+      Environmentname: 'geoist'
+      Packagespecs: 'python=3'
 
   - script: python -m pip install --upgrade pip && pip install pygmi
     displayName: 'Install dependencies'
