@@ -26,6 +26,8 @@ jobs:
       Environmentname: 'environment'
       Packagespecs: 'python=3'
 
+  - script: conda install -n environment pytest
+    displayName: 'Install dependencies'
 
   - script: |
       pytest tests --doctest-modules --junitxml=junit/test-results.xml
