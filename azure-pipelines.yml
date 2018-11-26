@@ -22,16 +22,10 @@ jobs:
 
   - task: CondaEnvironment@1
     inputs:
-      Createcustomenvironment: true
-      Environmentname: 'environment'
-      Packagespecs: 'python=3'
+      createCustomEnvironment: true
+      Environmentname: 'geoist'
+      Packagespecs: 'python=3.6'
 
-  - script: conda install -n environment pytest
-    displayName: 'Install dependencies'
-
-  - script: |
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml
-    displayName: 'pytest'
 
   - task: PublishTestResults@2
     inputs:
