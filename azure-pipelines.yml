@@ -29,7 +29,7 @@ jobs:
       Packagespecs: -c conda-forge impactutils obspy libcomcat gdal Cartopy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
 
   - script: |
-      conda activate geoist && sudo pip install --upgrade pip setuptools wheel && sudo pip install pygmi
+      /usr/share/miniconda/bin/conda activate geoist && sudo pip install --upgrade pip setuptools wheel && sudo pip install pygmi
     displayName: 'activate conda and install additional packages'
 
   - script: |
