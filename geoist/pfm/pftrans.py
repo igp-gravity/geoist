@@ -17,7 +17,7 @@
 import warnings
 import numpy
 
-import giutils
+from . import giutils
 
 
 def reduce_to_pole(x, y, data, shape, inc, dec, sinc, sdec):
