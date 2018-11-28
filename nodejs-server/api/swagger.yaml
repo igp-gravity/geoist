@@ -15,13 +15,13 @@ host: "virtserver.swaggerhub.com"
 basePath: "/g526/geoist/1.0.0"
 tags:
 - name: "gravity"
-  description: "openAPI on geoist"
+  description: "gravity adjustment"
   externalDocs:
-    description: "Find out more"
+    description: "Bayes approach"
     url: "http://swagger.io"
 - name: "pfm"
-  description: "Access to Petstore orders"
-- name: "user"
+  description: "potential field method"
+- name: "earthquake"
   description: "Operations about user"
   externalDocs:
     description: "Find out more about our store"
