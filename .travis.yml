@@ -1,15 +1,36 @@
-sudo: false
-
 language: python
 
 python:
   - 3.6
 
 install:
+  - sudo apt-get update
+
+  # install miniconda
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels conda-forge
+  - conda update -q conda
+  - conda info -a
+
+  # install conda-build in order to build the conda package
+  - conda install conda-build
+  - conda config --set anaconda_upload no
+
+  # creat the "geoist" environment
+  - conda env create --name geoist --file environment.yml
+  - source activate geoist
+
+  # install additional requirements
   - pip install codecov
-  - pip install pytest pytest-cov
-  - pip install scipy
-  - pip install matplotlib
+  - pip install pytest-cov
+
+  # build conda package
+  - conda-build conda_recipe/meta.yaml -c defaults -c conda-forge
+  - conda install geoist --use-local
 
 script:
   - pytest --cov=./
