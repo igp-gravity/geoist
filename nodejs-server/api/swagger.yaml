@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a sample Petstore server.  You can find \nout more about Swagger\
+  description: "This is a sample geoist server.  You can find \nout more about Swagger\
     \ at \n[http://swagger.io](http://swagger.io) or on \n[irc.freenode.net, #swagger](http://swagger.io/irc/).\n"
   version: "1.0.0"
   title: "geoist openAPI"
@@ -22,7 +22,7 @@ tags:
 - name: "pfm"
   description: "potential field method"
 - name: "earthquake"
-  description: "Operations about user"
+  description: "catalog analysis"
   externalDocs:
     description: "Find out more about our store"
     url: "http://swagger.io"
