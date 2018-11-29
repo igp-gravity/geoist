@@ -31,9 +31,9 @@ jobs:
       #    displayName: 'activate conda and install additional packages'
 
   - script: |
-      pytest ./geoist --doctest-modules --junitxml=junit/test-results.xml
+      pytest ./geoist 
     displayName: 'pytest'
-
+      # pytest ./geoist --doctest-modules --junitxml=junit/test-results.xml
 
   - task: PublishTestResults@2
     inputs:
