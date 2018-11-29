@@ -12,9 +12,7 @@ jobs:
     matrix:
       Python36:
         python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 2
+    maxParallel: 1
 
   steps:
   - task: UsePythonVersion@0
@@ -24,6 +22,7 @@ jobs:
 
   - task: CondaEnvironment@1
     inputs:
+
       Createcustomenvironment: true
       Environmentname: geoist
       Packagespecs: -c conda-forge impactutils obspy libcomcat gdal Cartopy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
@@ -35,6 +34,7 @@ jobs:
   - script: |
       pytest ./geoist --doctest-modules --junitxml=junit/test-results.xml
     displayName: 'pytest'
+
 
   - task: PublishTestResults@2
     inputs:
