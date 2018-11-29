@@ -7,7 +7,7 @@ direct access to ready-made optimization routines and regularization.
 
 For now, only implements an l2-norm data misfit:
 
-* :class:`~fatiando.inversion.misfit.Misfit`: an l2-norm data-misfit function
+* :class:`~geoist.inversion.misfit.Misfit`: an l2-norm data-misfit function
 
 See the documentation for :mod:`fatiando.inversion` for examples of using
 ``Misfit``.
@@ -15,13 +15,13 @@ See the documentation for :mod:`fatiando.inversion` for examples of using
 ----
 
 """
-from __future__ import division, absolute_import
+
 import copy
 from abc import abstractmethod
 import numpy as np
 import scipy.sparse
 
-from ..utils import safe_dot
+from ..pfm.giutils import safe_dot
 from .base import (OptimizerMixin, OperatorMixin, CachedMethod,
                    CachedMethodPermanent)
 
