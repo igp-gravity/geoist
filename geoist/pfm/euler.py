@@ -33,7 +33,7 @@ import numpy as np
 
 #from .. import gridder
 from ..inversion import Misfit
-from ..utils import safe_inverse, safe_dot, safe_diagonal
+from .giutils import safe_inverse, safe_dot, safe_diagonal
 
 
 class EulerDeconv(Misfit):
