@@ -32,7 +32,7 @@ Geophysics, 55(1), 80-91, doi:10.1190/1.1442774.
 import numpy as np
 
 #from .. import gridder
-from ..inversion import Misfit
+from ..inversion import misfit
 from .giutils import safe_inverse, safe_dot, safe_diagonal
 
 
