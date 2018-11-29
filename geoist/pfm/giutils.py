@@ -20,7 +20,7 @@ import scipy.sparse.linalg
 import scipy.misc
 from . import giconstants
 
-def gi_inverse(matrix):
+def safe_inverse(matrix):
     """
     Calculate the inverse of a matrix using an apropriate algorithm.
 
@@ -45,7 +45,7 @@ def gi_inverse(matrix):
         return numpy.linalg.inv(matrix)
 
 
-def gi_solve(matrix, vector):
+def safe_solve(matrix, vector):
     """
     Solve a linear system using an apropriate algorithm.
 
@@ -79,7 +79,7 @@ def gi_solve(matrix, vector):
         return numpy.linalg.solve(matrix, vector)
 
 
-def gi_dot(a, b):
+def safe_dot(a, b):
     """
     Make the dot product using the appropriate method.
 
@@ -103,7 +103,7 @@ def gi_dot(a, b):
         return numpy.dot(a, b)
 
 
-def gi_diagonal(matrix):
+def safe_diagonal(matrix):
     """
     Get the diagonal of a matrix using the appropriate method.
 
