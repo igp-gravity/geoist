@@ -8,7 +8,7 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 [![codecov](https://codecov.io/gh/igp-gravity/geoist/branch/master/graph/badge.svg)](https://codecov.io/gh/igp-gravity/geoist)
 [![Documentation Status](https://readthedocs.org/projects/pip/badge/?version=latest&style=flat)](https://geoist.readthedocs.io/en/latest/)
 [![Binder](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/igp-gravity/geoist/master)
-[![Build Status](https://dev.azure.com/igp-gravity/mygeoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/igp-gravity/mygeoist/_build/latest?definitionId=1)
+[![Build Status](https://dev.azure.com/chenshi1980/geoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/chenshi1980/geoist/_build/latest?definitionId=1)
 
 ## Functionalities
 
