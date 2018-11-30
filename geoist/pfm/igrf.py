@@ -44,7 +44,7 @@ from math import atan2
 import os
 #third party imports
 import numpy as np
-# local imports
+# local imports t
 
 class IGRF():
     """

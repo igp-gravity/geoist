@@ -9,7 +9,7 @@ For now, only implements an l2-norm data misfit:
 
 * :class:`~geoist.inversion.misfit.Misfit`: an l2-norm data-misfit function
 
-See the documentation for :mod:`fatiando.inversion` for examples of using
+See the documentation for :mod:`geoist.inversion` for examples of using
 ``Misfit``.
 
 ----

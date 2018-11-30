@@ -42,9 +42,9 @@ class EulerDeconv(Misfit):
 
     Follows the formulation of Reid et al. (1990). Performs the deconvolution
     on the whole data set. For windowed approaches, use
-    :class:`~fatiando.gravmag.euler.EulerDeconvMW` (moving window)
+    :class:`~geoist.pfm.euler.EulerDeconvMW` (moving window)
     and
-    :class:`~fatiando.gravmag.euler.EulerDeconvEW` (expanding window).
+    :class:`~geoist.pfm.euler.EulerDeconvEW` (expanding window).
 
     Works on any potential field that satisfies Euler's homogeneity equation
     (both gravity and magnetic, assuming simple sources):
@@ -72,7 +72,7 @@ class EulerDeconv(Misfit):
 
         Please read the paper Reid et al. (2014)  to avoid doing **horrible
         things** with Euler deconvolution. Uieda et al. (2014) offer a
-        practical tutorial using Fatiando code and show some common
+        practical tutorial using geoist code and show some common
         misinterpretations.
 
     After Reid et al. (2014), values of the structural index (SI) can be:
@@ -85,7 +85,7 @@ class EulerDeconv(Misfit):
     Thin sheet edge, thin sill, thin dyke    1         0
     ===================================== ======== =========
 
-    Use the :meth:`~fatiando.gravmag.euler.EulerDeconv.fit` method to run the
+    Use the :meth:`~geoist.pfm.euler.EulerDeconv.fit` method to run the
     deconvolution. The estimated coordinates :math:`(x_0, y_0, z_0)` are stored
     in the ``estimate_`` attribute and the estimated base level :math:`b` is
     stored in ``baselevel_``.
@@ -106,7 +106,7 @@ class EulerDeconv(Misfit):
 
         Units of the input data (x, y, z, field, derivatives) must be in SI
         units! Otherwise, the results will be in strange units. Use functions
-        in :mod:`fatiando.utils` to convert between units.
+        in :mod:`geoist.pfm.giutils` to convert between units.
 
     Parameters:
 
@@ -143,7 +143,7 @@ class EulerDeconv(Misfit):
     <http://dx.doi.org/10.1190/tle33040448.1>`__.
 
     """
-
+	
     def __init__(self, x, y, z, field, xderiv, yderiv, zderiv,
                  structural_index):
         same_shape = all(i.shape == x.shape
@@ -223,9 +223,9 @@ class EulerDeconvEW(EulerDeconv):
     deconvolution. Keeps the best result, judged by the estimated error.
 
     The deconvolution is performed as in
-    :class:`~fatiando.gravmag.euler.EulerDeconv`.
+    :class:`~geoist.pfm.euler.EulerDeconv`.
 
-    Use the :meth:`~fatiando.gravmag.euler.EulerDeconvEW.fit` method to produce
+    Use the :meth:`~geoist.pfm.euler.EulerDeconvEW.fit` method to produce
     an estimate. The estimated point is stored in the attribute ``estimate_``
     and the base level in ``baselevel_``.
 
@@ -288,9 +288,9 @@ class EulerDeconvMW(EulerDeconv):
     only a top percentage of the estimates from all windows.
 
     The deconvolution is performed as in
-    :class:`~fatiando.gravmag.euler.EulerDeconv`.
+    :class:`~geoist.pfm.euler.EulerDeconv`.
 
-    Use the :meth:`~fatiando.gravmag.euler.EulerDeconvMW.fit` method to produce
+    Use the :meth:`~geoist.pfm.euler.EulerDeconvMW.fit` method to produce
     an estimate. The estimated points are stored in ``estimate_`` as a 2D numpy
     array. Each line in the array is an [x, y, z] coordinate of a point. The
     base levels are stored in ``baselevel_``.
