@@ -20,7 +20,8 @@ Available classes:
 import multiprocessing
 import numpy
 
-from ..vis import mpl
+#from ..vis import giplt
+import matplotlib as mpl
 from .base import OptimizerMixin
 
 

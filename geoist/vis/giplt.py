@@ -12,8 +12,8 @@
                2D objects, etc.
 
 This module loads all functions from :mod:`matplotlib.pyplot`, adds new
-functions and overwrites some others (like :func:`~geoist.vis.mpl.contour`,
-:func:`~geoist.vis.mpl.pcolor`, etc).
+functions and overwrites some others (like :func:`~geoist.vis.giplt.contour`,
+:func:`~geoist.vis.giplt.pcolor`, etc).
 
 .. warning::
 
@@ -24,40 +24,40 @@ functions and overwrites some others (like :func:`~geoist.vis.mpl.contour`,
 
 **Grids**
 
-* :func:`~geoist.vis.mpl.contour`
-* :func:`~geoist.vis.mpl.contourf`
-* :func:`~geoist.vis.mpl.pcolor`
+* :func:`~geoist.vis.giplt.contour`
+* :func:`~geoist.vis.giplt.contourf`
+* :func:`~geoist.vis.giplt.pcolor`
 
 Grids are automatically reshaped and interpolated if desired or necessary.
 
 **2D objects**
 
-* :func:`~geoist.vis.mpl.points`
-* :func:`~geoist.vis.mpl.paths`
-* :func:`~geoist.vis.mpl.square`
-* :func:`~geoist.vis.mpl.squaremesh`
-* :func:`~geoist.vis.mpl.polygon`
-* :func:`~geoist.vis.mpl.layers`
-* :func:`~geoist.vis.mpl.seismic_image`
-* :func:`~geoist.vis.mpl.seismic_wiggle`
+* :func:`~geoist.vis.giplt.points`
+* :func:`~geoist.vis.giplt.paths`
+* :func:`~geoist.vis.giplt.square`
+* :func:`~geoist.vis.giplt.squaremesh`
+* :func:`~geoist.vis.giplt.polygon`
+* :func:`~geoist.vis.giplt.layers`
+* :func:`~geoist.vis.giplt.seismic_image`
+* :func:`~geoist.vis.giplt.seismic_wiggle`
 
 **Interactive**
 
-* :func:`~geoist.vis.mpl.draw_polygon`
-* :func:`~geoist.vis.mpl.draw_layers`
-* :func:`~geoist.vis.mpl.pick_points`
+* :func:`~geoist.vis.giplt.draw_polygon`
+* :func:`~geoist.vis.giplt.draw_layers`
+* :func:`~geoist.vis.giplt.pick_points`
 
 **Basemap (map projections)**
 
-* :func:`~geoist.vis.mpl.basemap`
-* :func:`~geoist.vis.mpl.draw_geolines`
-* :func:`~geoist.vis.mpl.draw_countries`
-* :func:`~geoist.vis.mpl.draw_coastlines`
+* :func:`~geoist.vis.giplt.basemap`
+* :func:`~geoist.vis.giplt.draw_geolines`
+* :func:`~geoist.vis.giplt.draw_countries`
+* :func:`~geoist.vis.giplt.draw_coastlines`
 
 **Auxiliary**
 
-* :func:`~geoist.vis.mpl.set_area`
-* :func:`~geoist.vis.mpl.m2km`
+* :func:`~geoist.vis.giplt.set_area`
+* :func:`~geoist.vis.giplt.m2km`
 
 ----
 
@@ -424,7 +424,7 @@ def draw_geolines(area, dlon, dlat, basemap, linewidth=1):
         The spacing between the lines in the longitude and latitude directions,
         respectively (in decimal degrees)
     * basemap : mpl_toolkits.basemap.Basemap
-        The basemap used for plotting (see :func:`~geoist.vis.mpl.basemap`)
+        The basemap used for plotting (see :func:`~geoist.vis.giplt.basemap`)
     * linewidth : float
         The width of the lines
 
@@ -443,7 +443,7 @@ def draw_countries(basemap, linewidth=1, style='dashed'):
     Parameters:
 
     * basemap : mpl_toolkits.basemap.Basemap
-        The basemap used for plotting (see :func:`~geoist.vis.mpl.basemap`)
+        The basemap used for plotting (see :func:`~geoist.vis.giplt.basemap`)
     * linewidth : float
         The width of the lines
     * style : str
@@ -462,7 +462,7 @@ def draw_coastlines(basemap, linewidth=1, style='solid'):
     Parameters:
 
     * basemap : mpl_toolkits.basemap.Basemap
-        The basemap used for plotting (see :func:`~geoist.vis.mpl.basemap`)
+        The basemap used for plotting (see :func:`~geoist.vis.giplt.basemap`)
     * linewidth : float
         The width of the lines
     * style : str
@@ -859,7 +859,7 @@ def contour(x, y, v, shape, levels, interp=False, extrapolate=False, color='k',
         Width of the contour lines
     * basemap : mpl_toolkits.basemap.Basemap
         If not None, will use this basemap for plotting with a map projection
-        (see :func:`~geoist.vis.mpl.basemap` for creating basemaps)
+        (see :func:`~geoist.vis.giplt.basemap` for creating basemaps)
 
     Returns:
 
@@ -925,7 +925,7 @@ def contourf(x, y, v, shape, levels, interp=False, extrapolate=False,
         Color map to be used. (see pyplot.cm module)
     * basemap : mpl_toolkits.basemap.Basemap
         If not None, will use this basemap for plotting with a map projection
-        (see :func:`~geoist.vis.mpl.basemap` for creating basemaps)
+        (see :func:`~geoist.vis.giplt.basemap` for creating basemaps)
 
     Returns:
 
@@ -977,7 +977,7 @@ def pcolor(x, y, v, shape, interp=False, extrapolate=False, cmap=pyplot.cm.jet,
         Saturation values of the colorbar.
     * basemap : mpl_toolkits.basemap.Basemap
         If not None, will use this basemap for plotting with a map projection
-        (see :func:`~geoist.vis.mpl.basemap` for creating basemaps)
+        (see :func:`~geoist.vis.giplt.basemap` for creating basemaps)
 
     Returns:
 
