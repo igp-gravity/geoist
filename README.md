@@ -9,6 +9,9 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 [![Documentation Status](https://readthedocs.org/projects/pip/badge/?version=latest&style=flat)](https://geoist.readthedocs.io/en/latest/)
 [![Binder](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/igp-gravity/geoist/master)
 [![Build Status](https://dev.azure.com/chenshi1980/geoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/chenshi1980/geoist/_build/latest?definitionId=1)
+[![lic-image]](LICENSE)
+
+* [Chinese Documentation](README.cn.md)
 
 ## Functionalities
 
@@ -23,6 +26,11 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 * Build upon popular Python packages such as Numpy, Scipy, Pandas, Matplotlib etc. Well integrated into python ecosystem.
 
 > Our Missions
+
+Contributing
+-------
+
+Contribution is welcome, please feel free to contact our team and fork this project. Waiting for your pull request.
 
 License
 -------
