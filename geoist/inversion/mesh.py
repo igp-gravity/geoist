@@ -10,6 +10,7 @@ import scipy.interpolate
 import copy as cp
 
 from .. import gridder
+from ..pfm import grdio
 from .geometry import Square, Prism, Sphere, Tesseroid
 
 
@@ -250,7 +251,7 @@ class PointGrid(object):
         self.radius = scipy.special.cbrt(3. / (4. * np.pi))
         self.x, self.y = gridder.regular(area, shape)
         # The spacing between points
-        self.dx, self.dy = gridder.spacing(area, shape)
+        self.dx, self.dy = grdio.spacing(area, shape)
 
     def __len__(self):
         return self.size
