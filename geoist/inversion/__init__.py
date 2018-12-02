@@ -351,7 +351,6 @@ from .regularization import Damping, Smoothness, Smoothness1D, Smoothness2D, \
 from .hyper_param import LCurve
 
 # Generate and operate on geometric elements and meshes.
-
 from .geometry import Polygon, Square, Prism, Tesseroid, Sphere
 from .geometry import PolygonalPrism
 from .mesh import SquareMesh, PointGrid, PrismRelief, PrismMesh, TesseroidMesh
