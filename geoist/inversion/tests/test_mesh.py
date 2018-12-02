@@ -18,8 +18,6 @@ def test_pointgrid():
                [10, 2, 200],
                [10, 4, 200],
                [10, 6, 200]]
-    for point, true_c in zip(g, centers):
-        npt.assert_allclose(point.center, true_c)
     for i in range(g.size):
         npt.assert_allclose(g[i].center, centers[i])
     for i in range(-1, -(g.size + 1), -1):
@@ -44,8 +42,6 @@ def test_pointgrid_z_array():
                [10, 2, 3],
                [10, 4, 4],
                [10, 6, 5]]
-    for point, true_c in zip(g, centers):
-        npt.assert_allclose(point.center, true_c)
     for i in range(g.size):
         npt.assert_allclose(g[i].center, centers[i])
     for i in range(-1, -(g.size + 1), -1):
@@ -179,19 +175,19 @@ def test_carvetopo():
     p2.carvetopo(topox, topoy, topoz, below=True)
     # Test p0 and p1 which should be the same
     for pi in [p0, p1]:
-        for i, p in enumerate(pi):
-            if i == 0:
-                assert p is None
+        for p in range(pi.size):
+            if p == 0:
+                assert pi[p] is None
             else:
-                assert p is not None
-                assert np.any(p0r[i].center() == p.center())
+                assert pi[p] is not None
+                assert np.any(p0r[i].center() == pi[p].center())
     # Test p2
-    for i, p in enumerate(p2):
-        if i == 1:
-            assert p is None
+    for p in range(p2.size):
+        if p == 1:
+            assert p2[p]. is None
         else:
-            assert p is not None
-            assert np.any(p2r[i].center() == p.center())
+            assert p2[p] is not None
+            assert np.any(p2r[i].center() == p2[p].center())
 
 
 def test_square_mesh_copy():

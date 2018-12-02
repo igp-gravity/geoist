@@ -18,8 +18,8 @@ class SquareMesh(object):
     """
     A 2D regular mesh of squares.
 
-    For all purposes, :class:`~fatiando.mesher.SquareMesh` can be used as a
-    list of :class:`~fatiando.mesher.Square`. The order of the squares in the
+    For all purposes, :class:`~geoist.inversion.SquareMesh` can be used as a
+    list of :class:`~geoist.inversion.Square`. The order of the squares in the
     list is: x directions varies first, then y.
 
     Parameters:
@@ -133,7 +133,7 @@ class SquareMesh(object):
         * values : list or array
             The value of this physical property in each square of the mesh.
             For the ordering of squares in the mesh see
-            :class:`~fatiando.mesher.SquareMesh`
+            :class:`~geoist.inversion.SquareMesh`
 
         """
         self.props[prop] = values
@@ -187,7 +187,7 @@ class PointGrid(object):
     """
     A regular grid of 3D point sources (spheres of unit volume).
 
-    Use this as a 1D list of :class:`~fatiando.mesher.Sphere`.
+    Use this as a 1D list of :class:`~geoist.inversion.Sphere`.
 
     Grid points are ordered like a C matrix, first each row in a column, then
     change columns. In this case, the x direction (North-South) are the rows
@@ -312,7 +312,7 @@ class PointGrid(object):
         Returns:
 
         * subgrids : list
-            List of :class:`~fatiando.mesher.PointGrid`
+            List of :class:`~geoist.inversion.PointGrid`
 
         Examples::
 
@@ -402,7 +402,7 @@ class PrismRelief(object):
     can loop over prisms). It also has a ``__getitem__`` method to access
     individual elements in the mesh.
     In practice, PrismRelief should be able to be passed to any function that
-    asks for a list of prisms, like :func:`fatiando.gravmag.prism.gz`.
+    asks for a list of prisms, like :func:`geoist.pfm.prism.gz`.
 
     Parameters:
 
@@ -506,15 +506,15 @@ class PrismMesh(object):
     index 1 (second layer), y index 1 (second row), and x index 2 (third
     element in the column).
 
-    :class:`~fatiando.mesher.PrismMesh` can used as list of prisms. It acts
+    :class:`~geoist.inversion.PrismMesh` can used as list of prisms. It acts
     as an iteratior (so you can loop over prisms). It also has a
     ``__getitem__`` method to access individual elements in the mesh.
-    In practice, :class:`~fatiando.mesher.PrismMesh` should be able to be
+    In practice, :class:`~geoist.inversion.PrismMesh` should be able to be
     passed to any function that asks for a list of prisms, like
-    :func:`fatiando.gravmag.prism.gz`.
+    :func:`geoist.pfm.prism.gz`.
 
     To make the mesh incorporate a topography, use
-    :meth:`~fatiando.mesher.PrismMesh.carvetopo`
+    :meth:`~geoist.inversion.PrismMesh.carvetopo`
 
     Parameters:
 
@@ -530,7 +530,7 @@ class PrismMesh(object):
 
     Examples:
 
-        >>> from fatiando.mesher import PrismMesh
+        >>> from geoist.inversion import PrismMesh
         >>> mesh = PrismMesh((0, 1, 0, 2, 0, 3), (1, 2, 2))
         >>> for p in mesh:
         ...     print p
@@ -561,7 +561,7 @@ class PrismMesh(object):
         x1:0 | x2:1 | y1:0 | y2:4 | z1:0 | z2:3 | density:200
         x1:1 | x2:2 | y1:0 | y2:4 | z1:0 | z2:3 | density:-1000
 
-    You can use :meth:`~fatiando.mesher.PrismMesh.get_xs` (and similar
+    You can use :meth:`~geoist.inversion.PrismMesh.get_xs` (and similar
     methods for y and z) to get the x coordinates of the prisms in the mesh::
 
         >>> mesh = PrismMesh((0, 2, 0, 4, 0, 3), (1, 1, 2))
@@ -659,7 +659,7 @@ class PrismMesh(object):
         * values :  list or array
             Value of this physical property in each prism of the mesh. For the
             ordering of prisms in the mesh see
-            :class:`~fatiando.mesher.PrismMesh`
+            :class:`~geoist.inversion.PrismMesh`
 
         """
         self.props[prop] = values
@@ -773,7 +773,7 @@ class PrismMesh(object):
 
         Returns:
 
-        * prisms : list of :class:`~fatiando.mesher.Prism`
+        * prisms : list of :class:`~geoist.inversion.Prism`
             The prisms in the ith layer
 
         Examples::
@@ -912,10 +912,10 @@ class TesseroidMesh(PrismMesh):
     method to access individual elements in the mesh.
     In practice, it should be able to be
     passed to any function that asks for a list of tesseroids, like
-    :func:`fatiando.gravmag.tesseroid.gz`.
+    :func:`geoist.pfm.tesseroid.gz`.
 
     To make the mesh incorporate a topography, use
-    :meth:`~fatiando.mesher.TesseroidMesh.carvetopo`
+    :meth:`~geoist.inversion.TesseroidMesh.carvetopo`
 
     Parameters:
 
@@ -932,7 +932,7 @@ class TesseroidMesh(PrismMesh):
 
     Examples:
 
-        >>> from fatiando.mesher import TesseroidMesh
+        >>> from geoist.inversion import TesseroidMesh
         >>> mesh = TesseroidMesh((0, 1, 0, 2, 3, 0), (1, 2, 2))
         >>> for p in mesh:
         ...     print p
@@ -963,7 +963,7 @@ class TesseroidMesh(PrismMesh):
         w:0 | e:1 | s:0 | n:4 | top:3 | bottom:0 | density:200
         w:1 | e:2 | s:0 | n:4 | top:3 | bottom:0 | density:-1000
 
-    You can use :meth:`~fatiando.mesher.PrismMesh.get_xs` (and similar
+    You can use :meth:`~geoist.inversion.PrismMesh.get_xs` (and similar
     methods for y and z) to get the x coordinates of the tesseroidss in the
     mesh::
 
