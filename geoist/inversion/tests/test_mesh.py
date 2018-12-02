@@ -180,14 +180,14 @@ def test_carvetopo():
                 assert pi[p] is None
             else:
                 assert pi[p] is not None
-                assert np.any(p0r[i].center() == pi[p].center())
+                assert np.any(p0r[p].center() == pi[p].center())
     # Test p2
     for p in range(p2.size):
         if p == 1:
-            assert p2[p]. is None
+            assert p2[p] is None
         else:
             assert p2[p] is not None
-            assert np.any(p2r[i].center() == p2[p].center())
+            assert np.any(p2r[p].center() == p2[p].center())
 
 
 def test_square_mesh_copy():
