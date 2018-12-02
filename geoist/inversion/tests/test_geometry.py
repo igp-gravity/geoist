@@ -3,7 +3,7 @@ Test the geometric element classes.
 """
 import numpy as np
 
-from .geometry import Square, GeometricElement, Polygon, PolygonalPrism, \
+from ..geometry import Square, GeometricElement, Polygon, PolygonalPrism, \
     Prism, Sphere, Tesseroid
 
 

@@ -2,8 +2,8 @@ import numpy as np
 import numpy.testing as npt
 from pytest import raises
 
-from .. import gridder
-from .mesh import PrismMesh, Prism, SquareMesh, PointGrid, TesseroidMesh
+from ... import gridder
+from ..mesh import PrismMesh, Prism, SquareMesh, PointGrid, TesseroidMesh
 
 
 def test_pointgrid():
