@@ -5,7 +5,7 @@ prisms
 import matplotlib.pyplot as plt
 from geoist import gridder
 from geoist.inversion import geometry
-from geoist.pfm import polyprism
+from geoist.pfm import polyprism, giutils
 from geoist.vis import giplt
 
 # The regional field
@@ -13,15 +13,16 @@ inc, dec = 30, -15
 # Draw each polygonal prism (viewed from above)
 bounds = [-5000, 5000, -5000, 5000, 0, 5000]
 area = bounds[:4]
-axis = plt.figure().gca()
-plt.axis('scaled')
+#axis = plt.figure().gca()
+#plt.axis('scaled')
 verts = [[-2000, -3000], [-2000, 2000], [3000, 3000], [2000, -3000]]
 model = [
     geometry.PolygonalPrism(
         #giplt.draw_polygon(area, axis, xy2ne=True),
         verts,
         # Use only induced magnetization
-        0, 2000, {'magnetization': 2})]
+        #0, 2000, {'magnetization': 2})]
+        0, 2000, {'magnetization': giutils.ang2vec(2, inc, dec)})]
 # Calculate the effect
 shape = (100, 100)
 xp, yp, zp = gridder.regular(area, shape, z=-500)

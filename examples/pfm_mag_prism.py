@@ -24,6 +24,7 @@ shape = (200, 200)
 area = bounds[:4]
 xp, yp, zp = gridder.regular(area, shape, z=-500)
 # Calculate the anomaly for a given regional field
+
 tf = prism.tf(xp, yp, zp, model, inc, dec)
 # Plot
 plt.figure()
@@ -33,5 +34,5 @@ giplt.contourf(yp, xp, tf, shape, 15)
 plt.colorbar()
 plt.xlabel('East y (km)')
 plt.ylabel('North x (km)')
-plt.m2km()
+giplt.m2km()
 plt.show()

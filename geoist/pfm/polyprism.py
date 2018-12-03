@@ -20,7 +20,7 @@ def tf(xp, yp, zp, prisms, inc, dec, pmag=None):
 
     * xp, yp, zp : arrays
         Arrays with the x, y, and z coordinates of the computation points.
-    * prisms : list of :class:`geoist.inversion.mesher.PolygonalPrism`
+    * prisms : list of :class:`geoist.inversion.geometry.PolygonalPrism`
         The model used to calculate the total field anomaly.
         Prisms without the physical property ``'magnetization'`` will
         be ignored.

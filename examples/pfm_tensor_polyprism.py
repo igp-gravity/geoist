@@ -12,11 +12,13 @@ from geoist.vis import giplt
 print("Draw the polygons one by one")
 bounds = [-10000, 10000, -10000, 10000, 0, 5000]
 area = bounds[:4]
-axis = plt.figure().gca()
-plt.axis('scaled')
+#axis = plt.figure().gca()
+#plt.axis('scaled')
+verts = [[-2000, -3000], [-2000, 2000], [3000, 3000], [2000, -3000]]
 model = [
     geometry.PolygonalPrism(
-        giplt.draw_polygon(area, axis, xy2ne=True),
+       # giplt.draw_polygon(area, axis, xy2ne=True),
+        verts,
         0, 1000, {'density': 500})]
 # Calculate the effect
 shape = (100, 100)
@@ -41,5 +43,5 @@ for i in range(len(data)):
     for p in model:
         giplt.polygon(p, '.-k', xy2ne=True)
     giplt.set_area(area)
-    plt.m2km()
+    giplt.m2km()
 plt.show()

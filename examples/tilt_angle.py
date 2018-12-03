@@ -4,7 +4,7 @@ Tilt angle of magnetic anomalies
 
 The tilt angle is a useful transformation of potential field data for boundary
 detection. It is commonly used with reduced-to-the-pole total field magnetic
-anomaly data. We'll test the :func:`fatiando.gravmag.transform.tilt` function
+anomaly data. We'll test the :func:`geoist.pfm.pftrans.tilt` function
 on some synthetic magnetic data. For simplicity here, we'll assume that our
 data is already reduced to the pole. You can use
 :func:`fatiando.gravmag.transform.reduce_to_pole` to reduce your data.
