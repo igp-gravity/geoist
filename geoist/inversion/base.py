@@ -31,8 +31,8 @@ This module defines base classes that are used by the rest of the
 
 """
 
-from future.utils import with_metaclass
-from future.builtins import super, object, isinstance, zip, map
+from six import with_metaclass
+#from future.builtins import super, object, isinstance, zip, map
 import hashlib
 import copy
 from abc import ABCMeta, abstractmethod
