@@ -6,11 +6,11 @@ dependencies:
         - python>=3.5
         - impactutils
         - ipython
-        - libcomcat
-        - gdal
+          #        - libcomcat
+          #        - gdal
         - pip:
-          - Cartopy
-          - obspy
+          #          - Cartopy
+          #          - obspy
           - Shapely
           - scipy
           - pytest
@@ -18,7 +18,7 @@ dependencies:
           - matplotlib
           - h5py
           - numpy
-          - argparse
-          - pygmi
+            #          - pygmi
           - MarkDown
           - rasterio
+          - Cython
