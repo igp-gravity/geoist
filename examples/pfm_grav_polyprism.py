@@ -20,7 +20,7 @@ for i in range(1, len(depths)):
         giplt.polygon(p, '.-k', xy2ne=True)
     model.append(
         geometry.PolygonalPrism(
-            plt.draw_polygon(area, axes, xy2ne=True),
+            giplt.draw_polygon(area, axes, xy2ne=True),
             depths[i - 1], depths[i], {'density': 500}))
 # Calculate the effect
 shape = (100, 100)

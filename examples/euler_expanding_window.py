@@ -77,7 +77,7 @@ print(model[1].center)
 
 plt.figure(figsize=(6, 5))
 plt.title('Euler deconvolution with expanding windows')
-giplt.contourf(y.reshape(shape), x.reshape(shape), data.reshape(shape), 30,
+plt.contourf(y.reshape(shape), x.reshape(shape), data.reshape(shape), 30,
              cmap="RdBu_r")
 plt.scatter([sol1.estimate_[1], sol2.estimate_[1]],
             [sol1.estimate_[0], sol2.estimate_[0]],

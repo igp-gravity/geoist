@@ -71,7 +71,7 @@ print(solver.estimate_)
 
 plt.figure(figsize=(6, 5))
 plt.title('Euler deconvolution with a moving window')
-giplt.contourf(y.reshape(shape), x.reshape(shape), data.reshape(shape), 30,
+plt.contourf(y.reshape(shape), x.reshape(shape), data.reshape(shape), 30,
              cmap="RdBu_r")
 plt.scatter(solver.estimate_[:, 1], solver.estimate_[:, 0],
             s=50, c=solver.estimate_[:, 2], cmap='cubehelix')

@@ -86,7 +86,7 @@ doi: 10.1007/s001900000116.
 
 import numpy
 
-from . import gutils
+from . import giutils
 from .giconstants import G, SI2EOTVOS, CM, T2NT, SI2MGAL
 try:
     from . import _prism
@@ -636,7 +636,7 @@ def tf(xp, yp, zp, prisms, inc, dec, pmag=None):
     res = numpy.zeros(size, dtype=numpy.float)
     # Calculate the 3 components of the unit vector in the direction of the
     # regional field
-    fx, fy, fz = utils.dircos(inc, dec)
+    fx, fy, fz = giutils.dircos(inc, dec)
     if pmag is not None:
         if isinstance(pmag, float) or isinstance(pmag, int):
             mx, my, mz = pmag * fx, pmag * fy, pmag * fz
