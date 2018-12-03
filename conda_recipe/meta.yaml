@@ -12,6 +12,8 @@ requirements:
   build:
     - python >=3.5
     - setuptools
+    - Cython
+    - numpy
 
   run:
     - python >=3.5
