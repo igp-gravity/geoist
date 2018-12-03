@@ -4,11 +4,14 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 
 [logo]: ./geoist.png "Geoist"
 
-[![Build Status](https://travis-ci.org/rular099/geoist.svg?branch=master)](https://travis-ci.org/rular099/geoist)
-[![codecov](https://codecov.io/gh/rular099/geoist/branch/master/graph/badge.svg)](https://codecov.io/gh/rular099/geoist)
+[![Build Status](https://travis-ci.org/igp-gravity/geoist.svg?branch=master)](https://travis-ci.org/igp-gravity/geoist)
+[![codecov](https://codecov.io/gh/igp-gravity/geoist/branch/master/graph/badge.svg)](https://codecov.io/gh/igp-gravity/geoist)
 [![Documentation Status](https://readthedocs.org/projects/pip/badge/?version=latest&style=flat)](https://geoist.readthedocs.io/en/latest/)
-[![Binder](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/rular099/geoist/master)
-[![Build Status](https://dev.azure.com/rular099/mygeoist/_apis/build/status/rular099.geoist)](https://dev.azure.com/rular099/mygeoist/_build/latest?definitionId=1)
+[![Binder](https://binder.pangeo.io/badge.svg)](https://binder.pangeo.io/v2/gh/igp-gravity/geoist/master)
+[![Build Status](https://dev.azure.com/chenshi1980/geoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/chenshi1980/geoist/_build/latest?definitionId=1)
+[![lic-image](https://img.shields.io/dub/l/vibe-d.svg)](LICENSE)
+
+* [Chinese Documentation](README.cn.md)
 
 ## Functionalities
 
@@ -23,6 +26,11 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 * Build upon popular Python packages such as Numpy, Scipy, Pandas, Matplotlib etc. Well integrated into python ecosystem.
 
 > Our Missions
+
+Contributing
+-------
+
+Contribution is welcome, please feel free to contact our team and fork this project. Waiting for your pull request.
 
 License
 -------
