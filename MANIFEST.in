@@ -1,5 +1,3 @@
 include versioneer.py
 include ./geoist/_version.py
 include geoist/pfm/*.COF
-include geoist/pfm/*.c
-include geoist/pfm/*.pyx
