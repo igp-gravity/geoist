@@ -13,7 +13,7 @@ extensions = [
               include_dirs=[numpy.get_include()]
     )
 ]
-install_requires = ["numpy","numba","matplotlib","scipy","pytest","future","Cython"]
+install_requires = ["numba","pandas","pytest","future","Cython"]
 setuptools.setup(
     name="geoist",
     version=versioneer.get_version(),

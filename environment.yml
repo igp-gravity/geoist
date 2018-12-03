@@ -4,21 +4,22 @@ channels:
         - defaults
 dependencies:
         - python>=3.5
-        - impactutils
+          #        - impactutils , not used
         - ipython
-          #        - libcomcat
-          #        - gdal
+          #        - libcomcat  , not used
+          #        - gdal  , not used
         - pip:
-          #          - Cartopy
-          #          - obspy
+          #          - Cartopy , not used
+          #          - obspy , not used
           - Shapely
-          - scipy
+            #          - scipy , dependency of pandas
           - pytest
           - pandas
-          - matplotlib
-          - h5py
-          - numpy
-            #          - pygmi
+            #          - matplotlib , dependency of pandas
+            #          - h5py , dependency of rasterio
+            #          - numpy , dependency of pandas and scipy
+            #          - pygmi , not used
           - MarkDown
           - rasterio
           - Cython
+          - future
