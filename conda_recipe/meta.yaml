@@ -24,6 +24,9 @@ requirements:
     - MarkDown
     - rasterio
     - future
+    - numpy
+    - scipy
+    - matplotlib
 
 about:
   home: https://github.com/igp-gravity/geoist

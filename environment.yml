@@ -9,15 +9,15 @@ dependencies:
           #        - libcomcat  , not used
           #        - gdal  , not used
         - pip:
-          - Cartopy , not used
+          - Cartopy
             #- obspy , not used
           - Shapely
-          - scipy , dependency of pandas
+          - scipy
           - pytest
           - pandas
-          - matplotlib , dependency of pandas
-          - h5py , dependency of rasterio
-          - numpy , dependency of pandas and scipy
+          - matplotlib
+          - h5py
+          - numpy
             #          - pygmi , not used
           - MarkDown
           - rasterio
