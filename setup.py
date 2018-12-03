@@ -13,6 +13,7 @@ extensions = [
               include_dirs=[numpy.get_include()]
     )
 ]
+install_requires = ["numpy","numba","matplotlib","scipy","pytest","future","Cython"]
 setuptools.setup(
     name="geoist",
     version=versioneer.get_version(),
@@ -26,6 +27,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     ext_modules=cythonize(extensions),
     include_package_data=True,
+    install_requires=install_requires,
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
