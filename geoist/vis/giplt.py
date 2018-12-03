@@ -73,9 +73,9 @@ from .. import gridder
 Basemap = None
 
 # Tell users that this module will be removed in v0.6
-warnings.warn("This module will be removed in v0.6. We recommend the use of " +
-              "matplotlib.pyplot module directly. Some of the geoist " +
-              "specific functions will remain.")
+#warnings.warn("This module will be removed in v0.6. We recommend the use of " +
+#              "matplotlib.pyplot module directly. Some of the geoist " +
+#              "specific functions will remain.")
 
 
 def draw_polygon(area, axes, style='-', marker='o', color='k', width=2,
@@ -775,7 +775,7 @@ def polygon(polygon, style='-k', linewidth=1, fill=None, alpha=1., label=None,
 
     Parameters:
 
-    * polygon : :class:`geoist.mesher.Polygon`
+    * polygon : :class:`geoist.inversion.geometry.Polygon`
         The polygon
     * style : str
         Color and line style string (as in matplotlib.pyplot.plot)

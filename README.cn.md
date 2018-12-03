@@ -1,5 +1,7 @@
-# Geoist  
-An Open-Source Geophysical Python Library for Geoscience Prototype Research
+# Geoist项目
+
+>面向地球科学原型化研究的开源Python程序库
+
 ![alt text][logo]
 
 [logo]: ./geoist.png "Geoist"
@@ -11,28 +13,31 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 [![Build Status](https://dev.azure.com/chenshi1980/geoist/_apis/build/status/igp-gravity.geoist)](https://dev.azure.com/chenshi1980/geoist/_build/latest?definitionId=1)
 [![lic-image](https://img.shields.io/dub/l/vibe-d.svg)](LICENSE)
 
-* [Chinese Documentation](README.cn.md)
+* [English Documentation](README.md)
 
-## Functionalities
+## 主要功能
 
-* Potential Field analysis method
-* Gravity data process and adjustment
-* Geophysics inversion
-* Geological modelling
+* 重磁位场数据分析与处理
+* 地震重力平差和数据处理
+* 地球物理反演方法
+* 地质建模方法
 
-## Features
+## 特点
 
-* Our algorithms take advantages of Bayesian inversion framework.
-* Build upon popular Python packages such as Numpy, Scipy, Pandas, Matplotlib etc. Well integrated into python ecosystem.
+* 基于贝叶斯优化和ABIC准则的算法。
+* 基于流行的Python程序库构建，包括： Numpy, Scipy, Pandas, Matplotlib等。
+* 基于Python的生态系统维护和开发。
 
-> Our Missions
+## 愿景
 
-Contributing
+为从事地学相关的学生、教学与科研人员提供好用的软件工具包。
+
+贡献
 -------
 
-Contribution is welcome, please feel free to contact our team and fork this project. Waiting for your pull request.
+欢迎任何从事地球科学研究和对我们工作感兴趣的单位和个人fork该项目，期待您的加入.
 
-License
+版权
 -------
 
-`MIT`  © 2018-2020 Gravity Team of Institute of Geophysics, CEA
+`MIT`  © 2018-2020 中国地震局地球物理研究所重力学科团队
