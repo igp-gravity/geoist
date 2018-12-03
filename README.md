@@ -27,4 +27,6 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 License
 -------
 
+[![lic-image](https://img.shields.io/dub/l/vibe-d.svg)](LICENSE)
+
 `MIT`  © 2018-2020 Gravity Team of Institute of Geophysics, CEA
