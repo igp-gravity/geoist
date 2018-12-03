@@ -876,7 +876,8 @@ def contour(x, y, v, shape, levels, interp=False, extrapolate=False, color='k',
     X = numpy.reshape(x, shape)
     Y = numpy.reshape(y, shape)
     V = numpy.reshape(v, shape)
-    kwargs = dict(colors=color, picker=True)
+    kwargs = dict(colors=color)
+    #kwargs = dict(colors=color, picker=True)
     if basemap is None:
         ct_data = pyplot.contour(X, Y, V, levels, **kwargs)
         pyplot.xlim(X.min(), X.max())
@@ -940,7 +941,8 @@ def contourf(x, y, v, shape, levels, interp=False, extrapolate=False,
     X = numpy.reshape(x, shape)
     Y = numpy.reshape(y, shape)
     V = numpy.reshape(v, shape)
-    kwargs = dict(vmin=vmin, vmax=vmax, cmap=cmap, picker=True)
+    kwargs = dict(vmin=vmin, vmax=vmax, cmap=cmap)
+    #kwargs = dict(vmin=vmin, vmax=vmax, cmap=cmap, picker=True)
     if basemap is None:
         ct_data = pyplot.contourf(X, Y, V, levels, **kwargs)
         pyplot.xlim(X.min(), X.max())
