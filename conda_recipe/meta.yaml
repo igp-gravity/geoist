@@ -27,6 +27,7 @@ requirements:
     - numpy
     - scipy
     - matplotlib
+    - cartopy
 
 about:
   home: https://github.com/igp-gravity/geoist

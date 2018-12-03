@@ -8,8 +8,8 @@ dependencies:
         - ipython
           #        - libcomcat  , not used
           #        - gdal  , not used
+        - cartopy
         - pip:
-          - Cartopy
             #- obspy , not used
           - Shapely
           - scipy
