@@ -25,7 +25,7 @@ jobs:
 
       Createcustomenvironment: true
       Environmentname: geoist
-      Packagespecs: -c conda-forge impactutils obspy libcomcat gdal Cartopy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
+      Packagespecs: -c conda-forge cython impactutils obspy libcomcat gdal Cartopy Shapely scipy pytest pandas matplotlib h5py numpy MarkDown rasterio
       #  - script: |
       #      sudo pip install --upgrade pip setuptools wheel && sudo pip install pygmi
       #    displayName: 'activate conda and install additional packages'
