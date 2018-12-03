@@ -1,9 +1,18 @@
 import setuptools
 import versioneer
+from setuptools.extension import Extension
+from Cython.Build import cythonize
+import numpy
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+extensions = [
+    Extension("geoist.pfm._prism",
+              ["geoist/pfm/_prism.pyx"],
+              include_dirs=[numpy.get_include()]
+    )
+]
 setuptools.setup(
     name="geoist",
     version=versioneer.get_version(),
@@ -15,6 +24,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/igp-gravity/geoist",
     packages=setuptools.find_packages(),
+    ext_modules=cythonize(extensions),
+    include_package_data=True,
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

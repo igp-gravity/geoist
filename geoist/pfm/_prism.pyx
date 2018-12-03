@@ -1,4 +1,5 @@
 #cython: embedsignature=True
+#cython: language_level=3
 """
 Cython implementation of the gravity and magnetic fields of right rectangular
 prisms.
