@@ -9,7 +9,7 @@ from geoist.inversion import geometry
 from geoist.pfm import polyprism
 from geoist.vis import giplt
 
-print("Draw the polygons one by one")
+#print("Draw the polygons one by one")
 bounds = [-10000, 10000, -10000, 10000, 0, 5000]
 area = bounds[:4]
 #axis = plt.figure().gca()
