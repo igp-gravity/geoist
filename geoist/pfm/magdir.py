@@ -16,11 +16,9 @@ bodies.
 
 """
 
-from __future__ import division, absolute_import
-from future.builtins import super
 import numpy as np
 from ..inversion import Misfit
-from .. import mesher
+from ..inversion import geometry
 from .giutils import ang2vec, vec2ang, safe_dot
 from . import sphere
 from .giconstants import G, CM, T2NT, SI2EOTVOS
@@ -145,7 +143,7 @@ class DipoleMagDir(Misfit):
         x = self.x
         y = self.y
         z = self.z
-        dipoles = [mesher.Sphere(xp, yp, zp, 1.) for xp, yp, zp in
+        dipoles = [geometry.Sphere(xp, yp, zp, 1.) for xp, yp, zp in
                    self.points]
         jac = np.empty((self.ndata, self.nparams), dtype=np.float)
         for i, dipole in enumerate(dipoles):

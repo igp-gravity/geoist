@@ -15,9 +15,11 @@ bounds = [-5000, 5000, -5000, 5000, 0, 5000]
 area = bounds[:4]
 axis = plt.figure().gca()
 plt.axis('scaled')
+verts = [[-2000, -3000], [-2000, 2000], [3000, 3000], [2000, -3000]]
 model = [
     geometry.PolygonalPrism(
-        plt.draw_polygon(area, axis, xy2ne=True),
+        #giplt.draw_polygon(area, axis, xy2ne=True),
+        verts,
         # Use only induced magnetization
         0, 2000, {'magnetization': 2})]
 # Calculate the effect

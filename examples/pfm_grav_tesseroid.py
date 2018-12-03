@@ -33,7 +33,7 @@ fields = [
     tesseroid.gyy(lons, lats, heights, model),
     tesseroid.gyz(lons, lats, heights, model),
     tesseroid.gzz(lons, lats, heights, model)]
-print("Time it took: %s" % (giutils.sec2hms(time.time() - start)))
+print("Time it took: %s" % (time.time() - start))
 
 titles = ['potential', 'gx', 'gy', 'gz',
           'gxx', 'gxy', 'gxz', 'gyy', 'gyz', 'gzz']
@@ -41,7 +41,7 @@ bm = giplt.basemap(area, 'merc')
 plt.figure()
 plt.title(titles[0])
 giplt.contourf(lons, lats, fields[0], shape, 40, basemap=bm)
-bm.draw_coastlines()
+giplt.draw_coastlines(bm)
 plt.colorbar()
 plt.figure()
 for i, field in enumerate(fields[1:4]):

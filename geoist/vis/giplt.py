@@ -775,7 +775,7 @@ def polygon(polygon, style='-k', linewidth=1, fill=None, alpha=1., label=None,
 
     Parameters:
 
-    * polygon : :class:`geoist.mesher.Polygon`
+    * polygon : :class:`geoist.inversion.geometry.Polygon`
         The polygon
     * style : str
         Color and line style string (as in matplotlib.pyplot.plot)

@@ -49,7 +49,7 @@ def tf(xp, yp, zp, prisms, inc, dec, pmag=None):
         raise ValueError("Input arrays xp, yp, and zp must have same shape!")
     # Calculate the 3 components of the unit vector in the direction of the
     # regional field
-    fx, fy, fz = utils.dircos(inc, dec)
+    fx, fy, fz = giutils.dircos(inc, dec)
     res = 0
     for prism in prisms:
         if prism is None:

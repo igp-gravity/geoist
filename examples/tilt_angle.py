@@ -12,16 +12,16 @@ data is already reduced to the pole. You can use
 The zero contour of the tilt is said to outline the body so we've plotted it as
 a dashed line on the tilt map.
 """
-from __future__ import division, print_function
+
 import matplotlib.pyplot as plt
-from fatiando.gravmag import prism, transform
-from fatiando.mesher import Prism
-from fatiando import gridder, utils
+from geoist.pfm import prism, pftrans, giutils
+from geoist.inversion.geometry import Prism
+from geoist import gridder
 
 # Create some synthetic magnetic data. We'll assume the data is already reduced
 # to the pole.
 inc, dec = 90, 0
-mag = utils.ang2vec(1, inc, dec)
+mag = giutils.ang2vec(1, inc, dec)
 model = [Prism(-1500, 1500, -500, 500, 0, 2000, {'magnetization': mag})]
 area = (-7e3, 7e3, -7e3, 7e3)
 shape = (100, 100)
@@ -29,7 +29,7 @@ x, y, z = gridder.regular(area, shape, z=-300)
 data_at_pole = prism.tf(x, y, z, model, inc, dec)
 
 # Calculate the tilt
-tilt = transform.tilt(x, y, data_at_pole, shape)
+tilt = pftrans.tilt(x, y, data_at_pole, shape)
 
 # Make some plots
 plt.figure(figsize=(8, 6))

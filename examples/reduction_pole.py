@@ -10,18 +10,17 @@ the geomagnetic field direction. This example shows how to use it in this case.
 Use ``sinc=inc`` and ``sdec=dec`` if there is only induced magnetization.
 
 """
-from __future__ import division, print_function
 import matplotlib.pyplot as plt
-from fatiando.gravmag import prism, transform
-from fatiando.mesher import Prism
-from fatiando import gridder, utils
+from geoist.pfm import prism, pftrans, giutils
+from geoist.inversion.geometry import Prism
+from geoist import gridder
 
 # Create some synthetic magnetic data with a total magnetization that is
 # different from the geomagnetic field (so there is remanent magnetization or
 # some demagnetizing effect)
 inc, dec = -60, 23  # Geomagnetic field direction
 sinc, sdec = -30, -20  # Source magnetization direction
-mag = utils.ang2vec(1, sinc, sdec)
+mag = giutils.ang2vec(1, sinc, sdec)
 model = [Prism(-1500, 1500, -500, 500, 0, 2000, {'magnetization': mag})]
 area = (-7e3, 7e3, -7e3, 7e3)
 shape = (100, 100)
@@ -29,7 +28,7 @@ x, y, z = gridder.regular(area, shape, z=-300)
 data = prism.tf(x, y, z, model, inc, dec)
 
 # Reduce to the pole
-data_at_pole = transform.reduce_to_pole(x, y, data, shape, inc, dec, sinc,
+data_at_pole = pftrans.reduce_to_pole(x, y, data, shape, inc, dec, sinc,
                                         sdec)
 
 # Make some plots
