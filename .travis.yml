@@ -29,8 +29,8 @@ install:
   - pip install pytest-cov
 
   # build conda package
-  - conda-build conda_recipe/meta.yaml -c defaults -c conda-forge
-  - conda install geoist --use-local
+  #  - conda-build conda_recipe/meta.yaml -c defaults -c conda-forge
+  #  - conda install geoist --use-local
 
 script:
   - pytest --cov=./
