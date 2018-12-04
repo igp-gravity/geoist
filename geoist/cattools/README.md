@@ -1,4 +1,4 @@
-# CatalogueTool-Lite
+# Catalog Tools
 *A simplified Python toolkit for earthquake catalogue manipulation*
 
 The toolkit consists of 9 main modules:
