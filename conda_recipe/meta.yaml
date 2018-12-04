@@ -12,25 +12,24 @@ requirements:
   build:
     - python >=3.5
     - setuptools
+    - Cython
+    - numpy
 
   run:
     - python >=3.5
-    - impactutils
     - ipython
-    - libcomcat
     - gdal
-    - Cartopy
-    - obspy
     - Shapely
-    - scipy
     - pytest
     - pandas
-    - matplotlib
-    - h5py
-    - numpy
-#    - pygmi
+    - numba
     - MarkDown
     - rasterio
+    - future
+    - numpy
+    - scipy
+    - matplotlib
+    - cartopy
 
 about:
   home: https://github.com/igp-gravity/geoist
