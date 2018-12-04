@@ -15,7 +15,7 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 * Potential Field analysis method
 * Gravity data process and adjustment
 * Geophysics inversion
-* Geological modelling
+* Geodesy data assimilation and modelling
 * Earthquake catalog analysis
 
 ## Features
