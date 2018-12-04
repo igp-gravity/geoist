@@ -4,7 +4,7 @@
 
 import math as mt
 
-import .Regressor as Reg
+from . import Regressor as Reg
 
 #-----------------------------------------------------------------------------------------
 # Generic 1:1

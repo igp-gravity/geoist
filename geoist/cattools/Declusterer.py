@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math as ma
 
-import .Catalogue as Cat
-import .CatUtils as CU
+from . import Catalogue as Cat
+from . import CatUtils as CU
 
 #-----------------------------------------------------------------------------------------
 

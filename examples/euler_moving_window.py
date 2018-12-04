@@ -12,7 +12,7 @@ when sources are complex.
 
 Let's test the Euler deconvolution using a moving window scheme, a very common
 approach used in all industry software. This is implemented in
-:class:`fatiando.gravmag.euler.EulerDeconvMW`.
+:class:`geoist.pfm.euler.EulerDeconvMW`.
 
 
 """

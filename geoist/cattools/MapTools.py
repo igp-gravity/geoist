@@ -281,6 +281,6 @@ class GeoMap:
 
   #---------------------------------------------------------------------------------------
 
-  def SaveFig(self, OutFile, Dpi=150):
+  def SaveFig(self, OutFile, Dpi=300):
 
     plt.savefig(OutFile, bbox_inches = 'tight', dpi = Dpi)

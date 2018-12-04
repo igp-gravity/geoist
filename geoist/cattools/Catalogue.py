@@ -8,10 +8,10 @@ Module for Earthquake Catalogue Storage and Manipulation.
 
 import math as ma
 import copy as cp
-import cPickle as pk
+import _pickle as pk
 
-import .AsciiTools as AT
-import .CatUtils as CU
+from . import AsciiTools as AT
+from . import CatUtils as CU
 
 #-----------------------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ class Database(object):
         self.Events[I]['Location'] += Event['Location']
         self.Events[I]['Magnitude'] += Event['Magnitude']
       else:
-        print 'Warning: Not a valid Id'
+        print('Warning: Not a valid Id')
 
   #---------------------------------------------------------------------------------------
 
@@ -101,7 +101,7 @@ class Database(object):
     if I != []:
       del self.Events[I]
     else:
-      print 'Warning: Event not found'
+      print('Warning: Event not found')
 
   #---------------------------------------------------------------------------------------
 
@@ -192,7 +192,7 @@ class Database(object):
       return
 
     # Warn user if model file does not exist
-    print 'Warning: Cannot open file'
+    print('Warning: Cannot open file')
 
   #---------------------------------------------------------------------------------------
 
@@ -205,7 +205,7 @@ class Database(object):
       return
 
     # Warn user if model file does not exist
-    print 'Warning: Cannot open file'
+    print('Warning: Cannot open file')
 
   #---------------------------------------------------------------------------------------
 
@@ -348,10 +348,10 @@ class Database(object):
     ItemList = sorted(ItemDict, key=ItemDict.get, reverse=True)
 
     if Verbose:
-      print Key, ': Occurrence'
-      print '----------------------'
+      print(Key, ': Occurrence')
+      print('----------------------')
       for w in ItemList:
-        print w, ':', ItemDict[w]
+        print(w, ':', ItemDict[w])
 
     return ItemList, ItemDict
 
@@ -368,12 +368,12 @@ class Database(object):
       Max = max(Data)
       return Min, Max
 
-    print 'Number of Events: {0}'.format(Size)
-    print 'Year Rage: ({0[0]},{0[1]})'.format(GetBounds('Year'))
-    print 'Magnitude Rage: ({0[0]},{0[1]})'.format(GetBounds('MagSize'))
-    print 'Latitude Rage: ({0[0]},{0[1]})'.format(GetBounds('Latitude'))
-    print 'Longitude Rage: ({0[0]},{0[1]})'.format(GetBounds('Longitude'))
-    print 'Depth Rage: ({0[0]},{0[1]})'.format(GetBounds('Depth'))
+    print('Number of Events: {0}'.format(Size))
+    print('Year Rage: ({0[0]},{0[1]})'.format(GetBounds('Year')))
+    print('Magnitude Rage: ({0[0]},{0[1]})'.format(GetBounds('MagSize')))
+    print('Latitude Rage: ({0[0]},{0[1]})'.format(GetBounds('Latitude')))
+    print('Longitude Rage: ({0[0]},{0[1]})'.format(GetBounds('Longitude')))
+    print('Depth Rage: ({0[0]},{0[1]})'.format(GetBounds('Depth')))
 
   #---------------------------------------------------------------------------------------
 
@@ -446,33 +446,33 @@ class Database(object):
     if I != []:
       E = self.Events[I]
 
-      print 'Event Id: {0}'.format(E['Id'])
-      print 'Location:'
+      print('Event Id: {0}'.format(E['Id']))
+      print('Location:')
       for n, L in enumerate(E['Location']):
-        print '[{0}] -'.format(n),
-        print 'Year: {0}'.format(L['Year']),
-        print 'Month: {0}'.format(L['Month']),
-        print 'Day: {0}'.format(L['Day']),
-        print 'Hour: {0}'.format(L['Hour']),
-        print 'Minute: {0}'.format(L['Minute']),
-        print 'Second: {0}'.format(L['Second']),
-        print 'Latitude: {0}'.format(L['Latitude']),
-        print 'Longitude: {0}'.format(L['Longitude']),
-        print 'Depth: {0}'.format(L['Depth']),
-        print 'Agency: {0}'.format(L['LocCode']),
-        print 'Prime: {0}'.format(L['Prime'])
-      print 'Magnitude:'
+        print('[{0}] -'.format(n)),
+        print('Year: {0}'.format(L['Year'])),
+        print('Month: {0}'.format(L['Month'])),
+        print('Day: {0}'.format(L['Day'])),
+        print('Hour: {0}'.format(L['Hour'])),
+        print('Minute: {0}'.format(L['Minute'])),
+        print('Second: {0}'.format(L['Second'])),
+        print('Latitude: {0}'.format(L['Latitude'])),
+        print('Longitude: {0}'.format(L['Longitude'])),
+        print('Depth: {0}'.format(L['Depth'])),
+        print('Agency: {0}'.format(L['LocCode'])),
+        print('Prime: {0}'.format(L['Prime']))
+      print('Magnitude:')
       for m, M in enumerate(E['Magnitude']):
-        print '[{0}] -'.format(m),
-        print 'Type: {0}'.format(M['MagType']),
-        print 'Size: {0}'.format(M['MagSize']),
-        print 'Error: {0}'.format(M['MagError']),
-        print 'Agency: {0}'.format(M['MagCode'])
-      print 'Log:'
-      print '{0}'.format(E['Log'])
+        print('[{0}] -'.format(m)),
+        print('Type: {0}'.format(M['MagType'])),
+        print('Size: {0}'.format(M['MagSize'])),
+        print('Error: {0}'.format(M['MagError'])),
+        print('Agency: {0}'.format(M['MagCode']))
+      print('Log:')
+      print('{0}'.format(E['Log']))
 
     else:
-      print 'Warning: Event not found'
+      print('Warning: Event not found')
 
   #---------------------------------------------------------------------------------------
 

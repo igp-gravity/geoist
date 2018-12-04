@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import shapely as shp
+from shapely import wkt, geometry
 import scipy as scp
 import numpy as np
 import math as ma
@@ -251,7 +251,7 @@ def LeapNum(Year):
 def DateToSec(Year, Month, Day, Hour, Minute, Second):
 
   if Year < 1:
-    print 'Warning: Year must be > 1'
+    print('Warning: Year must be > 1')
     return None
 
   if not Year: Year = 1.
@@ -307,7 +307,7 @@ def WktToXY(WktString):
     return X, Y
 
   # Loading WKT
-  WktObj = shp.wkt.loads(WktString)
+  WktObj = wkt.loads(WktString)
 
   if WktObj.type in ['Point', 'LineString', 'Polygon']:
     try:
@@ -370,7 +370,7 @@ class Polygon():
       self.x, self.y = WktToXY(XY)
 
     else:
-      print 'Format not recognized'
+      print('Format not recognized')
 
   #---------------------------------------------------------------------------------------
 
@@ -415,7 +415,7 @@ class Polygon():
     In the future, all Polygon objects will be defined this way
     """
 
-    P = shp.geometry.Polygon(zip(self.x, self.y))
+    P = geometry.Polygon(zip(self.x, self.y))
     B = P.buffer(Delta)
 
     x, y = B.exterior.xy
@@ -444,7 +444,7 @@ class Polygon():
       return
 
     # Warn user if model file does not exist
-    print 'File not found.'
+    print('File not found.')
 
   #---------------------------------------------------------------------------------------
 
@@ -563,7 +563,7 @@ class Trace():
       self.x, self.y = WktToXY(XY)
 
     else:
-      print 'Format not recognized'
+      print('Format not recognized')
 
   #---------------------------------------------------------------------------------------
 
@@ -572,7 +572,7 @@ class Trace():
     Return a polygon object containing the buffer area
     """
 
-    L = shp.geometry.LineString(zip(self.x, self.y))
+    L = geometry.LineString(zip(self.x, self.y))
     B = L.buffer(Delta)
 
     P = Polygon()

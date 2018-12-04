@@ -5,7 +5,7 @@ import numpy as np
 import scipy.optimize as spo
 import matplotlib.pyplot as plt
 
-import .Selection as Sel
+from . import Selection as Sel
 
 #-----------------------------------------------------------------------------------------
 

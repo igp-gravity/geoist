@@ -5,8 +5,8 @@
 import copy as cp
 import math as ma
 
-import .Catalogue as Cat
-import .CatUtils as CU
+from . import Catalogue as Cat
+from . import CatUtils as CU
 
 #-----------------------------------------------------------------------------------------
 
@@ -345,7 +345,7 @@ def SelectPrime(Db, Owrite=False):
 
       DbP.Events.append(cp.deepcopy(Event))
     else:
-      print 'Event {0} has no solution\n'.format(E['Id'])
+      print('Event {0} has no solution\n'.format(E['Id']))
 
   if Owrite:
     Db.Events = DbP.Events
@@ -367,7 +367,7 @@ def MergeDuplicate(DbA, DbB=[],
   #---------------------------------------------------------------------------------------
 
   if Tunit not in ['Second','Minute','Hour','Day','Month','Year']:
-    print 'Warning: not a valid time'
+    print('Warning: not a valid time')
     return
 
   # Converting current-units to seconds
@@ -608,7 +608,7 @@ def MagConvert(Db, MagAgency, MagOld, MagNew, ConvFun, Coeff=None, Owrite=True):
                 A['MagType'] = CU.CastValue('MagType', MagNew)
                 Cnt += 1
 
-  print "Converting {0} to {1}: {2} events found".format(MagOld, MagNew, Cnt)
+  print("Converting {0} to {1}: {2} events found".format(MagOld, MagNew, Cnt))
 
   if not Owrite:
     return DbC

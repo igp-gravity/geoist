@@ -7,9 +7,9 @@ Module for Specific Catalogue Parsers
 """
 
 import math as mt
-import .Catalogue as Cat
-import .AsciiTools as AT
-import .CatUtils as CU
+from . import Catalogue as Cat
+from . import AsciiTools as AT
+from . import CatUtils as CU
 
 #-----------------------------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ class Database(Cat.Database):
       return
 
     # Warn user if model file does not exist
-    print 'File not found.'
+    print('File not found.')
 
   #---------------------------------------------------------------------------------------
 
@@ -179,7 +179,7 @@ class Database(Cat.Database):
       return
 
     # Warn user if model file does not exist
-    print 'File not found.'
+    print('File not found.')
 
   #---------------------------------------------------------------------------------------
 
@@ -266,7 +266,7 @@ class Database(Cat.Database):
       return
 
     # Warn user if model file does not exist
-    print 'File not found.'
+    print('File not found.')
 
   #---------------------------------------------------------------------------------------
 

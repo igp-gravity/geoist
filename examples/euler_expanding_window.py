@@ -16,7 +16,7 @@ interpret multiple bodies by selecting multiple expanding window centers, one
 for each anomaly.
 
 The expanding window scheme is implemented in
-:class:`fatiando.gravmag.euler.EulerDeconvEW`.
+:class:`geoist.pfm.euler.EulerDeconvEW`.
 
 """
 from geoist.pfm import sphere, pftrans, euler, giutils

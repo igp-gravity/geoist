@@ -4,9 +4,9 @@
 
 import numpy as np
 
-import .Selection as Sel
-import .Exploration as Exp
-import .CatUtils as CU
+from . import Selection as Sel
+from . import Exploration as Exp
+from . import CatUtils as CU
 
 #-----------------------------------------------------------------------------------------
 
