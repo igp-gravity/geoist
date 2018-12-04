@@ -16,6 +16,7 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 * Gravity data process and adjustment
 * Geophysics inversion
 * Geological modelling
+* Earthquake catalog analysis
 
 ## Features
 
