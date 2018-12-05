@@ -84,11 +84,10 @@ and geophysics, Geophysics, 66(6), p. 1660-1668, doi: 10.1190/1.1487109
 """
 
 import math
-import numpy
+import numpy as np
 
 from . import giutils
 from .giconstants import G
-
 
 class ReferenceEllipsoid(object):
     """
@@ -179,11 +178,16 @@ class ReferenceEllipsoid(object):
         q0prime = 3*(1 + bE**2)*(1 - bE*atanEb) - 1
         return self.GM*(1 + self.m*self.e_prime*q0prime/(3*q0))/self.a**2
 
+# From Hofmann-WellenhofMoritz2006
 
 WGS84 = ReferenceEllipsoid(a=6378137, f=1/298.257223563, GM=3986004.418e8,
                            omega=7292115e-11,
                            name="World Geodetic System 1984")
 
+GRS80 = ReferenceEllipsoid(a=6378137, f=1/298.257222101, GM=3986005.0e8,
+                           omega=7292115e-11,
+                           name="Geodetic Reference System 1980")
+    
 
 def gamma_somigliana(latitude, ellipsoid=WGS84):
     '''
@@ -204,12 +208,12 @@ def gamma_somigliana(latitude, ellipsoid=WGS84):
         The computed normal gravity (in mGal).
 
     '''
-    lat = numpy.deg2rad(latitude)
-    sin2 = numpy.sin(lat)**2
-    cos2 = numpy.cos(lat)**2
+    lat = np.deg2rad(latitude)
+    sin2 = np.sin(lat)**2
+    cos2 = np.cos(lat)**2
     top = ((ellipsoid.a*ellipsoid.gamma_a)*cos2 +
            (ellipsoid.b*ellipsoid.gamma_b)*sin2)
-    bottom = numpy.sqrt(ellipsoid.a**2*cos2 + ellipsoid.b**2*sin2)
+    bottom = np.sqrt(ellipsoid.a**2*cos2 + ellipsoid.b**2*sin2)
     gamma = top/bottom
     return giutils.si2mgal(gamma)
 
@@ -264,27 +268,27 @@ def gamma_closed_form(latitude, height, ellipsoid=WGS84):
     E2 = ellipsoid.E**2
     bE = ellipsoid.b/ellipsoid.E
     atanEb = math.atan2(ellipsoid.E, ellipsoid.b)
-    lat = numpy.deg2rad(latitude)
-    coslat = numpy.cos(lat)
-    sinlat = numpy.sin(lat)
+    lat = np.deg2rad(latitude)
+    coslat = np.cos(lat)
+    sinlat = np.sin(lat)
     tanlat = sinlat/coslat
-    beta = numpy.arctan2(ellipsoid.b*tanlat, ellipsoid.a)
-    sinbeta = numpy.sin(beta)
-    cosbeta = numpy.cos(beta)
+    beta = np.arctan2(ellipsoid.b*tanlat, ellipsoid.a)
+    sinbeta = np.sin(beta)
+    cosbeta = np.cos(beta)
     zl2 = (ellipsoid.b*sinbeta + height*sinlat)**2
     rl2 = (ellipsoid.a*cosbeta + height*coslat)**2
     D = (rl2 - zl2)/E2
     R = (rl2 + zl2)/E2
-    cosbetal = numpy.sqrt(0.5*(1 + R) - numpy.sqrt(0.25*(1 + R**2) - 0.5*D))
+    cosbetal = np.sqrt(0.5*(1 + R) - np.sqrt(0.25*(1 + R**2) - 0.5*D))
     cosbetal2 = cosbetal**2
     sinbetal2 = 1 - cosbetal2
-    bl = numpy.sqrt(rl2 + zl2 - E2*cosbetal2)
+    bl = np.sqrt(rl2 + zl2 - E2*cosbetal2)
     bl2 = bl**2
     blE = bl/ellipsoid.E
-    atanEbl = numpy.arctan2(ellipsoid.E, bl)
+    atanEbl = np.arctan2(ellipsoid.E, bl)
     q0 = 0.5*((1 + 3*bE**2)*atanEb - 3*bE)
     q0l = 3*(1 + blE**2)*(1 - blE*atanEbl) - 1
-    W = numpy.sqrt((bl2 + E2*sinbetal2)/(bl2 + E2))
+    W = np.sqrt((bl2 + E2*sinbetal2)/(bl2 + E2))
     omega2 = ellipsoid.omega**2
     a2 = ellipsoid.a**2
     part1 = ellipsoid.GM/(bl2 + E2)
@@ -320,12 +324,17 @@ def bouguer_plate(topography, density_rock=2670, density_water=1040):
         The computed gravitational effect of the Bouguer plate
 
     """
-    t = numpy.atleast_1d(topography)
-    g_bg = numpy.empty_like(t)
-    g_bg[t >= 0] = 2*numpy.pi*G*density_rock*t[t >= 0]
-    g_bg[t < 0] = 2*numpy.pi*G*(density_water - density_rock)*(-t[t < 0])
+    t = np.atleast_1d(topography)
+    g_bg = np.empty_like(t)
+    g_bg[t >= 0] = 2*G*np.pi*density_rock*t[t >= 0]
+    g_bg[t < 0] = 2*G*np.pi*(density_water - density_rock)*(-t[t < 0])
     g_bg = giutils.si2mgal(g_bg)
+    #print(g_bg)
     if g_bg.size == 1:
         return g_bg[0]
     else:
         return g_bg
+
+		
+
+

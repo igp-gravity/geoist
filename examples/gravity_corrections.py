@@ -29,7 +29,9 @@ gamma = normgra.gamma_closed_form(data['lat'], data['height'])
 disturbance = data['gravity'] - gamma
 # Use a Bouguer plate to remove the effect of topography
 bouguer = disturbance - normgra.bouguer_plate(data['topography'])
-
+#print(data['topography'])
+#print(disturbance)
+#print(normgra.bouguer_plate(data['topography']))
 # Plot the data using the UTM coordinates (x is North and y is East)
 shape = data['shape']
 x, y = data['x'].reshape(shape), data['y'].reshape(shape)
