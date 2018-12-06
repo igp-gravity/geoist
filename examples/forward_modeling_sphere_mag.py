@@ -2,7 +2,7 @@
 Forward modeling magnetic data using spheres in Cartesian coordinates
 -----------------------------------------------------------------------
 
-The :mod:`fatiando.gravmag` has many functions for forward modeling gravity and
+The :mod:`geoist.gravity` has many functions for forward modeling gravity and
 magnetic data. Here we'll show how to build a model out of spheres and
 calculate the total field magnetic anomaly and the 3 components of the magnetic
 induction.

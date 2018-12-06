@@ -2,7 +2,7 @@
 Forward modeling gravity data using spheres in Cartesian coordinates
 --------------------------------------------------------------------
 
-The :mod:`fatiando.gravmag` has many functions for forward modeling gravity and
+The :mod:`geoist.gravity` has many functions for forward modeling gravity and
 magnetic data. Here we'll show how to build a model out of spheres and
 calculate the gravitational attraction and it's gradients in Cartesian
 coordinates.
@@ -16,7 +16,7 @@ from geoist import gridder
 from geoist.inversion import geometry
 from geoist.vis import giplt
 
-# Create a model using geometric objects from fatiando.mesher
+# Create a model using geometric objects from geoist.gridder
 # Each model element has a dictionary with its physical properties.
 # We'll use two spheres with opposite density contrast values.
 model = [geometry.Sphere(x=10e3, y=10e3, z=1.5e3, radius=1.5e3,
