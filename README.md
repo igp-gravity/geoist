@@ -17,6 +17,7 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 * Geophysics inversion
 * Geodesy data assimilation and modelling
 * Earthquake catalog analysis
+* Anomaly Detection and time series analysis
 
 ## Features
 
