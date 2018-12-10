@@ -34,7 +34,7 @@ spacing = 15 / 60
 chain = chain.Chain(
     [
         ("mean", gg.BlockReduce(np.mean, spacing=spacing * 111e3)),
-        ("spline", spline.Spline(damping=1e-10, mindist=100e3)),
+        ("spline", spline.Spline(damping=1e-10, mindist=100e3, engine='numpy')),
     ]
 )
 print(chain)
@@ -80,5 +80,5 @@ tmp = grid.temperature.plot.pcolormesh(
 plt.colorbar(tmp).set_label("Air temperature (C)")
 # Use an utility function to add tick labels and land and ocean features to the map.
 fetch_data.setup_texas_wind_map(ax, region=region)
-plt.tight_layout()
+#plt.tight_layout()
 plt.show()

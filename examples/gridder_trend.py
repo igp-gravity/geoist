@@ -78,5 +78,5 @@ cb = plt.colorbar(
 )
 cb.set_label("nT")
 
-plt.tight_layout()
+#plt.tight_layout()
 plt.show()
