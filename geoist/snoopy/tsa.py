@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[239]:
+# In[1]:
 
 
 import pandas as pd
@@ -42,4 +42,13 @@ def despike_v2(dt,th=None,*args,**kwargs):
     diff_dt = diff_dt.interpolate(method=method,order=order)
     diff_dt.iloc[0] = dt.iloc[0]
     return diff_dt.cumsum()
+def print_adf(res,data_name,file=sys.stdout):
+    print('Augmented Dickey–Fuller test for {}:'.format(data_name),file=file)
+    print(' ' * 2 + 'adf: {}'.format(res[0]),file=file)
+    print(' ' * 2 + 'p-value: {}'.format(res[1]),file=file)
+    print(' ' * 2 + 'norder: {}'.format(res[2]),file=file)
+    print(' ' * 2 + 'number of points: {}'.format(res[3]),file=file)
+    print(' ' * 2 + 'critical values:',file=file)
+    for key,value in res[4].items():
+        print(' '*4 + '{} : {}'.format(key,value),file=file)
 
