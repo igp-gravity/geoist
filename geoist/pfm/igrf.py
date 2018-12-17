@@ -151,15 +151,18 @@ class IGRF():
         self.dsb_alt = 0
         self.date = ''
 
-    def pnt(self, latitude, longitude, alt):
+    def pnt(self, latitude, longitude, alt, Model='IGRF12'):
         """
         Settings Dialog. This is the main entrypoint into this routine. It also
         contains the main IGRF code.
         """
 # Variable declaration
 # Control variables
-
-        mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF12.cof')
+        if Model == 'IGRF12':
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF12.cof')
+        else:
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF11.cof')
+                     
         #mdf = open(__file__.rpartition('\\')[0]+'\\IGRF12.cof')
         modbuff = mdf.readlines()
         fileline = -1                            # First line will be 1
@@ -195,8 +198,8 @@ class IGRF():
         yrmax = np.array(yrmax)
         modelI = sum(yrmax < sdate)
         igdgc = 1
-
-
+        #print(yrmax, sdate,modelI)
+        #print(max2)
         if max2[modelI] == 0:
             self.getshc(modbuff, 1, irec_pos[modelI], max1[modelI], 0)
             self.getshc(modbuff, 1, irec_pos[modelI+1], max1[modelI+1], 1)
@@ -220,8 +223,8 @@ class IGRF():
         self.reportback['Int']=str(self.f)
         self.reportback['Inc']=str(np.rad2deg(self.i))
         self.reportback['Dec']=str(np.rad2deg(self.d))
-        print(self.reportback)
-        return True
+        #print(self.reportback)
+        return [self.f, np.rad2deg(self.i), np.rad2deg(self.d)]
 
     def getshc(self, file, iflag, strec, nmax_of_gh, gh):
         """
