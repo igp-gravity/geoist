@@ -53,7 +53,7 @@ x2,y2,z2 = Exp.GetHypocenter(Db2)
 
 # Reshape polygon (to plot area)
 P.x.append(P.x[0])
-P.y.append(P.y[0])
+P.y.append(P.y[0]) 
 
 # Plot map
 cfg = {'Bounds': [10., -40., 60., 20.],
