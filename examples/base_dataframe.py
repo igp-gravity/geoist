@@ -8,7 +8,7 @@ Created on Wed Nov 14 09:24:41 2018
 import pandas as pd
 import numpy as np
 #读入数据接口
-df1=pd.read_csv("D:\MyWorks\geoist-master\pfm\gradata.csv")
+df1=pd.read_csv("D:\MyWorks\geoist\dataset\gradata.csv")
 lon=df1['Longitude']
 lat=df1['Latitude']
 elev=df1['Elevation']
@@ -31,4 +31,5 @@ export['lat']=lat
 export['elev']=elev
 export['val']=val
 df2=pd.DataFrame(export)
-df2.to_csv("D:\MyWorks\geoist-master\pfm\df2.csv")
+df2.to_csv("D:\MyWorks\geoist\dataset\df2.csv")
+df2.describe()

@@ -1,8 +1,9 @@
 """
-EXAMPLE 4 - READING CSV CATALOGUE
+ Earthquake Catalog Analysis
 """
 from os.path import dirname
 import numpy as np
+#local import
 from geoist.cattools import Catalogue as Cat
 from geoist.cattools import Exploration as Exp
 from geoist.cattools import MapTools as Map
@@ -10,33 +11,23 @@ from geoist.cattools import Selection as Sel
 from geoist.cattools import Seismicity as Sem
 from geoist.cattools import Declusterer as Declus
 from geoist.cattools import Smoothing as Sm
+from geoist.cattools import CatUtils as Ct
 #-----------------------------------------------------------------------------------------
-# 1) STANDARD FORMAT
 pathname = dirname(__file__)
-Db = Cat.Database('ISC-Africa')
-Db.Import(pathname+'/data/isc-rev-africa-select.csv')
-
-#-----------------------------------------------------------------------------------------
-# 2) ARBITRARY FORMAT (USER DEFINED)
-
 H = ['Id','','Year','Month','Day','Hour','Minute','Second',
      'Longitude','Latitude','','','','Depth','DepError',
      'MagSize','MagError','','','','','','','','','']
 
 Db = Cat.Database('ISC-GEM')
-Db.Import(pathname+'/data/isc-gem-v3.csv',Header=H,
-                                SkipLine=1,
-                                Delimiter=',')
+Db.Import(pathname+'/data/isc-gem-v3.csv',Header=H, SkipLine=1, Delimiter=',')
 
-Db.SetField('Prime',True)
 Db.SetField('LocCode','ISC-GEM')
 Db.SetField('MagCode','ISC-GEM')
 Db.SetField('MagType','MW')
-
 #-----------------------------------------------------------------------------------------
-# Search Area (Africa) using internal filter
-lon = [-20, 60]
-lat = [-40, 40]
+# Search Area (China) using internal filter
+lon = [70, 135]
+lat = [15, 55]
 #地震筛选
 Db.Filter('Latitude',lat[0],Opr='>=')
 Db.Filter('Latitude',lat[1],Opr='<=')
@@ -47,11 +38,14 @@ Exp.AgencyReport(Db, 'L')
 Exp.MagTimePlot(Db)
 Exp.MagTimeBars(Db)
 Exp.RateDensityPlot(Db)
-Enum, Mbin =Exp.GetKeyHisto(Db,'MagSize',Bnum=10, Norm=False) #G-R关系
+# G-R关系
+Enum, Mbin =Exp.GetKeyHisto(Db,'MagSize',Bnum=10, Norm=False) 
 Minc= (max(Mbin)-min(Mbin))/10.
-a,b = Sem.MfdOptimize(Enum, Mbin, Minc, max(Mbin))
+#拟合b值
+a,b = Sem.MfdOptimize(Enum, Mbin, Minc, max(Mbin))  
+print('b-value=',b) 
+#复发概率
 Sem.MfdPlot(a,b, max(Mbin),Enum=Enum, Ecum=np.cumsum(Enum[::-1])[::-1], Mbin=Mbin, Minc=[Minc])
-
 #重复事件监测
 Log = Sel.MergeDuplicate(Db,Twin=60.,Swin=50.,Log=1)
 Exp.DuplicateCheck(Log)
@@ -63,14 +57,11 @@ Dbm.Info()
 x1,y1,z1 = Exp.GetHypocenter(Db)
 x2,y2,z2 = Exp.GetHypocenter(Dbm)
 
-from geoist.cattools import CatUtils as Ct
-import numpy as np
-
-p = pathname+"/data/area.wkt"
+p = [(90.,20.),(90.,40.),(105.,40.),(105.,20.),(90.,20.)]
 P = Ct.Polygon()
-P.Import(p,Type='wkt')
+P.Load(p)
   
-cfg = {'Bounds': [10., -40., 60., 20.],
+cfg = {'Bounds': [70., 15., 135., 55.],
        'FigSize': [8., 6.],
        'Background': ['none',[0.9,0.8,0.6],[0.5,0.8,1.]],
        'Grid': [10., 10.]}
@@ -85,15 +76,12 @@ M.PointPlot(x2, y2, Set=['*','r',2,1], Label='Main')
 M.AreaPlot(P.x, P.y, Set=['y',0.5,'k',1])
 #平滑地震目录
 wkt = Ct.XYToWkt(P.x, P.y)
-xsm, ysm, asm = Sm.SmoothMFD(Db, 1., wkt, Delta=0.2)
+xsm, ysm, asm = Sm.SmoothMFD(Db, 1., wkt, Delta=0.5)
 #M.PointPlot(xsm, ysm, Set=['o','b',2,1], Label='Grid')
 M.MeshPlot(xsm, ysm, asm)
 M.Legend()
-M.Title('Example-cattools_area_sel')
+M.Title('Earthquakes in China')
 M.Show()
-
-
-
 
 #print('dump to:'+pathname+'/data/isc-gem-v3.bin')
 #Db.Dump(pathname+'/data/isc-gem-v3.bin')

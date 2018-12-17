@@ -145,7 +145,7 @@ class GeoMap:
   def PointPlot(self, Lon, Lat, Label=[], Set=['o','y',5,1]):
 
     x, y = self._map(Lon, Lat)
-
+    
     self._zo += 1
     self._map.plot(x, y, Set[0],
                          color = Set[1],
@@ -198,6 +198,7 @@ class GeoMap:
     from matplotlib.ticker import MaxNLocator
 
     x, y = self._map(Lon, Lat)
+    #print(Lon[0],Lat[0],x[0],y[0])
     z = Elev
 
     if not Cmap:
@@ -205,7 +206,7 @@ class GeoMap:
     # cmap.set_under('w', alpha=0.)
 
     if not Clim:
-      Clim = [z.min(), z.max()]
+      Clim = [np.array(z).min(), np.array(z).max()]
 
     levels = MaxNLocator(nbins=16).tick_values(Clim[0], Clim[1])
     norm = BoundaryNorm(levels, ncolors = Cmap.N, clip=True)
@@ -224,7 +225,12 @@ class GeoMap:
 
     else:
       self._zo += 1
-      z = z[:-1, :-1]
+      xlen=len(sorted(set(x), key = x.index))
+      ylen=len(sorted(set(y), key = y.index))
+      z= np.array(z).reshape(xlen,ylen)[:-1,:-1]
+      x= np.array(x).reshape(xlen,ylen)
+      y= np.array(y).reshape(xlen,ylen)
+      #z = z[:-1, :-1]
       h = plt.pcolormesh(x, y, z, cmap = Cmap,
                                   norm = norm,
                                   vmin = Clim[0],
