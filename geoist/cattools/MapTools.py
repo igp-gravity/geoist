@@ -6,7 +6,6 @@ from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
-from math import sqrt 
 
 #-----------------------------------------------------------------------------------------
 
@@ -199,7 +198,7 @@ class GeoMap:
     from matplotlib.ticker import MaxNLocator
 
     x, y = self._map(Lon, Lat)
-    print(Lon[0],Lat[0],x[0],y[0])
+    #print(Lon[0],Lat[0],x[0],y[0])
     z = Elev
 
     if not Cmap:

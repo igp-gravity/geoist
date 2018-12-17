@@ -1,5 +1,5 @@
 """
-地震目录分析示例
+ Earthquake Catalog Analysis
 """
 from os.path import dirname
 import numpy as np
@@ -14,7 +14,6 @@ from geoist.cattools import Smoothing as Sm
 from geoist.cattools import CatUtils as Ct
 #-----------------------------------------------------------------------------------------
 pathname = dirname(__file__)
-
 H = ['Id','','Year','Month','Day','Hour','Minute','Second',
      'Longitude','Latitude','','','','Depth','DepError',
      'MagSize','MagError','','','','','','','','','']
