@@ -40,7 +40,7 @@ def despike_v2(dt,th=None,*args,**kwargs):
     method = kwargs.get('method','linear')
     order = kwargs.get('order',1)
     diff_dt = diff_dt.interpolate(method=method,order=order)
-    diff_dt[diff_dt.isna()] = 0.0
+    diff_dt.fillna(0.0)
     diff_dt.iloc[0] = dt.dropna().iloc[0]
     return diff_dt.cumsum(),is_spike*1
 def print_adf(res,data_name,file=sys.stdout):
