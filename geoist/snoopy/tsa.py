@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[1]:
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +12,10 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tsa.seasonal import seasonal_decompose
 from scipy.signal import detrend
-import sys
+
+
+# In[345]:
+
 
 def despike(dt,upper_bound=None,lower_bound=None,w_size=5,*args,**kwargs):
     diff_dt = dt.diff()
@@ -21,12 +27,10 @@ def despike(dt,upper_bound=None,lower_bound=None,w_size=5,*args,**kwargs):
     is_spike = (diff_dt.abs() > upper_bound) & (sum_diff.abs() < lower_bound)
     dt[is_spike] = np.nan
     return dt.interpolate()
-
 def dejump(dt,*args,**kwargs):
     tmp = despike(dt.diff(),*args,**kwargs)
     tmp.iloc[0] = dt.iloc[0]
     return tmp.cumsum()
-
 def despike_v2(dt,th=None,*args,**kwargs):
     diff_dt = dt.diff()
     if th is None:
@@ -36,9 +40,9 @@ def despike_v2(dt,th=None,*args,**kwargs):
     method = kwargs.get('method','linear')
     order = kwargs.get('order',1)
     diff_dt = diff_dt.interpolate(method=method,order=order)
-    diff_dt.iloc[0] = dt.iloc[0]
+    diff_dt[diff_dt.isna()] = 0.0
+    diff_dt.iloc[0] = dt.dropna().iloc[0]
     return diff_dt.cumsum(),is_spike*1
-
 def print_adf(res,data_name,file=sys.stdout):
     print('Augmented Dickey–Fuller test for {}:'.format(data_name),file=file)
     print(' ' * 2 + 'adf: {}'.format(res[0]),file=file)
