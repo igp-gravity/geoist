@@ -32,14 +32,22 @@ def despike(dt,th=None,fill_end=True,*args,**kwargs):
         res = res.fillna(method='ffill').fillna(method='bfill')
     return res,is_spike*1
 def dejump(dt,th=None,fill_end=True,*args,**kwargs):
-    res,is_jump = despike(dt.diff(),th,fill_end=False,*args,**kwargs)
+    diff_dt = dt.diff()
+    if th is None:
+        th = diff_dt.std()*2
+    is_jump = (diff_dt-diff_dt.mean()).abs() > th
+    diff_dt[is_jump] = np.nan
+    method = kwargs.get('method','linear')
+    order = kwargs.get('order',1)
+    diff_dt = diff_dt.interpolate(method=method,order=order)
     if fill_end:
-        res.fillna(0.0)
-        res.iloc[0] = dt.dropna().iloc[0]
-        return res.cumsum(),is_jump
+        diff_dt.fillna(0.0)
+        diff_dt.iloc[0] = dt.dropna().iloc[0]
+        return diff_dt.cumsum(),is_jump
     else:
-        res[~res.isna()] = res[~res.isna()].cumsum()
-        return res,is_spike
+        dt[~diff_dt.isna()] = diff_dt[~diff_dt.isna()].cumsum(skipna=True) \
+                             + dt.dropna().iloc[0]
+        return dt,is_jump
 def despike_v2(dt,th=None,fill_end=True,*args,**kwargs):
     despiked,is_spike = despike(dt,th,fill_end)
     dejumped,is_jump = dejump(despiked,th,fill_end)
