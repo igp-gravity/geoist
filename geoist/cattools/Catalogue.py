@@ -4,6 +4,8 @@
 
 """
 Module for Earthquake Catalogue Storage and Manipulation.
+Examples of earthquake catalogue format:
+eventID,Agency,year,month,day,hour,minute,second,longitude,latitude,SemiMajor90,SemiMinor90,ErrorStrike,depth,depthError,magnitude,sigmaMagnitude,moment,scaling,source,mpp,mpr,mrr,mrt,mtp,mtt   
 """
 
 import math as ma
