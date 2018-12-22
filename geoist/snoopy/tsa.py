@@ -40,7 +40,7 @@ def despike_v2(dt,th=None,*args,**kwargs):
     return diff_dt.cumsum(),is_spike*1
 
 def print_adf(res,data_name,file=sys.stdout):
-    print('Augmented Dickey–Fuller test for {}:'.format(data_name),file=file)
+    print('Augmented Dickey-Fuller test for {}:'.format(data_name),file=file)
     print(' ' * 2 + 'adf: {}'.format(res[0]),file=file)
     print(' ' * 2 + 'p-value: {}'.format(res[1]),file=file)
     print(' ' * 2 + 'norder: {}'.format(res[2]),file=file)
