@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[1]:
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,36 +11,71 @@ import scipy.signal as signal
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tsa.seasonal import seasonal_decompose
-from scipy.signal import detrend
+from scipy.signal import detrend,butter,sosfilt,sosfiltfilt,sosfreqz,welch,\
+    lombscargle,periodogram
 import sys
 
-def despike(dt,upper_bound=None,lower_bound=None,w_size=5,*args,**kwargs):
-    diff_dt = dt.diff()
-    if upper_bound is None:
-        upper_bound = diff_dt.std()*4
-    if lower_bound is None:
-        lower_bound = upper_bound / 2
-    sum_diff = diff_dt.rolling(window=w_size).sum()
-    is_spike = (diff_dt.abs() > upper_bound) & (sum_diff.abs() < lower_bound)
-    dt[is_spike] = np.nan
-    return dt.interpolate()
 
-def dejump(dt,*args,**kwargs):
-    tmp = despike(dt.diff(),*args,**kwargs)
-    tmp.iloc[0] = dt.iloc[0]
-    return tmp.cumsum()
+# In[345]:
 
-def despike_v2(dt,th=None,*args,**kwargs):
+
+def despike(dt,th=None,fill_end=True,*args,**kwargs):
     diff_dt = dt.diff()
     if th is None:
         th = diff_dt.std()*2
     is_spike = (diff_dt-diff_dt.mean()).abs() > th
-    diff_dt[is_spike] = np.nan
+    dt[is_spike] = np.nan
+    method = kwargs.get('method','linear')
+    order = kwargs.get('order',1)
+    res = dt.interpolate(method=method,order=order)
+    if fill_end:
+        res = res.fillna(method='ffill').fillna(method='bfill')
+    return res,is_spike*1
+def dejump(dt,th=None,fill_end=True,*args,**kwargs):
+    diff_dt = dt.diff()
+    if th is None:
+        th = diff_dt.std()*2
+    is_jump = (diff_dt-diff_dt.mean()).abs() > th
+    diff_dt[is_jump] = np.nan
     method = kwargs.get('method','linear')
     order = kwargs.get('order',1)
     diff_dt = diff_dt.interpolate(method=method,order=order)
-    diff_dt.iloc[0] = dt.iloc[0]
-    return diff_dt.cumsum(),is_spike*1
+    if fill_end:
+        diff_dt.fillna(0.0)
+        diff_dt.iloc[0] = dt.dropna().iloc[0]
+        return diff_dt.cumsum(),is_jump
+    else:
+        dt[~diff_dt.isna()] = diff_dt[~diff_dt.isna()].cumsum(skipna=True) \
+                             + dt.dropna().iloc[0]
+        return dt,is_jump
+def despike_v2(dt,th=None,fill_end=True,*args,**kwargs):
+    despiked,is_spike = despike(dt,th,fill_end)
+    dejumped,is_jump = dejump(despiked,th,fill_end)
+    is_spike_jump = is_spike + is_jump
+    return dejumped,is_spike_jump
+
+def departure(data,freq='M'):
+    '''Calculate departure(ju4ping2 in Chinese)
+
+    Args:
+        data (Series or 1-column DataFrame): Data to be processed
+        freq (str): M==Month,D==Day
+
+    Returns:
+        DataFrame
+    '''
+    if freq.lower() == 'm':
+        datefmt = '%m'
+    elif freq.lower() == 'd':
+        datefmt = '%m%d'
+    else:
+        raise ValueError("freq must be 'D' or 'M'!")
+    if type(data) is pd.Series:
+        data = pd.DataFrame({'origin_data':data})
+    tmp = data.index.map(lambda x: x.strftime(datefmt))
+    data['departure_mean'] = data.groupby(tmp,axis=0).transform(lambda x: x.mean())
+    data['departure'] = data.iloc[:,0] - data['departure_mean']
+    return data
 
 def print_adf(res,data_name,file=sys.stdout):
     print('Augmented Dickey-Fuller test for {}:'.format(data_name),file=file)
