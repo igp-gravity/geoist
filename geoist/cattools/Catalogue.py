@@ -30,6 +30,7 @@ class Database(object):
     .AddEvent = Add an earthquake event to the database
     .DelEvent = Remove an earthquake avent from the database
     .Import = Import catalogue from file (csv format)
+    .ImportEQT= Import catalogue form file(eqt format)
     .Export = Export catalogue to file (csv format)
     .Load = Import database structure from binary file (cPickle compressed)
     .Dump = Exprot database structure to binary file (cPickle compressed)
@@ -123,7 +124,15 @@ class Database(object):
     else:
       return DbC
 
-  #---------------------------------------------------------------------------------------
+  def ImportEQT(self,FileName):
+    with open(FileName) as file_object:
+        lines = file_object.readlines()
+    for line in lines:
+        I=line[1:15]
+        L={'Prime': False, 'Latitude': line[15:21], 'LonError': None, 'DepError': None, 'Longitude': line[21:28], 'Month': line[5:7], 'LatError': None, 'Hour': line[9:11], 'Day': line[7:9], 'Year': line[1:5], 'Depth': line[34:38], 'LocCode': None, 'Second': line[11:13], 'SecError': None, 'Minute': line[13:15]}
+        M={'MagError': None, 'MagSize': line[28:33], 'MagCode': None, 'MagType': 'ML'}
+        O = ''
+        self.AddEvent(I, L, M, O)
 
   def Import(self, FileName, Header=[],
                              Delimiter=',',
@@ -155,9 +164,7 @@ class Database(object):
         O = ''
       self.AddEvent(I, L, M, O)
 
-  #---------------------------------------------------------------------------------------
-
-  def Export(self, FileName):
+   def Export(self, FileName):
 
     tab = AT.AsciiTable()
 
