@@ -30,8 +30,9 @@ class Database(object):
     .AddEvent = Add an earthquake event to the database
     .DelEvent = Remove an earthquake avent from the database
     .Import = Import catalogue from file (csv format)
-    .ImportEQT= Import catalogue form file(eqt format)
+    .ImportEQT = Import catalogue form file(eqt format)
     .Export = Export catalogue to file (csv format)
+    .ExportEQT = Export catalogue to file (eqt format)
     .Load = Import database structure from binary file (cPickle compressed)
     .Dump = Exprot database structure to binary file (cPickle compressed)
     .Filter = Filter earthquake events by key field and rule
@@ -164,6 +165,20 @@ class Database(object):
         O = ''
       self.AddEvent(I, L, M, O)
 
+   def ExportEQT(self,FieName):
+       tab = AT.AsciiTable()
+       for E in DbC.Events:
+           Data = [E['Id']]
+           if not E['Location']:
+               E['Location'] = [CU.LocationInit()]
+               if not E['Magnitude']:
+                   E['Magnitude'] = [CU.MagnitudeInit()]
+               for Key in tab.header[1:-1]:
+                   Grp = CU.KeyGroup(Key)
+                   Data.append(E[Grp][0][Key])
+            Data.append(E['Log'])
+            tab.AddElement(Data)
+       tab.Export(FileName)
    def Export(self, FileName):
 
     tab = AT.AsciiTable()
