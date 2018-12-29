@@ -125,14 +125,18 @@ class Database(object):
     else:
       return DbC
 
-
+  #---------------------------------------------------------------------------------------
+  #  def AddEvent(self, Id, Location=[],
+  #                       Magnitude=[],
+ #                        Log='',
+  #                       Append=False):
   def ImportEQT(self,FileName):
     with open(FileName) as file_object:
         lines = file_object.readlines()
     for line in lines:
         I=line[1:15]
-        L={'Prime': False, 'Latitude': line[15:21], 'LonError': None, 'DepError': None, 'Longitude': line[21:28], 'Month': line[5:7], 'LatError': None, 'Hour': line[9:11], 'Day': line[7:9], 'Year': line[1:5], 'Depth': line[34:38], 'LocCode': None, 'Second': line[11:13], 'SecError': None, 'Minute': line[13:15]}
-        M={'MagError': None, 'MagSize': line[28:33], 'MagCode': None, 'MagType': 'ML'}
+        L={'Prime': False, 'Latitude': line[15:21], 'LonError': None, 'DepError': None, 'Longitude': line[21:28], 'Month': line[5:7], 'LatError': None, 'Hour': line[9:11], 'Day': line[7:9], 'Year': line[1:5], 'Depth': line[32:36], 'LocCode': None, 'Second': line[11:13], 'SecError': None, 'Minute': line[13:15]}
+        M={'MagSize': line[28:33], 'MagError': None, 'MagCode': None, 'MagType': 'ML'}
         O = ''
         #AddEvent
         self.AddEvent(I, L, M, O)
@@ -168,29 +172,27 @@ class Database(object):
         O = D['Log']
       else:
         O = ''
-      #print(str(I)+'IIIIIIIIII'+str(L)+'LLLLLLLLLLLLLL'+str(M)+'MMMMMMMMMMMMMM'+str(O))
-      #I id ,L 坐标，M 震级，O 日志信息
-      #ID:17539208
-      #L: {'Prime': False, 'Latitude': '-55.5380', 'LonError': None, 'DepError': '25.00', 'Longitude': '-124.4970', 'Month': '11', 'LatError': None, 'Hour': '22', 'Day': '11', 'Year': '2011', 'Depth': '15.00', 'LocCode': None, 'Second': '41.06', 'SecError': None, 'Minute': '50'}
-      #M:{'MagError': '0.10', 'MagSize': '5.58', 'MagCode': None, 'MagType': None}
       self.AddEvent(I, L, M, O)
 
   #---------------------------------------------------------------------------------------
 
-  def ExportEQT(self,FieName):
-      tab = AT.AsciiTable()
-      for E in DbC.Events:
-          Data = [E['Id']]
-          if not E['Location']:
-              E['Location'] = [CU.LocationInit()]
-              if not E['Magnitude']:
-                  E['Magnitude'] = [CU.MagnitudeInit()]
-              for Key in tab.header[1:-1]:
-                  Grp = CU.KeyGroup(Key)
-                  Data.append(E[Grp][0][Key])
-              Data.append(E['Log'])
-              tab.AddElement(Data)
-      tab.Export(FileName)
+  def ExportEQT(self, FileName):
+      
+    tab = AT.AsciiTable()
+    
+    tab.header = ['Id','Content']
+    DbC = self.Copy()
+    for E in DbC.Events:
+      Data = ['']
+      if not E['Location']:
+        E['Location'] = [CU.LocationInit()]
+      if not E['Magnitude']:
+        E['Magnitude'] = [CU.MagnitudeInit()]
+      eqt="{0} {1} {2}{3}{4}000".format(str(E['Location'][0]['Year']).zfill(4)+str(E['Location'][0]['Month']).zfill(2)+str(E['Location'][0]['Day']).zfill(2)+str(E['Location'][0]['Hour']).zfill(2)+str(E['Location'][0]['Minute']).zfill(2)+str(round(E['Location'][0]['Second'])).zfill(2),str(E['Location'][0]['Latitude']).zfill(5),str(E['Location'][0]['Longitude']).zfill(6),str(E['Magnitude'][0]['MagSize']).zfill(3),str(round(E['Location'][0]['Depth'])).zfill(4))       
+      Data.append(eqt)      
+      tab.AddElement(Data)      
+    tab.ExportEQT(FileName,write_header='no',delimiter=' ')
+    
   def Export(self, FileName):
 
     tab = AT.AsciiTable()
