@@ -32,7 +32,7 @@ class Database(object):
     .Import = Import catalogue from file (csv format)
     .ImportEQT = Import catalogue form file(eqt format)
     .Export = Export catalogue to file (csv format)
-    .ExoportEQT =  Export catalogue to file (eqt format)
+    .ExportEQT =  Export catalogue to file (eqt format)
     .Load = Import database structure from binary file (cPickle compressed)
     .Dump = Exprot database structure to binary file (cPickle compressed)
     .Filter = Filter earthquake events by key field and rule
