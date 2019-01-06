@@ -30,7 +30,9 @@ class Database(object):
     .AddEvent = Add an earthquake event to the database
     .DelEvent = Remove an earthquake avent from the database
     .Import = Import catalogue from file (csv format)
+    .ImportEQT = Import catalogue form file(eqt format)
     .Export = Export catalogue to file (csv format)
+    .ExportEQT =  Export catalogue to file (eqt format)
     .Load = Import database structure from binary file (cPickle compressed)
     .Dump = Exprot database structure to binary file (cPickle compressed)
     .Filter = Filter earthquake events by key field and rule
@@ -124,6 +126,23 @@ class Database(object):
       return DbC
 
   #---------------------------------------------------------------------------------------
+  #  def AddEvent(self, Id, Location=[],
+  #                       Magnitude=[],
+ #                        Log='',
+  #                       Append=False):
+  def ImportEQT(self,FileName):
+    with open(FileName) as file_object:
+        lines = file_object.readlines()
+    for line in lines:
+        I=line[1:15]
+        L={'Prime': False, 'Latitude': line[15:21], 'LonError': None, 'DepError': None, 'Longitude': line[21:28], 'Month': line[5:7], 'LatError': None, 'Hour': line[9:11], 'Day': line[7:9], 'Year': line[1:5], 'Depth': line[32:36], 'LocCode': None, 'Second': line[11:13], 'SecError': None, 'Minute': line[13:15]}
+        M={'MagSize': line[28:33], 'MagError': None, 'MagCode': None, 'MagType': 'ML'}
+        O = ''
+        #AddEvent
+        self.AddEvent(I, L, M, O)
+
+      
+  #---------------------------------------------------------------------------------------
 
   def Import(self, FileName, Header=[],
                              Delimiter=',',
@@ -157,6 +176,23 @@ class Database(object):
 
   #---------------------------------------------------------------------------------------
 
+  def ExportEQT(self, FileName):
+      
+    tab = AT.AsciiTable()
+    
+    tab.header = ['Id','Content']
+    DbC = self.Copy()
+    for E in DbC.Events:
+      Data = ['']
+      if not E['Location']:
+        E['Location'] = [CU.LocationInit()]
+      if not E['Magnitude']:
+        E['Magnitude'] = [CU.MagnitudeInit()]
+      eqt="{0} {1} {2}{3}{4}000".format(str(E['Location'][0]['Year']).zfill(4)+str(E['Location'][0]['Month']).zfill(2)+str(E['Location'][0]['Day']).zfill(2)+str(E['Location'][0]['Hour']).zfill(2)+str(E['Location'][0]['Minute']).zfill(2)+str(round(E['Location'][0]['Second'])).zfill(2),str(E['Location'][0]['Latitude']).zfill(5),str(E['Location'][0]['Longitude']).zfill(6),str(E['Magnitude'][0]['MagSize']).zfill(3),str(round(E['Location'][0]['Depth'])).zfill(4))       
+      Data.append(eqt)      
+      tab.AddElement(Data)      
+    tab.ExportEQT(FileName,write_header='no',delimiter=' ')
+    
   def Export(self, FileName):
 
     tab = AT.AsciiTable()

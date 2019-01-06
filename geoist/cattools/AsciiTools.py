@@ -197,6 +197,40 @@ class AsciiTable():
 
     # Warn user if model file does not exist
     print('File not found.')
+  #---------------------------------------------------------------------------------------
+  def ExportEQT(self, ascii_file,
+                   write_header='no',
+                   delimiter=' '):
+    """
+    Method to export data object into an ascii file.
+    """
+
+    try:
+      with open(ascii_file, 'w') as f:
+
+        # Write header
+        if write_header == 'yes':
+          header = delimiter.join(self.header)
+          f.write(header + '\n')
+
+        # Write data (loop over rows)
+        for i, item in enumerate(self.data):
+          data = [_CastValue(item[j],'s') for j in self.header]
+          data = delimiter.join(data)
+
+          if i < (self.Size()[0]-1):
+            f.write(data + '\n')
+          else:
+            f.write(data)
+
+        f.close()
+
+    except:
+      # Warn user if model file does not exist
+      print('File not found.')
+
+  #---------------------------------------------------------------------------------------
+
 
   #---------------------------------------------------------------------------------------
 
