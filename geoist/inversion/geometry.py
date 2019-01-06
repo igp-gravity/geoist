@@ -186,7 +186,7 @@ class Prism(GeometricElement):
 
     Examples:
 
-        >>> from fatiando.mesher import Prism
+        >>> from geoist.inversion import Prism
         >>> p = Prism(1, 2, 3, 4, 5, 6, {'density':200})
         >>> p.props['density']
         200

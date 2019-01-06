@@ -10,7 +10,10 @@ import importlib
 
 importlib.reload(gi)
 gi.log.info('tttt')
-
+pic_flag = 1
+if pic_flag == 1:
+    if pic_flag == 1:
+        print('1')
 #gi.log.setname('base_log')
 #gi.log.setlevel(10)
 gi.log.info('info tt')
