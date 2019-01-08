@@ -639,7 +639,7 @@ class PrismMesh(object):
         self.i = 0
         return self
 
-    def next(self):
+    def __next__(self):
         if self.i >= self.size:
             raise StopIteration
         prism = self.__getitem__(self.i)
