@@ -422,7 +422,12 @@ def DuplicateCheck(Log, Tmax=[], Smax=[],
 
   XBins = np.linspace(0, Tmax, Tnum)
   YBins = np.linspace(0, Smax, Snum)
-
+  
+  if(len(dT)-len(dS)>0):
+      dT=dT[:len(dS)]
+  elif(len(dT)-len(dS)<0):
+      dS=dS[:len(dT)]
+      
   H = np.histogram2d(dT, dS, [YBins, XBins])
 
   def Gaussian(Size,Sigma):
@@ -443,14 +448,10 @@ def DuplicateCheck(Log, Tmax=[], Smax=[],
   fig = plt.figure(figsize=(5, 5))
 
   plt.pcolor(XBins, YBins, H0, cmap='Purples')
-
   plt.xlabel('Time', fontsize=12, fontweight='bold')
   plt.ylabel('Distance', fontsize=12, fontweight='bold')
-
   plt.grid('on')
-
   plt.tight_layout()
-
   plt.show(block=False)
 
   if OutFile:
