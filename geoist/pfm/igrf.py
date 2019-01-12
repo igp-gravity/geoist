@@ -159,9 +159,9 @@ class IGRF():
 # Variable declaration
 # Control variables
         if Model == 'IGRF12':
-          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF12.cof')
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\cof\\IGRF12.cof')
         else:
-          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF11.cof')
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\cof\\IGRF11.cof')
                      
         #mdf = open(__file__.rpartition('\\')[0]+'\\IGRF12.cof')
         modbuff = mdf.readlines()

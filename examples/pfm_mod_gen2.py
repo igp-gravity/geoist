@@ -13,8 +13,8 @@ from geoist.vis import giplt
 meshfile = r"d:\msh.txt"
 densfile = r"d:\den.txt"
 #生成场源网格 10km*20km*5km, 500个单元，z方向5层
-mesh = PrismMesh((0, 10000, 0, 20000, 0, 5000), (5, 10, 10))
-mesh.addprop('density', 1000.0*np.random.rand(500))
+mesh = PrismMesh((0, 10000, 0, 20000, 0, 5000), (20, 20, 20))
+mesh.addprop('density', 1000.0*np.random.rand(8000))
 mesh.dump(meshfile, densfile, 'density') #输出网格到磁盘，MeshTools3D可视化
 #生成核矩阵
 kernel=[] 
