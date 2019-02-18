@@ -1,0 +1,13 @@
+Augmented Dickey-Fuller test for original data:
+  adf: -0.8491927137529374
+  p-value: 0.8042434936169718
+  norder: 20
+  number of points: 3894
+  critical values:
+    1% : -3.4320304355349225
+    5% : -2.862282524384801
+    10% : -2.567165254588137
+ 
+White noise test for original data:
+  test statistic: [3910.94033259]
+  p-value: [0.]

@@ -1,0 +1,22 @@
+﻿{
+	"pluginname": "TsADF",
+	"copyright": 1,
+	"author": "zhangbei",
+	"Items": [
+		{
+			"name": "ADF检验",
+			"desc": "Augumented Dickey-Fuller检验",
+			"icon": "icon_ADF.png",
+			"language": "py",
+			"ui": "index_TsADF.html",
+			"pnodefieldname": "inputTable.txt",
+			"script": "main_TsADF.py",
+			"fieldfile": "outputFields.txt",
+			"hasviewer": true,
+			"issourcenode": false,
+			"isbase64": false
+		}
+	],
+	"appendfiles": [],
+	"dnpfile": ""
+}

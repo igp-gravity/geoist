@@ -1,0 +1,27 @@
+﻿{
+  "GroupName": "时间序列",
+  "Name": "序列检验",
+  "SystemToolTip": "序列检验，支持：Augumented Dickey-Fuller检验，随机性检验",
+  "Version": "1.2",
+  "Author": "张贝 at CEA",
+  "ScriptFile": "TsADF.py",
+  "InputTables": [
+    {
+      "Name": "tsdata",
+      "Title": "原始曲线数据",
+      "Fields": [
+        {
+          "Name": "time",
+          "Title": "时间",
+          "Type": "datetime"
+        },
+        {
+          "Name": "origin_data",
+          "Title": "原数据",
+          "Type": "real"
+        }
+      ]
+    }
+  ],
+  "ResultFile":"result.json"
+}

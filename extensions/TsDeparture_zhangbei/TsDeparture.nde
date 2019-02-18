@@ -1,0 +1,45 @@
+﻿{
+  "GroupName": "时间序列",
+  "Name": "距平分析",
+  "SystemToolTip": "序列距平分析",
+  "Version": "1.2",
+  "Author": "张贝 at CEA",
+  "ScriptFile": "TsDeparture.py",
+  "InputTables": [
+    {
+      "Name": "tsdata",
+      "Title": "原始曲线数据",
+      "Fields": [
+        {
+          "Name": "time",
+          "Title": "时间",
+          "Type": "datetime"
+        },
+        {
+          "Name": "origin_data",
+          "Title": "原数据",
+          "Type": "real"
+        }
+      ]
+    }
+  ],
+  "OutputFields": [
+    {
+      "Name": "time",
+      "Type": "datetime"
+    },  
+    {
+      "Name": "origin_data",
+      "Type": "real"
+    },
+    {
+      "Name": "departure",
+      "Type": "real"
+    },	
+    {
+      "Name": "residual",
+      "Type": "real"
+    }
+  ],
+  "ResultFile":"result.json"
+}

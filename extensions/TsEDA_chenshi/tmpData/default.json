@@ -1,0 +1,22 @@
+﻿{
+	"pluginname": "TsDeparture",
+	"copyright": 1,
+	"author": "zhangbei",
+	"Items": [
+		{
+			"name": "距平分析",
+			"desc": "月距平分析",
+			"icon": "icon_TsDeparture.png",
+			"language": "py",
+			"ui": "index_TsDeparture.html",
+			"pnodefieldname": "inputTable.txt",
+			"script": "main_TsDeparture.py",
+			"fieldfile": "outputFields.txt",
+			"hasviewer": true,
+			"issourcenode": false,
+			"isbase64": false
+		}
+	],
+	"appendfiles": [],
+	"dnpfile": ""
+}

@@ -1,0 +1,249 @@
+<?xml version="1.0"?>
+<NodeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Arthor>bushyao</Arthor>
+  <HID>0025_38B2_81BD_8A67.</HID>
+  <SQLiteIO>
+    <DbFullName>Tba9bd5825ed74b5087007bed456e25f7.bcdb</DbFullName>
+    <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
+    <DmsFullName>C:\工作\数据专家发布\IntelliLock\output\Plugin\GraDespike_zhangbei\NodeDemos\main_GraDespike.dms</DmsFullName>
+  </SQLiteIO>
+  <FieldFormats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Integer</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:#.##}</DisplayFormatEx>
+      <DecimalPlaces>2</DecimalPlaces>
+      <DataType>Real</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Text</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Boolean</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:G}</DisplayFormatEx>
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>DateTime</DataType>
+      <Visible>true</Visible>
+    </Formats>
+  </FieldFormats>
+  <Title>Stream</Title>
+  <Subject>2018/12/17 10:52:43</Subject>
+  <Arthor2>DESKTOP-1OR86JK</Arthor2>
+  <Manager />
+  <Company>DSS</Company>
+  <Category />
+  <Description />
+  <KeyWords />
+  <StreamID />
+  <ReportTitleName />
+  <ListReportTitles />
+  <Price>0</Price>
+  <PrivilegeType>公开</PrivilegeType>
+  <Parameters />
+  <Items>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>13bbd9af-a674-4937-918d-25b8f5670207</Guid>
+      <CenterY>157.5</CenterY>
+      <CenterX>445</CenterX>
+      <Description />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>Despike</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>3ea1d0a1-3cfa-4ae1-935b-bd842f0b73ec</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\Max\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"Coordinate":"0","NormalGra":"0","Anomaly":"0"},"allfields":true,"names":{"Coordinate":"0","NormalGra":"0","Anomaly":"0"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>3ea1d0a1-3cfa-4ae1-935b-bd842f0b73ec</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>time</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>origin_data</PriorFieldName>
+              <FieldName>origin_data</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>GraDespike_zhangbei</PluginPath>
+      <Author>zhangbei</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_GraDespike.html</UiFileName>
+      <ScriptFileName>main_GraDespike.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>false</ExportTable>
+      <HasViewer>true</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTXTEx">
+      <Guid>c01addf2-9571-49bb-9d47-2872cae77b0a</Guid>
+      <CenterY>157.5</CenterY>
+      <CenterX>155</CenterX>
+      <Description />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TXT+</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FileName />
+      <ReadMode>Delimited</ReadMode>
+      <Filebody>false</Filebody>
+      <SplitterDelimited>;</SplitterDelimited>
+      <SplitterFixed>10,20</SplitterFixed>
+      <HasHeader>true</HasHeader>
+      <EncodingSave>Default</EncodingSave>
+      <RemoveRept>false</RemoveRept>
+      <EnclosedInQuotes>false</EnclosedInQuotes>
+      <ReadOnlyFristRows>false</ReadOnlyFristRows>
+      <OnlyFristRows>10000</OnlyFristRows>
+      <ReadNullRow>false</ReadNullRow>
+      <FolderFiles>
+        <IsFolder>false</IsFolder>
+        <FullName>C:\工作\tsa\despike.txt</FullName>
+      </FolderFiles>
+      <AllExt>true</AllExt>
+      <Ext>txt;csv;json;htm;html;xml</Ext>
+      <ExportFileName>false</ExportFileName>
+      <FullFileName>false</FullFileName>
+      <FieldFilters />
+      <Exts>
+        <string>.csv</string>
+        <string>.txt</string>
+        <string>.json</string>
+        <string>.htm</string>
+        <string>.html</string>
+        <string>.xml</string>
+      </Exts>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>3ea1d0a1-3cfa-4ae1-935b-bd842f0b73ec</Guid>
+      <CenterY>157.5</CenterY>
+      <CenterX>300</CenterX>
+      <Description />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>c01addf2-9571-49bb-9d47-2872cae77b0a</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>despiked</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>despiked</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTable">
+      <Guid>3e74cb3c-b051-452a-8387-da6ce418e682</Guid>
+      <CenterY>157.5</CenterY>
+      <CenterX>605</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>浏览数据</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>13bbd9af-a674-4937-918d-25b8f5670207</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFormats />
+      <AutoWidthFit>true</AutoWidthFit>
+      <Expression />
+    </NodeBase>
+  </Items>
+  <ParNames />
+  <EvalNodeNames>Despike;浏览数据</EvalNodeNames>
+  <OffsetX>0</OffsetX>
+  <OffsetY>0</OffsetY>
+  <Scale>1</Scale>
+</NodeCollection>
