@@ -46,6 +46,7 @@ def run_TsADF(data):
     res = tsa.adfuller(data['origin_data'].values)
     res1 = tsa.acorr_ljungbox(data['origin_data'] ,lags = 1)
     with open(pathlib.Path(res_file),'w') as f:
+        print('ADF and White noise tests for time series signal: {}'.format('original data'),file=f)
         tsa.print_adf(res,'original data',file=f)
         print(' ',file=f)
         print('White noise test for {}:'.format('original data'),file=f)

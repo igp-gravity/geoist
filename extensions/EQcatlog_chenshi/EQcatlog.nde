@@ -1,0 +1,56 @@
+﻿{
+  "GroupName": "地震分析",
+  "Name": "目录获取",
+  "SystemToolTip": "下载地震目录数据（Github数据源），包括：全球目录、中国大陆目录等",
+  "Version": "1.2",
+  "Author": "陈石 at CEA",
+  "ScriptFile": "EQcatlog.py",
+  "OutputFields": [
+    {
+      "Name": "Year",
+      "Type": "string"
+    },  
+    {
+      "Name": "Month",
+      "Type": "string"
+    },
+    {
+      "Name": "Day",
+      "Type": "string"
+    },	
+    {
+      "Name": "Hour",
+      "Type": "string"
+    },
+    {
+      "Name": "Min",
+      "Type": "string"
+    },
+    {
+      "Name": "Sec",
+      "Type": "string"
+    },
+    {
+      "Name": "Lati",
+      "Type": "string"
+    },
+    {
+      "Name": "Long",
+      "Type": "string"
+    },
+    {
+      "Name": "Mag",
+      "Type": "string"
+    },
+    {
+      "Name": "Depth",
+      "Type": "string"
+    },
+    {
+      "Name": "ID",
+      "Type": "string"
+    }
+  ],
+  "ResultFile":"result.json"
+}
+

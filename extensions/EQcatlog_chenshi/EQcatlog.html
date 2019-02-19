@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <link rel="stylesheet" type="text/css" href="..\js\iview.css">
+    <script type="text/javascript" src="..\js\vue.min.js"></script>
+    <script type="text/javascript" src="..\js\iview.min.js"></script>
+    <script type="text/javascript" src="..\js\jquery.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <i-Row :gutter="10">           
+            <i-Col span="18">
+                <div>
+                    <i-Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                        <Form-Item label="窗口大小" prop="windowsize">
+                            <i-Input
+                                  v-model="formValidate.windowsize"
+                                  placeholder="请输入数据窗口大小"
+                            ></i-Input>
+                        </Form-Item>
+                    </i-Form>              
+                </div>               
+            </i-Col>
+        </i-Row>
+ 
+    </div>
+   
+    <script>
+        var Main = {
+            data() {
+                return {
+                          
+                    formValidate: {
+                        windowsize: null,                        
+                    },
+
+                    ruleValidate: {
+                           windowsize: [{
+                            required: true,
+                            message: '窗口带下不能为空',
+                            trigger: 'blur'
+                        }],
+                 }
+                }
+            },
+        }
+
+        var Component = Vue.extend(Main)
+        var vue = new Component().$mount('#app')
+
+        ////保存数据到节点中
+        function GetData() {
+            var anObject = new Object();
+
+            anObject.pars = new Object();
+            anObject.pars.windowsize = vue.$data.formValidate.windowsize;
+
+			
+            anObject.allfields = true;
+
+            anObject.names = new Object();
+            anObject.names.windowsize = vue.$data.formValidate.windowsize;
+ 
+		
+            return JSON.stringify(anObject);
+        }
+
+        //SetData由节点编辑器在窗口打开时，自动执行。
+        function SetData(txt, fieldnames) {
+            //输入框赋值
+            if (txt !== null && txt !== '') {
+                var obj = JSON.parse(txt);
+
+                if (obj !== null) {
+                    vue.$data.formValidate.windowsize = obj.pars.windowsize;   
+                }
+            }
+        }
+    </script>
+
+    <script>
+    </script>
+
+</body>
+
+</html>
