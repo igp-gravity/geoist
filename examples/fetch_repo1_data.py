@@ -19,6 +19,9 @@ regfile = pathlib.Path(path,'regHash.txt')
 
 make_registry(path, regfile, recursive=True)
 
+import pandas as pd
+
+dd=pd.read_csv(r'D:\MyWorks\geoist\examples\data\ttt\cncat_mw.txt', sep='\t', encoding = 'utf-8')
 ##先获得HASH信息从Github到本地
 #url = "https://raw.githubusercontent.com/gravity-igpcea/dataset/master/"
 #filename = url + 'regHash.txt'

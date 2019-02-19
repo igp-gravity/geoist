@@ -25,6 +25,8 @@ def run_EQCatlog():
     if not path.exists():
         path.mkdir()    
     file1 = pathlib.Path(tmppath,'tmpData','catalog.csv')
+    fileinfo1 = pathlib.Path(tmppath,'tmpData','catsample.csv')
+    filedesc1 = pathlib.Path(tmppath,'tmpData','catdesc.csv')
     downfile = pathlib.Path(tmppath,'tmpData','Hash.txt')
     png_file = pathlib.Path(tmppath,'tmpData','eqM-T.png') 
     png_file1 = pathlib.Path(tmppath,'tmpData','eqLocations.png')
@@ -48,21 +50,23 @@ def run_EQCatlog():
     
     fetch_data.Drepo1.load_registry(downfile)
     cncat = fetch_data.fetch_catalogCN()  #dataframe
-    gemcat = fetch_data.fetch_catalogGME()  #dataframe
-    xccat = fetch_data.fetch_catalog('catalog_xc.TXT')  #dataframe
+    #gemcat = fetch_data.fetch_catalogGME()  #dataframe
+    #xccat = fetch_data.fetch_catalog('catalog_xc.TXT')  #dataframe
     #allcat = fetch_data.fetch_catalogGEM()
-    cncat["年"] = cncat["年"].astype("int64")
-    year = cncat["年"].values
-    mon = cncat["月"].values
-    #print(cncat.dtypes)
-    print(cncat.head())
-    print(cncat.tail())
-    print(cncat.info())
-    print(cncat.describe())
-    lon = cncat["纬"].values
-    lat = cncat["经"].values
-    mag = cncat["mw"].values
+
+#    year = cncat["year"].values
+#    mon = cncat["month"].values
     cncat.to_csv(file1,sep=';',index=False,encoding="utf-8")
+    catinfo = pd.concat([cncat.head(),cncat.tail()])    
+    catinfo.to_csv(fileinfo1,sep=';',index=True,encoding="utf-8")
+    catdesc = cncat.describe()
+    catdesc.to_csv(filedesc1,sep=';',index=True,encoding="utf-8")
+#    print(cncat.dtypes)
+#    print(cncat.head())
+#    print(cncat.tail())
+#    print(cncat.info())
+#    print(cncat.describe())
+    
 #    data=pd.read_csv(pathlib.Path(orig_file),parse_dates=True,delimiter=";",index_col=[0],na_values=na_values)
 #    data['origin_data'] = data[data.columns[0]].interpolate()  
 #    res = tsa.adfuller(data['origin_data'].values)

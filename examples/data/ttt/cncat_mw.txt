@@ -1,4 +1,4 @@
-﻿id	year	month	day	hour	min	sec	lat	lon	mag	depth
+id	year	month	day	hour	min	sec	lat	lon	mag	depth
 1	19	2	0	0	0	0	41.10	126.18	5.30	-1
 2	46	10	21	0	0	0	33.00	112.50	6.40	-1
 3	128	2	22	0	0	0	34.70	105.40	6.40	-1

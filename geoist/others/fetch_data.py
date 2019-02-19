@@ -66,7 +66,7 @@ def fetch_catalogCN():
     """
     
     data_file = Drepo1.fetch("cncat_mw.txt")
-    data = pd.read_csv(data_file)
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
     return data
 
 def fetch_catalog(filename):
@@ -75,7 +75,7 @@ def fetch_catalog(filename):
     """
     
     data_file = Drepo1.fetch(filename)
-    data = pd.read_csv(data_file)
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
     return data
 
 def fetch_catalogGEM():
@@ -83,7 +83,7 @@ def fetch_catalogGEM():
     Fetch GEM Global earthquake catalog data from Github Repos.
     """
     data_file = Drepo1.fetch("isc-gem-cat.txt")
-    data = pd.read_csv(data_file)
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
     return data
 
 

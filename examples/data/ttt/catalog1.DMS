@@ -18,6 +18,7 @@
   <StreamID />
   <ReportTitleName />
   <ListReportTitles />
+  <AttachFiles />
   <Price>0</Price>
   <PrivilegeType>公开</PrivilegeType>
   <Parameters />
@@ -27,6 +28,7 @@
       <CenterY>122.5</CenterY>
       <CenterX>90</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>TXT+</Name>
@@ -63,6 +65,7 @@
       <CenterY>47.5</CenterY>
       <CenterX>85</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title>TXT+#1</Title>
       <Name>TXT+</Name>
@@ -99,6 +102,7 @@
       <CenterY>132.5</CenterY>
       <CenterX>215</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>过滤</Name>
@@ -216,6 +220,7 @@
       <CenterY>142.5</CenterY>
       <CenterX>550</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>保存为文件</Name>
@@ -245,6 +250,7 @@
       <CenterY>42.5</CenterY>
       <CenterX>175</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>过滤</Name>
@@ -278,6 +284,7 @@
       <CenterY>57.5</CenterY>
       <CenterX>620</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>保存为文件</Name>
@@ -307,6 +314,7 @@
       <CenterY>47.5</CenterY>
       <CenterX>275</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>year</Name>
@@ -336,6 +344,7 @@
       <CenterY>47.5</CenterY>
       <CenterX>350</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>多列</Name>
@@ -380,6 +389,7 @@
       <CenterY>52.5</CenterY>
       <CenterX>435</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>列序</Name>
@@ -410,6 +420,7 @@
       <CenterY>62.5</CenterY>
       <CenterX>525</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title>过滤#1</Title>
       <Name>过滤</Name>
@@ -437,6 +448,7 @@
       <CenterY>127.5</CenterY>
       <CenterX>355</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title>列序#1</Title>
       <Name>列序</Name>
@@ -467,6 +479,7 @@
       <CenterY>207.5</CenterY>
       <CenterX>80</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title>TXT+#2</Title>
       <Name>TXT+</Name>
@@ -503,6 +516,7 @@
       <CenterY>212.5</CenterY>
       <CenterX>200</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>过滤</Name>
@@ -584,6 +598,7 @@
       <CenterY>202.5</CenterY>
       <CenterX>300</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>id</Name>
@@ -607,6 +622,7 @@
       <CenterY>212</CenterY>
       <CenterX>378</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title>列序#2</Title>
       <Name>列序</Name>
@@ -659,7 +675,7 @@
       <TxtOverwrite>true</TxtOverwrite>
       <TxtAppendTitle>true</TxtAppendTitle>
       <TextSystem>Windows</TextSystem>
-      <EncodingSave>UTF8</EncodingSave>
+      <EncodingSave>Default</EncodingSave>
     </NodeBase>
   </Items>
   <OffsetX>0</OffsetX>
