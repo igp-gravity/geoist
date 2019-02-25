@@ -1,0 +1,14 @@
+﻿{
+  "pars": {
+    "Threshold": "100"
+  },
+  "allfields": true,
+  "names": {
+    "Threshold": "100"
+  },
+  "gradata": "C:\\Users\\chens\\AppData\\Local\\Temp\\gradata.txt",
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "Url"
+}

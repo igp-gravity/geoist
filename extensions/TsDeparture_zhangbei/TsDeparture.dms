@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<NodeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <NodeBase xsi:type="NodeTXTEx">
+      <Guid>3ee1c63d-4248-4957-b8bb-1066fb481d02</Guid>
+      <CenterY>77.5</CenterY>
+      <CenterX>80</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TXT+</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FileName />
+      <ReadMode>Fixed</ReadMode>
+      <Filebody>false</Filebody>
+      <SplitterDelimited>
+      </SplitterDelimited>
+      <SplitterFixed>11,19,30</SplitterFixed>
+      <HasHeader>false</HasHeader>
+      <EncodingSave>Default</EncodingSave>
+      <RemoveRept>false</RemoveRept>
+      <EnclosedInQuotes>false</EnclosedInQuotes>
+      <ReadOnlyFristRows>false</ReadOnlyFristRows>
+      <OnlyFristRows>10000</OnlyFristRows>
+      <ReadNullRow>false</ReadNullRow>
+      <FolderFiles>
+        <IsFolder>false</IsFolder>
+        <FullName>$stream$\tmpData\50002_1_2312.txt</FullName>
+      </FolderFiles>
+      <AllExt>true</AllExt>
+      <Ext>txt;csv;json;htm;html;xml</Ext>
+      <ExportFileName>false</ExportFileName>
+      <FullFileName>false</FullFileName>
+      <FieldFilters />
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>39550db8-fd47-4d78-80a0-a759a3808710</Guid>
+      <CenterY>82.5</CenterY>
+      <CenterX>245</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>3ee1c63d-4248-4957-b8bb-1066fb481d02</guid>
+      </PriorNodeGuid>
+      <CacheIt>true</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>列0</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>时间</NewFieldName>
+          <NewDataType>DateTime</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>列1</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>列1</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>列2</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>观测值</NewFieldName>
+          <NewDataType>Real</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTable">
+      <Guid>b08fc218-404b-494f-8040-afb19dd6fd79</Guid>
+      <CenterY>207.5</CenterY>
+      <CenterX>345</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>浏览数据</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>39550db8-fd47-4d78-80a0-a759a3808710</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFormats />
+      <AutoWidthFit>true</AutoWidthFit>
+      <Expression />
+    </NodeBase>
+    <NodeBase xsi:type="NodeChartP">
+      <Guid>da641bfe-4abc-48a9-a109-fd05c561b47f</Guid>
+      <CenterY>202.5</CenterY>
+      <CenterX>135</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>折线图</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>39550db8-fd47-4d78-80a0-a759a3808710</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ChartId>XYLine</ChartId>
+      <Multi>Value</Multi>
+      <ChartName>XYChart</ChartName>
+      <SeriesName>Line</SeriesName>
+      <Setting>X=时间;Y=观测值</Setting>
+      <StyleName>default</StyleName>
+      <ShowLable>false</ShowLable>
+      <Symbol>None</Symbol>
+      <SymbolSize>5</SymbolSize>
+      <TitleX>时间</TitleX>
+      <TitleY>观测值</TitleY>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin2">
+      <Guid>2ddcfd20-e642-4880-86fb-464b846c6b2b</Guid>
+      <CenterY>87.5</CenterY>
+      <CenterX>405</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TS前处理</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>39550db8-fd47-4d78-80a0-a759a3808710</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <NodeParameters>{"pars":{"Threshold":"100"},"allfields":true,"names":{"Threshold":"100"}}</NodeParameters>
+      <PluginPath>TsDespike_zhangbei</PluginPath>
+      <Author>张贝 at CEA</Author>
+      <NodeExFile>Despike.nde</NodeExFile>
+      <Isbase64>false</Isbase64>
+      <ExportTable>false</ExportTable>
+      <HasViewer>false</HasViewer>
+      <FileResult>false</FileResult>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>39550db8-fd47-4d78-80a0-a759a3808710</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>时间</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>观测值</PriorFieldName>
+              <FieldName>origin_data</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin2">
+      <Guid>28c987e5-9de3-4551-bec4-78d64fe9b20a</Guid>
+      <CenterY>192.5</CenterY>
+      <CenterX>245</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>序列处理</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <NodeParameters />
+      <PluginPath>TsTools_zhangbei</PluginPath>
+      <Author>张贝 at CEA</Author>
+      <NodeExFile>TsTools.nde</NodeExFile>
+      <Isbase64>false</Isbase64>
+      <ExportTable>true</ExportTable>
+      <HasViewer>false</HasViewer>
+      <FileResult>false</FileResult>
+      <InputItems />
+    </NodeBase>
+  </Items>
+  <OffsetX>0</OffsetX>
+  <OffsetY>0</OffsetY>
+  <Scale>1</Scale>
+  <Arthor>bushyao</Arthor>
+  <SQLiteIO>
+    <DbFullName>Tbe42961b3b0c4391805ad16c9fa698d9.bcdb</DbFullName>
+    <DmsFullName>C:\Program Files (x86)\Datist\BinX\Plugin\TsDeparture_zhangbei\TsDeparture.dms</DmsFullName>
+    <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
+    <RunMemoryMode>false</RunMemoryMode>
+  </SQLiteIO>
+  <FieldFormats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Integer</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:#.##}</DisplayFormatEx>
+      <DecimalPlaces>2</DecimalPlaces>
+      <DataType>Real</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Text</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Boolean</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:G}</DisplayFormatEx>
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>DateTime</DataType>
+      <Visible>true</Visible>
+    </Formats>
+  </FieldFormats>
+  <Title>Stream</Title>
+  <Subject>2019/1/14 21:02:08</Subject>
+  <Arthor2>chenshi-X1</Arthor2>
+  <Manager />
+  <Company>DSS</Company>
+  <Category />
+  <Description />
+  <KeyWords />
+  <CheckIt>false</CheckIt>
+  <StreamID />
+  <ReportTitleName>样式一</ReportTitleName>
+  <ListReportTitles>PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8QXJyYXlPZlJlcG9ydFRpdGxlcyB4bWxuczp4c2Q9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hIiB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIj4NCiAgPFJlcG9ydFRpdGxlcz4NCiAgICA8SXRlbXM+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT4xPC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjI8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT40PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9LnsyfS57M30uezR9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjY8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9Lns2fSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuIA8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KICA8UmVwb3J0VGl0bGVzPg0KICAgIDxJdGVtcz4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjE8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjY8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX3jgIEgPC9UaXRsZUZvcm1hdD4NCiAgICAgIDwvUmVwb3J0VGl0bGVJdGVtPg0KICAgICAgPFJlcG9ydFRpdGxlSXRlbT4NCiAgICAgICAgPFRpdGxlR3JhZGU+MjwvVGl0bGVHcmFkZT4NCiAgICAgICAgPEJlZ2luSWQ+MDwvQmVnaW5JZD4NCiAgICAgICAgPFN0eWxlSWQ+NjwvU3R5bGVJZD4NCiAgICAgICAgPFRpdGxlRm9ybWF0Pih7Mn0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57M30uIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjQ8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57NH0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD4oezV9KSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT42PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD41PC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezZ9LiA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuow8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KPC9BcnJheU9mUmVwb3J0VGl0bGVzPg==</ListReportTitles>
+  <SelfRun>false</SelfRun>
+  <AttachFiles />
+  <Price>0</Price>
+  <PrivilegeType>公开</PrivilegeType>
+  <Parameters />
+</NodeCollection>

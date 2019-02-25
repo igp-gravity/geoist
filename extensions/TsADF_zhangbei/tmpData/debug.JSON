@@ -1,0 +1,14 @@
+﻿{
+  "pars": {
+    "windowsize": "2"
+  },
+  "allfields": true,
+  "names": {
+    "windowsize": "2"
+  },
+  "tsdata": "C:\\Users\\chens\\AppData\\Local\\Temp\\tsdata.txt",
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "DataTable"
+}

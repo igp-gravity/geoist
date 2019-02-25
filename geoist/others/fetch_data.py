@@ -17,6 +17,15 @@ Drepo = datarepo.create(
 
 Drepo.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
 
+Drepo1 = datarepo.create(
+    path=["~", ".catalog", "data"],
+    base_url="https://raw.githubusercontent.com/gravity-igpcea/dataset/master/",
+    version='0.0.1',
+    version_dev="master",
+    env="./",
+	registry={}
+)
+
 
 def _setup_map(
     ax, xticks, yticks, crs, region, land=None, ocean=None, borders=None, states=None
@@ -49,6 +58,32 @@ def fetch_gra_data():
     """
     data_file = Drepo.fetch("gradata.csv")
     data = pd.read_csv(data_file)
+    return data
+
+def fetch_catalogCN():
+    """
+    Fetch Chinese earthquake catalog data from Github Repos.
+    """
+    
+    data_file = Drepo1.fetch("cncat_mw.txt")
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
+    return data
+
+def fetch_catalog(filename):
+    """
+    Fetch earthquake catalog data from Github Repos.
+    """
+    
+    data_file = Drepo1.fetch(filename)
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
+    return data
+
+def fetch_catalogGEM():
+    """
+    Fetch GEM Global earthquake catalog data from Github Repos.
+    """
+    data_file = Drepo1.fetch("isc-gem-cat.txt")
+    data = pd.read_csv(data_file, sep='\t',encoding="utf-8")
     return data
 
 

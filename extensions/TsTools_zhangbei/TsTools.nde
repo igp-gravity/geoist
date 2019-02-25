@@ -1,0 +1,45 @@
+{
+  "GroupName": "时间序列",
+  "Name": "序列处理",
+  "SystemToolTip": "去趋势、指数平滑、滑动平均、差分、距平分析",
+  "Version": "1.2",
+  "Author": "张贝 at CEA",
+  "ScriptFile": "TsTools.py",
+  "InputTables": [
+    {
+      "Name": "tsdata",
+      "Title": "原始曲线数据",
+      "Fields": [
+        {
+          "Name": "time",
+          "Title": "时间",
+          "Type": "datetime"
+        },
+        {
+          "Name": "origin_data",
+          "Title": "原数据",
+          "Type": "real"
+        }
+      ]
+    }
+  ],
+  "OutputFields": [
+    {
+      "Name": "time",
+      "Type": "datetime"
+    },
+    {
+      "Name": "origin_data",
+      "Type": "real"
+    },
+    {
+      "Name": "trans_data",
+      "Type": "real"
+    },
+    {
+      "Name": "residual",
+      "Type": "real"
+    }	
+  ],
+  "ResultFile":"result.json"
+}

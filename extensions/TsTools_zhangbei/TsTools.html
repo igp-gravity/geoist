@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <link rel="stylesheet" type="text/css" href="..\js\iview.css">
+    <script type="text/javascript" src="..\js\vue.min.js"></script>
+    <script type="text/javascript" src="..\js\iview.min.js"></script>
+    <script type="text/javascript" src="..\js\jquery.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <i-Row :gutter="10">           
+            <i-Col span="18">
+                <div>
+                    <i-Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                     
+                        <Form-Item label="算法类型" prop="Tools">
+                            <i-Select v-model="formValidate.Tools" class="select">
+                                <i-Option v-for="item in List1" :value="item.value" :key="item.value">{{ item.label }}</i-Option>
+                            </i-Select>
+                        </Form-Item>
+                         <div v-if="formValidate.Tools === '滑动平均'">
+							<Form-Item label="窗口大小" prop="WindowSize">
+								<i-Input
+									  v-model="formValidate.WindowSize"
+									  placeholder="请输入≥1的整数窗口大小"></i-Input>
+							</Form-Item>
+						</div>
+				       <div v-if="formValidate.Tools === '指数平滑'">
+						<Form-Item label="系数" prop="Factor">
+                            <i-Input
+                                  v-model="formValidate.Factor"
+                                  placeholder="请输入0.00~1的平滑系数"></i-Input>
+                        </Form-Item>
+						 </div>
+						 <div v-if="formValidate.Tools === '一阶差分'">
+						<Form-Item label="步长" prop="Periods">
+                            <i-Input
+                                  v-model="formValidate.Periods"
+                                  placeholder="请输入≥1的整数步长"></i-Input>
+                        </Form-Item>
+						 </div>
+						 
+						  <div v-if="formValidate.Tools === '二阶差分'">
+						<Form-Item label="步长" prop="Periods">
+                            <i-Input
+                                  v-model="formValidate.Periods"
+                                  placeholder="请输入≥1的整数步长"></i-Input>
+                        </Form-Item>
+                         </div>
+                                                 
+						 <div v-if="formValidate.Tools === '多项式拟合'">
+						<Form-Item label="阶数" prop="WindowSize">
+								<i-Input
+									  v-model="formValidate.WindowSize"
+									  placeholder="请输入≥2的拟合阶数"></i-Input>
+                        </Form-Item>
+                        
+                         </div>
+                    </Form-Item>
+                    </i-Form>              
+                </div>               
+            </i-Col>
+        </i-Row>
+ 
+    </div>
+   
+    <script>
+        var Main = {
+                data() {
+                    var WindowSize = (rule, value, callback) => {
+                    if (/^([1-9]|([1-9]\d+))$/.test(value) || value == '') {
+                        callback();
+                    } else {
+                        callback(new Error('大于等于1的整数'));
+                    }
+                    }
+                    var Periods = (rule, value, callback) => {
+                    if (/^([1-9]|([1-9]\d+))$/.test(value) || value == '') {
+                        callback();
+                    } else {
+                        callback(new Error('大于等于1的整数'));
+                    }
+                    }
+                    var Factor = (rule, value, callback) => {
+                    if (/^(0|1|0.[0-9]{1,2})$/.test(value) || value == '') {
+                        callback();
+                    } else {
+                        callback(new Error('0.0~1的小数'));
+                    }
+                    }
+                return {
+                    List1: [
+					 
+                    ],
+
+                    formValidate: {
+                        Tools:'',
+                        WindowSize:5, 
+                        Periods:365,
+                        Factor:0.5, 
+                        RunModes:'交互图',  //设置单选框默认选中项，为label值
+                        Methods:'月平距',   //设置单选框默认选中项，为label值
+                    },
+                    
+                    ruleValidate: {
+                        Tools: [{
+                            required: true,
+                            message: '请选择算法类型!',
+                            trigger: 'change'
+                        }],
+                        WindowSize: [{
+                            required: true,
+                            message: '请输入窗口大小!',
+                            trigger: 'blur'
+                        },
+                        {
+                            validator: WindowSize,
+                            trigger: 'blur'
+                        }],
+                        Periods: [{
+                            required: true,
+                            message: '请输入步长!',
+                            trigger: 'blur'
+                        },
+                        {
+                            validator: Periods,
+                            trigger: 'blur'
+                        }],
+                        Factor: [{
+                            required: true,
+                            message: '0.00~1的小数!',
+                            trigger: 'blur'
+                        },
+                        {
+                            validator: Factor,
+                            trigger: 'blur'
+                        }],
+                        RunModes: {
+                            required: true,
+                            trigger: 'blur'
+                        },
+                        Methods: {
+                            required: true,
+                            trigger: 'blur'
+                        }
+                 }
+                }
+            },
+        }
+
+        var Component = Vue.extend(Main)
+        var vue = new Component().$mount('#app')
+
+        ////保存数据到节点中
+        function GetData() {
+            var anObject = new Object();
+
+            anObject.pars = new Object();
+            anObject.pars.Tools = vue.$data.formValidate.Tools;
+            anObject.pars.WindowSize = vue.$data.formValidate.WindowSize;
+            anObject.pars.Periods = vue.$data.formValidate.Periods;
+            anObject.pars.Factor = vue.$data.formValidate.Factor;
+            anObject.pars.Methods = vue.$data.formValidate.Methods;
+            
+           			
+            //anObject.allfields = true;
+
+            //anObject.names = new Object();
+            //anObject.names.Tools = vue.$data.formValidate.Tools;
+           // anObject.names.WindowSize = vue.$data.formValidate.WindowSize;
+            //anObject.names.Periods = vue.$data.formValidate.Periods;
+            //anObject.names.Factor = vue.$data.formValidate.Factor;
+            //anObject.names.RunModes = vue.$data.formValidate.RunModes;
+           // anObject.names.Methods = vue.$data.formValidate.Methods;
+		
+            return JSON.stringify(anObject);
+        }
+
+        //SetData由节点编辑器在窗口打开时，自动执行。
+        function SetData(txt, itemname) {
+            //如果获取前节点所有字段列表，设置 var itemname = fieldnames;
+            //如果设置自定义下拉框列表，  设置例如：var itemname = "去线性;指数平滑;滑动平均;一阶差分;二阶差分;多项式拟合";
+
+            //设置初始化算法类型列表
+            //var itemname = "去线性;指数平滑;滑动平均;一阶差分;二阶差分;多项式拟合";
+            var itemvalue = "去线性;指数平滑;滑动平均;一阶差分;二阶差分;多项式拟合";
+
+            //var fieldNameList = itemname.split(";");
+            var fieldValueList = itemvalue.split(";");
+
+            fieldValueList.forEach(function (value, index) {
+                var item = new Object();
+                item.label = fieldValueList[index];
+                item.value = fieldValueList[index];
+
+                vue.$data.List1.push(item);
+            });
+
+   
+
+            //赋值
+            if (txt !== null && txt !== '') {
+                var obj = JSON.parse(txt);
+
+                if (obj !== null) {
+                    vue.$data.formValidate.Tools = obj.pars.Tools;
+                    vue.$data.formValidate.WindowSize = obj.pars.WindowSize;
+                    vue.$data.formValidate.Periods = obj.pars.Periods; 
+                    vue.$data.formValidate.Factor = obj.pars.Factor;
+                    vue.$data.formValidate.Methods = obj.pars.Methods;
+                }
+            }
+        }
+    </script>
+
+    <script>
+    </script>
+
+</body>
+
+</html>

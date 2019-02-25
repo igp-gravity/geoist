@@ -1,0 +1,5 @@
+time
+origin_data
+trend
+seasonal
+residual

@@ -1,0 +1,22 @@
+﻿{
+	"pluginname": "TsSeason",
+	"copyright": 1,
+	"author": "zhangbei",
+	"Items": [
+		{
+			"name": "TS周期分解",
+			"desc": "趋势、季节、残差分解",
+			"icon": "icon_season.png",
+			"language": "py",
+			"ui": "index_TsSeason.html",
+			"pnodefieldname": "inputTable.txt",
+			"script": "main_TsSeason.py",
+			"fieldfile": "outputFields.txt",
+			"hasviewer": true,
+			"issourcenode": false,
+			"isbase64": false
+		}
+	],
+	"appendfiles": [],
+	"dnpfile": ""
+}

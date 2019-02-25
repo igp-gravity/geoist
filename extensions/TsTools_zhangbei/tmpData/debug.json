@@ -1,0 +1,15 @@
+﻿{
+  "pars": {
+    "Tools": "多项式拟合",
+    "WindowSize": 5,
+    "Periods": 1,
+    "Factor": 0.5,
+    "FitNum": "3",
+    "Methods": ""
+  },
+  "tsdata": "C:\\Users\\chens\\AppData\\Local\\Temp\\tsdata.txt",
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "Url"
+}

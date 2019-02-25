@@ -151,7 +151,7 @@ class IGRF():
         self.dsb_alt = 0
         self.date = ''
 
-    def pnt(self, latitude, longitude, alt, Model='IGRF12'):
+    def pnt(self, latitude, longitude, alt, magdata, Model='IGRF12'):
         """
         Settings Dialog. This is the main entrypoint into this routine. It also
         contains the main IGRF code.
@@ -159,9 +159,9 @@ class IGRF():
 # Variable declaration
 # Control variables
         if Model == 'IGRF12':
-          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF12.cof')
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\cof\\IGRF12.cof')
         else:
-          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\IGRF11.cof')
+          mdf = open(os.path.abspath(__file__).rpartition('\\')[0]+'\\cof\\IGRF11.cof')
                      
         #mdf = open(__file__.rpartition('\\')[0]+'\\IGRF12.cof')
         modbuff = mdf.readlines()
@@ -194,7 +194,7 @@ class IGRF():
                 
 
         # Pick model
-        sdate = 2018
+        sdate = magdata #2017.527397260274
         yrmax = np.array(yrmax)
         modelI = sum(yrmax < sdate)
         igdgc = 1
@@ -660,4 +660,5 @@ class IGRF():
 
 if __name__ == "__main__":
  m1=IGRF()
- m1.pnt(45,105,100)
+ a=m1.pnt(45,105,100,2017.5)
+ print(a)

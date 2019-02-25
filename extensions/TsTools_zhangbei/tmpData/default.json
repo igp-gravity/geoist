@@ -1,0 +1,22 @@
+﻿{
+	"pluginname": "TsTools",
+	"copyright": 1,
+	"author": "zhangbei",
+	"Items": [
+		{
+			"name": "TS数据处理",
+			"desc": "去趋势、指数平滑、滑动平均、差分、",
+			"icon": "icon_tools.png",
+			"language": "py",
+			"ui": "index_TsTools.html",
+			"pnodefieldname": "inputTable.txt",
+			"script": "main_TsTools.py",
+			"fieldfile": "outputFields.txt",
+			"hasviewer": true,
+			"issourcenode": false,
+			"isbase64": false
+		}
+	],
+	"appendfiles": [],
+	"dnpfile": ""
+}

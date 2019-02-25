@@ -11,6 +11,9 @@ import scipy.signal as signal
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.stats.diagnostic import acorr_ljungbox 
+from statsmodels.graphics.tsaplots import plot_acf 
+from statsmodels.graphics.tsaplots import plot_pacf 
 from scipy.signal import detrend,butter,sosfilt,sosfiltfilt,sosfreqz,welch,\
     lombscargle,periodogram
 import sys

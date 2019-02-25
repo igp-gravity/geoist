@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<NodeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Arthor>bushyao</Arthor>
+  <HID>0025_38B2_81BD_8A67.</HID>
+  <SQLiteIO>
+    <DbFullName>Tad1b2b7975fa451dad154a5f3f75db16.bcdb</DbFullName>
+    <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
+    <DmsFullName>C:\Applications\Datist\BinX\Plugin\TsTools_zhangbei\NodeDemos\main_TsTools.dms</DmsFullName>
+  </SQLiteIO>
+  <FieldFormats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Integer</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:#.##}</DisplayFormatEx>
+      <DecimalPlaces>2</DecimalPlaces>
+      <DataType>Real</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Text</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Boolean</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:G}</DisplayFormatEx>
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>DateTime</DataType>
+      <Visible>true</Visible>
+    </Formats>
+  </FieldFormats>
+  <Title>Stream</Title>
+  <Subject>2018/12/17 10:52:43</Subject>
+  <Arthor2>DESKTOP-1OR86JK</Arthor2>
+  <Manager />
+  <Company>DSS</Company>
+  <Category />
+  <Description />
+  <KeyWords />
+  <StreamID />
+  <ReportTitleName>样式一</ReportTitleName>
+  <ListReportTitles>PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8QXJyYXlPZlJlcG9ydFRpdGxlcyB4bWxuczp4c2Q9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hIiB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIj4NCiAgPFJlcG9ydFRpdGxlcz4NCiAgICA8SXRlbXM+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT4xPC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjI8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT40PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9LnsyfS57M30uezR9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjY8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9Lns2fSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuIA8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KICA8UmVwb3J0VGl0bGVzPg0KICAgIDxJdGVtcz4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjE8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjY8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX3jgIEgPC9UaXRsZUZvcm1hdD4NCiAgICAgIDwvUmVwb3J0VGl0bGVJdGVtPg0KICAgICAgPFJlcG9ydFRpdGxlSXRlbT4NCiAgICAgICAgPFRpdGxlR3JhZGU+MjwvVGl0bGVHcmFkZT4NCiAgICAgICAgPEJlZ2luSWQ+MDwvQmVnaW5JZD4NCiAgICAgICAgPFN0eWxlSWQ+NjwvU3R5bGVJZD4NCiAgICAgICAgPFRpdGxlRm9ybWF0Pih7Mn0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57M30uIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjQ8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57NH0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD4oezV9KSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT42PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD41PC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezZ9LiA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuow8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KPC9BcnJheU9mUmVwb3J0VGl0bGVzPg==</ListReportTitles>
+  <AttachFiles />
+  <Price>0</Price>
+  <PrivilegeType>公开</PrivilegeType>
+  <Parameters>
+    <StreamParameter>
+      <Name>台站</Name>
+      <DataType>Text</DataType>
+      <ShowInUI>false</ShowInUI>
+      <ParaValue xsi:type="xsd:string">50014_1_2323</ParaValue>
+      <ParagramEditor>TextBox</ParagramEditor>
+      <RunID>0</RunID>
+      <NodeGuids>
+        <guid>73a0d2d9-cf5e-4cfa-9d70-260cbf0d18aa</guid>
+        <guid>512a280d-37f6-47a0-a9df-dab5120c7006</guid>
+      </NodeGuids>
+    </StreamParameter>
+    <StreamParameter>
+      <Name>台站集合</Name>
+      <DataType>Text</DataType>
+      <ShowInUI>false</ShowInUI>
+      <ParaValue xsi:type="xsd:string">50002_1_2312;50014_1_2323</ParaValue>
+      <ParagramEditor>TextBox</ParagramEditor>
+      <RunID>0</RunID>
+      <NodeGuids>
+        <guid>36e6ef44-04c4-467b-8546-65e9094663c0</guid>
+        <guid>57017d78-8394-412b-9e34-c62f1cac2f17</guid>
+      </NodeGuids>
+    </StreamParameter>
+  </Parameters>
+  <Items>
+    <NodeBase xsi:type="NodeTXTEx">
+      <Guid>c01addf2-9571-49bb-9d47-2872cae77b0a</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>65</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TXT+</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>true</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FileName />
+      <ReadMode>Fixed</ReadMode>
+      <Filebody>false</Filebody>
+      <SplitterDelimited> </SplitterDelimited>
+      <SplitterFixed>10,20,33</SplitterFixed>
+      <HasHeader>false</HasHeader>
+      <EncodingSave>Default</EncodingSave>
+      <RemoveRept>false</RemoveRept>
+      <EnclosedInQuotes>false</EnclosedInQuotes>
+      <ReadOnlyFristRows>false</ReadOnlyFristRows>
+      <OnlyFristRows>10000</OnlyFristRows>
+      <ReadNullRow>false</ReadNullRow>
+      <FolderFiles>
+        <IsFolder>true</IsFolder>
+        <FullName>$system$\Plugin\GraDespike_zhangbei\Ts示例数据</FullName>
+      </FolderFiles>
+      <AllExt>true</AllExt>
+      <Ext>txt;csv;json;htm;html;xml</Ext>
+      <ExportFileName>true</ExportFileName>
+      <FullFileName>true</FullFileName>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>列0</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>time</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>列1</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>列1</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>列2</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>origin_data</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <Exts>
+        <string>.csv</string>
+        <string>.txt</string>
+        <string>.json</string>
+        <string>.htm</string>
+        <string>.html</string>
+        <string>.xml</string>
+      </Exts>
+    </NodeBase>
+    <NodeBase xsi:type="NodeDerive">
+      <Guid>a0aaf18b-946d-47de-97c5-3545076ff123</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>163.88888888888889</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>台站</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>c01addf2-9571-49bb-9d47-2872cae77b0a</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldName>台站</FieldName>
+      <FieldMode>Formula</FieldMode>
+      <FieldDataType>Text</FieldDataType>
+      <FormulaExpression>GetFileNameWithoutExtension( FileName )</FormulaExpression>
+      <ConditionIf />
+      <ConditionTrue />
+      <ConditionFalse />
+      <MutliOr>false</MutliOr>
+      <AppendNullRow>true</AppendNullRow>
+      <MutliDefaultValue>null</MutliDefaultValue>
+      <MutliCondtitions />
+      <MutliCondtitionIsDateTime>false</MutliCondtitionIsDateTime>
+    </NodeBase>
+    <NodeBase xsi:type="NodeStreamCollection">
+      <Guid>a3ac0bfb-0175-4f6e-b356-51764c39ccc7</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>658.33333333333337</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>文件收集器</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>3303b796-a38f-4078-87d2-7e552e6a7d6e</guid>
+        <guid>b319d587-39e4-4299-8751-02c745dd0778</guid>
+        <guid>8fb8f00d-29a1-44bb-9c49-d09393931805</guid>
+      </PriorNodeGuid>
+      <CacheIt>true</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <InputNodes />
+      <NameAsBefore>false</NameAsBefore>
+      <ByFieldMode>true</ByFieldMode>
+      <FieldNameMode>OnlyFieldName</FieldNameMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeHtmlReport">
+      <Guid>73a0d2d9-cf5e-4cfa-9d70-260cbf0d18aa</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>757.22222222222229</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title>$台站</Title>
+      <Name>浏览报告</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>a3ac0bfb-0175-4f6e-b356-51764c39ccc7</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ImageMaxWidth>1100</ImageMaxWidth>
+      <PageWidth>1100</PageWidth>
+      <MarkDownText />
+      <ReportMode>Default</ReportMode>
+      <HeadScript />
+      <BodyScript />
+      <FootScript />
+      <HeadHtml />
+      <FootHtml />
+      <HasBodyScript>false</HasBodyScript>
+      <HasHeadScript>false</HasHeadScript>
+      <HasFootScript>false</HasFootScript>
+      <HasHeadHtml>false</HasHeadHtml>
+      <HasFootHtml>false</HasFootHtml>
+      <UseWebFormula>false</UseWebFormula>
+      <HasReportTitle>false</HasReportTitle>
+      <ReportTitle />
+      <NameColumnType>None</NameColumnType>
+      <HasImage>true</HasImage>
+      <HasDescription>true</HasDescription>
+      <ExportTitleInfo>false</ExportTitleInfo>
+      <ExportTitleFieldName>Name</ExportTitleFieldName>
+      <TitleGrade>1</TitleGrade>
+      <ExportStreamFormat>HTML_TAG</ExportStreamFormat>
+      <UseFormula>false</UseFormula>
+      <ExportTitle>false</ExportTitle>
+      <IsTempletefile>false</IsTempletefile>
+      <Templetefile />
+      <Templete />
+      <AutoExpendTable>true</AutoExpendTable>
+      <AcceptEnter>true</AcceptEnter>
+    </NodeBase>
+    <NodeBase xsi:type="NodeParameter">
+      <Guid>41b960f7-f731-4700-8252-14af3e777c18</Guid>
+      <CenterY>152.5</CenterY>
+      <CenterX>415</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>更新变量</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>84d081a4-eb3b-4f9e-bf51-a15e26dd60e8</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <IsNew>true</IsNew>
+      <TemplateFields>
+        <FormatReportTemplateField>
+          <TemplateFieldName>台站集合</TemplateFieldName>
+          <NodeFieldName>台站</NodeFieldName>
+        </FormatReportTemplateField>
+      </TemplateFields>
+      <Paraments>
+        <FormatReportTemplateField>
+          <TemplateFieldName>台站集合</TemplateFieldName>
+          <NodeFieldName>台站</NodeFieldName>
+        </FormatReportTemplateField>
+      </Paraments>
+      <RunItOnEval>true</RunItOnEval>
+      <IsMultiMode>true</IsMultiMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeStreamCollection">
+      <Guid>57017d78-8394-412b-9e34-c62f1cac2f17</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>856.1111111111112</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title>文件收集器#1</Title>
+      <Name>文件收集器</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>73a0d2d9-cf5e-4cfa-9d70-260cbf0d18aa</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName>台站</BatchEvalParameterName>
+      <BatchEvalParameterValues>$台站集合</BatchEvalParameterValues>
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <InputNodes>
+        <SCInputNode>
+          <Text />
+          <gid>73a0d2d9-cf5e-4cfa-9d70-260cbf0d18aa</gid>
+          <Text2Stream>false</Text2Stream>
+        </SCInputNode>
+      </InputNodes>
+      <NameAsBefore>false</NameAsBefore>
+      <ByFieldMode>true</ByFieldMode>
+      <FieldNameMode>OnlyFieldName</FieldNameMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeHtmlReport">
+      <Guid>cac7b8ad-f62a-4603-bed1-8f59d009ef1c</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>955.00000000000011</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title>浏览报告#1</Title>
+      <Name>浏览报告</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>57017d78-8394-412b-9e34-c62f1cac2f17</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ImageMaxWidth>1100</ImageMaxWidth>
+      <PageWidth>1100</PageWidth>
+      <MarkDownText />
+      <ReportMode>Default</ReportMode>
+      <HeadScript />
+      <BodyScript />
+      <FootScript />
+      <HeadHtml />
+      <FootHtml />
+      <HasBodyScript>false</HasBodyScript>
+      <HasHeadScript>false</HasHeadScript>
+      <HasFootScript>false</HasFootScript>
+      <HasHeadHtml>false</HasHeadHtml>
+      <HasFootHtml>false</HasFootHtml>
+      <UseWebFormula>false</UseWebFormula>
+      <HasReportTitle>false</HasReportTitle>
+      <ReportTitle>报告</ReportTitle>
+      <NameColumnType>Title</NameColumnType>
+      <HasImage>true</HasImage>
+      <HasDescription>true</HasDescription>
+      <ExportTitleInfo>false</ExportTitleInfo>
+      <ExportTitleFieldName>Name</ExportTitleFieldName>
+      <TitleGrade>1</TitleGrade>
+      <ExportStreamFormat>HTML_TAG</ExportStreamFormat>
+      <UseFormula>false</UseFormula>
+      <ExportTitle>false</ExportTitle>
+      <IsTempletefile>false</IsTempletefile>
+      <Templetefile />
+      <Templete />
+      <AutoExpendTable>true</AutoExpendTable>
+      <AcceptEnter>true</AcceptEnter>
+    </NodeBase>
+    <NodeBase xsi:type="NodeSample">
+      <Guid>84d081a4-eb3b-4f9e-bf51-a15e26dd60e8</Guid>
+      <CenterY>152.5</CenterY>
+      <CenterX>338.88888888888891</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>定量筛选</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>6557da50-8a6e-4d5e-91f5-075156b03d8f</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <MaxRowCount>2</MaxRowCount>
+      <RandomMode>false</RandomMode>
+      <AppendNullRows>false</AppendNullRows>
+    </NodeBase>
+    <NodeBase xsi:type="NodeDistinct">
+      <Guid>6557da50-8a6e-4d5e-91f5-075156b03d8f</Guid>
+      <CenterY>152.5</CenterY>
+      <CenterX>262.77777777777777</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>去重</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>83c05a66-e3df-4a0c-993b-0f1c063f72a1</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <KeyFields>
+        <string>台站</string>
+      </KeyFields>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>83c05a66-e3df-4a0c-993b-0f1c063f72a1</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>262.77777777777777</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>a0aaf18b-946d-47de-97c5-3545076ff123</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <FieldFilters />
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeSelect">
+      <Guid>512a280d-37f6-47a0-a9df-dab5120c7006</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>361.66666666666663</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>筛选</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>83c05a66-e3df-4a0c-993b-0f1c063f72a1</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <IsIncluded>true</IsIncluded>
+      <FilterExpression>台站=$台站</FilterExpression>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>3303b796-a38f-4078-87d2-7e552e6a7d6e</Guid>
+      <CenterY>422.5</CenterY>
+      <CenterX>560</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>Ts评价</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>b319d587-39e4-4299-8751-02c745dd0778</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\WUWU\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"windowsize":"50"},"allfields":true,"names":{"windowsize":"50"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>b319d587-39e4-4299-8751-02c745dd0778</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>time</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>residual</PriorFieldName>
+              <FieldName>despiked</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>TsADF_zhangbei</PluginPath>
+      <Author>zhangbei</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_TsADF.html</UiFileName>
+      <ScriptFileName>main_TsADF.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon_ADF.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>false</ExportTable>
+      <HasViewer>true</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>4b93f1c5-5330-432e-9342-df81144fc322</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>460.55555555555554</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>Ts前处理</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>512a280d-37f6-47a0-a9df-dab5120c7006</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\WUWU\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"Threshold":"100"},"allfields":true,"names":{"Threshold":"100"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>512a280d-37f6-47a0-a9df-dab5120c7006</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>time</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>origin_data</PriorFieldName>
+              <FieldName>origin_data</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>GraDespike_zhangbei</PluginPath>
+      <Author>zhangbei</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_GraDespike.html</UiFileName>
+      <ScriptFileName>main_GraDespike.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon_dispike.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>true</ExportTable>
+      <HasViewer>false</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>b319d587-39e4-4299-8751-02c745dd0778</Guid>
+      <CenterY>282.5</CenterY>
+      <CenterX>560</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>Ts数据分析</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>4b93f1c5-5330-432e-9342-df81144fc322</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\WUWU\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"Period":"365"},"allfields":true,"names":{"Period":"365"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>4b93f1c5-5330-432e-9342-df81144fc322</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>time</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>despiked</PriorFieldName>
+              <FieldName>origin_data</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>TsSeason_zhangbei</PluginPath>
+      <Author>zhangbei</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_TsSeason.html</UiFileName>
+      <ScriptFileName>main_TsSeason.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon_season.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>true</ExportTable>
+      <HasViewer>false</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodePythonPlugin">
+      <Guid>8fb8f00d-29a1-44bb-9c49-d09393931805</Guid>
+      <CenterY>187.5</CenterY>
+      <CenterX>559.44444444444446</CenterX>
+      <Description />
+      <ToolTip />
+      <KeyWords />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>Ts数据处理</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>4b93f1c5-5330-432e-9342-df81144fc322</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <WorkPath>C:\Users\WUWU\AppData\Local\Temp\</WorkPath>
+      <BatScriptX />
+      <DataField />
+      <FileNameField />
+      <DataDataType />
+      <OutPutFileNames />
+      <RemoveOldOutPut>true</RemoveOldOutPut>
+      <IsFixedMode>true</IsFixedMode>
+      <SplitterDelimited>,</SplitterDelimited>
+      <EncodingSave>Default</EncodingSave>
+      <OutputMessage>false</OutputMessage>
+      <OutputERRORMessage>true</OutputERRORMessage>
+      <TemplateFields />
+      <NodeParameters>{"pars":{"Tools":"一阶差分","Period":"365"},"allfields":true,"names":{"Tools":"一阶差分","Period":"365"}}</NodeParameters>
+      <InputItems>
+        <PNodeItemSave>
+          <NodeName>gradata</NodeName>
+          <NodeId>4b93f1c5-5330-432e-9342-df81144fc322</NodeId>
+          <FieldPairs>
+            <FieldNamePair>
+              <PriorFieldName>time</PriorFieldName>
+              <FieldName>time</FieldName>
+            </FieldNamePair>
+            <FieldNamePair>
+              <PriorFieldName>origin_data</PriorFieldName>
+              <FieldName>origin_data</FieldName>
+            </FieldNamePair>
+          </FieldPairs>
+        </PNodeItemSave>
+      </InputItems>
+      <PluginPath>TsTools_zhangbei</PluginPath>
+      <Author>zhangbei</Author>
+      <PNodeFieldName>inputTable.txt</PNodeFieldName>
+      <UiFileName>index_TsTools.html</UiFileName>
+      <ScriptFileName>main_TsTools.py</ScriptFileName>
+      <Isbase64>false</Isbase64>
+      <IconFileName>icon_tools.png</IconFileName>
+      <FieldsFileName>outputFields.txt</FieldsFileName>
+      <ExportTable>false</ExportTable>
+      <HasViewer>true</HasViewer>
+    </NodeBase>
+    <NodeBase xsi:type="NodeComment">
+      <Guid>2c325b28-d026-4c34-a1a6-36e356fdeec2</Guid>
+      <CenterY>153.57142857142858</CenterY>
+      <CenterX>517.38945578231289</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>文本框</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InterActiveFieldName />
+      <InterActiveGroupID />
+      <CanOnlyOneViewer>false</CanOnlyOneViewer>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <NodeOutput>DB</NodeOutput>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <RenderTransformOrigin>
+        <X>1</X>
+        <Y>0.5</Y>
+      </RenderTransformOrigin>
+      <Width>88.735772357724386</Width>
+      <Height>92.95121951219636</Height>
+      <IsLine>false</IsLine>
+      <EndPointX>0</EndPointX>
+      <EndPointY>0</EndPointY>
+      <Points>0,10 10,20 5,26 15,33 6 ,40 20,30 30,10 25,0 20</Points>
+      <HasStartArrow>false</HasStartArrow>
+      <HasEndArrow>false</HasEndArrow>
+      <Rotate>0</Rotate>
+      <Parameter>0.7</Parameter>
+      <Parameter2>0</Parameter2>
+      <CmShapeType>矩形</CmShapeType>
+      <FontFamilyName>宋体</FontFamilyName>
+      <IsBold>false</IsBold>
+      <IsItalic>false</IsItalic>
+      <FontSize>10</FontSize>
+      <ForeColor>
+        <A>255</A>
+        <R>0</R>
+        <G>0</G>
+        <B>0</B>
+        <ScA>1</ScA>
+        <ScR>0</ScR>
+        <ScG>0</ScG>
+        <ScB>0</ScB>
+      </ForeColor>
+      <RenderID>1</RenderID>
+      <BackgroundColor>
+        <A>255</A>
+        <R>188</R>
+        <G>211</G>
+        <B>255</B>
+        <ScA>1</ScA>
+        <ScR>0.5028865</ScR>
+        <ScG>0.651405632</ScG>
+        <ScB>1</ScB>
+      </BackgroundColor>
+      <LineColor>
+        <A>255</A>
+        <R>99</R>
+        <G>141</G>
+        <B>189</B>
+        <ScA>1</ScA>
+        <ScR>0.124771819</ScR>
+        <ScG>0.266355634</ScG>
+        <ScB>0.50888133</ScB>
+      </LineColor>
+      <LineThickness>0.75</LineThickness>
+      <LineDashArray>0</LineDashArray>
+      <HAlignment>Left</HAlignment>
+      <VAlignment>Top</VAlignment>
+      <NodeSelected>false</NodeSelected>
+      <ZIndex>-1</ZIndex>
+      <Url />
+      <IsShadow>false</IsShadow>
+      <IsLocked>false</IsLocked>
+      <Exts>
+        <string>.png</string>
+        <string>.jpg</string>
+      </Exts>
+    </NodeBase>
+  </Items>
+  <ParNames>台站;台站集合</ParNames>
+  <EvalNodeNames>50014_1_2323;更新变量;浏览报告#1;Ts评价;Ts前处理;Ts数据分析;Ts数据处理</EvalNodeNames>
+  <OffsetX>0</OffsetX>
+  <OffsetY>96</OffsetY>
+  <Scale>0.72930232558139529</Scale>
+</NodeCollection>
