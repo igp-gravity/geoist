@@ -4,4 +4,4 @@ include geoist/pfm/*.COF
 include geoist/pfm/data/*
 include geoist/snoopy/data/*
 include geoist/dataset/*
-include geoist/*.txt
+recursive-include geoist/ *.txt

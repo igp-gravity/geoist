@@ -113,7 +113,7 @@ class SquareMesh(object):
         self.i = 0
         return self
 
-    def next(self):
+    def __next__(self):
         if self.i >= self.size:
             raise StopIteration
         square = self.__getitem__(self.i)
@@ -273,7 +273,7 @@ class PointGrid(object):
         self.i = 0
         return self
 
-    def next(self):
+    def __next__(self):
         if self.i >= self.size:
             raise StopIteration
         sphere = self.__getitem__(self.i)
@@ -457,7 +457,7 @@ class PrismRelief(object):
         props = dict([p, self.props[p][index]] for p in self.props)
         return Prism(x1, x2, y1, y2, z1, z2, props=props)
 
-    def next(self):
+    def __next__(self):
         if self.i >= self.size:
             raise StopIteration
         prism = self.__getitem__(self.i)
