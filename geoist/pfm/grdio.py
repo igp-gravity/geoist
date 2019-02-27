@@ -216,6 +216,18 @@ class grddata(object):
         return (x, y, z)
 
 
+    def load_grd(self,fname,*args,**kwargs):
+        with open(fname,'rb') as f:
+            tmp = f.read(4)
+        if tmp == b'DSAA':
+            self._load_surfer_ascii(fname,*args,**kwargs)
+        elif tmp == b'DSBB':
+            self._load_surfer_dsbb(fname,*args,**kwargs)
+        elif tmp == b'ncol':
+            self.load_ascii(fname,*args,**kwargs)
+        else:
+            raise ValueError("Unrecognized grd format.")
+
     def load_surfer(self, fname, *args, **kwargs):
         """
         Read data from a Surfer grid file.
@@ -467,6 +479,41 @@ class grddata(object):
                 fno.write(str(tmp[j, i]) + " ")
 
         fno.close()
+
+    def load_ascii(self,fname,dtype='float64'):
+        """
+        Load Ascii file
+
+        Parameters
+        ----------
+        data : grid Data
+            dataset to export
+        """
+        with open(fname) as fno:
+            tmp = fno.readline().strip().split()
+            self.cols = int(tmp[1])
+            tmp = fno.readline().strip().split()
+            self.rows = int(tmp[1])
+            tmp = fno.readline().strip().split()
+            self.xmin = float(tmp[1])
+            tmp = fno.readline().strip().split()
+            self.ymin = float(tmp[1])
+            tmp = fno.readline().strip().split()
+            self.xdim = float(tmp[1])
+            tmp = fno.readline().strip().split()
+            self.nullvalue = float(tmp[1])
+            field = np.fromiter((float(s)
+                                 for line in fno
+                                 for s in line.strip().split()),
+                                dtype=dtype)
+
+        self.ydim = self.xdim
+        self.dmin = field.min()
+        self.dmax = field.max()
+        self.xmax = self.xmin + self.xdim*(self.rows-1)
+        self.ymax = self.ymin + self.ydim*(self.cols-1)
+        self.data = np.ma.masked_equal(field.reshape(self.cols,self.rows),
+                                       self.nullvalue)
 
 if __name__ == "__main__":
 
