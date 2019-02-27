@@ -341,6 +341,8 @@ class grddata(object):
 #                                                                  field.max())
             self.xmin = xmin
             self.ymin = ymin
+            self.xmax = xmax
+            self.ymax = ymax
             self.xdim = (xmax-xmin)/(nx-1)
             self.ydim = (ymax-ymin)/(ny-1)
             self.dmin = dmin
