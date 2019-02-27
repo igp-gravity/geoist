@@ -17,11 +17,12 @@
             <i-Col span="18">
                 <div>
                     <i-Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-                        <Form-Item label="窗口大小" prop="windowsize">
-                            <i-Input
-                                  v-model="formValidate.windowsize"
-                                  placeholder="请输入数据窗口大小"
-                            ></i-Input>
+                        <Form-Item label="目录" prop="Dataset">
+                                <Radio-Group v-model="formValidate.Dataset">
+                                        <Radio label="CN">中国大陆Mw震级（公元19-2016年1月3日）</Radio>
+                                        <Radio label="GEM">ISC-GEM全球Mw震级（1904年6月25日-2014年12月31日）</Radio>
+										<Radio label="XC">西昌地震精定位Ml震级（2013年1月13日-2019年1月28日）</Radio>
+                                </Radio-Group>
                         </Form-Item>
                     </i-Form>              
                 </div>               
@@ -36,13 +37,13 @@
                 return {
                           
                     formValidate: {
-                        windowsize: null,                        
+                        Dataset:'CN',   //设置单选框默认选中项，为label值                    
                     },
 
                     ruleValidate: {
-                           windowsize: [{
+                           Methods: [{
                             required: true,
-                            message: '窗口带下不能为空',
+                            message: '请选择下载目录',
                             trigger: 'blur'
                         }],
                  }
@@ -58,13 +59,13 @@
             var anObject = new Object();
 
             anObject.pars = new Object();
-            anObject.pars.windowsize = vue.$data.formValidate.windowsize;
+            anObject.pars.Dataset = vue.$data.formValidate.Dataset;
 
 			
-            anObject.allfields = true;
+            //anObject.allfields = true;
 
-            anObject.names = new Object();
-            anObject.names.windowsize = vue.$data.formValidate.windowsize;
+            //anObject.names = new Object();
+            //anObject.names.Methods = vue.$data.formValidate.Methods;
  
 		
             return JSON.stringify(anObject);
@@ -77,7 +78,7 @@
                 var obj = JSON.parse(txt);
 
                 if (obj !== null) {
-                    vue.$data.formValidate.windowsize = obj.pars.windowsize;   
+                    vue.$data.formValidate.Dataset = obj.pars.Dataset;   
                 }
             }
         }

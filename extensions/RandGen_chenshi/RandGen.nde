@@ -1,0 +1,27 @@
+﻿{
+  "GroupName": "时间序列",
+  "Name": "信号生成",
+  "SystemToolTip": "生成随机时间序列数据（数据源）",
+  "Version": "1.2",
+  "Author": "陈石 at CEA",
+  "ScriptFile": "RandGen.py",
+  "OutputFields": [ 
+    {
+      "Name": "id",
+      "Type": "string"
+    },  
+    {
+      "Name": "chan1",
+      "Type": "real"
+    },
+    {
+      "Name": "chan2",
+      "Type": "real"
+    },	
+    {
+      "Name": "chan3",
+      "Type": "real"
+    }
+  ],
+  "ResultFile":"result.json"
+}

@@ -7,38 +7,35 @@
   "ScriptFile": "TsEDA.py",
   "InputTables": [
     {
-      "Name": "tsdata",
-      "Title": "原始曲线数据",
+      "Name": "inputdata",
+      "Title": "分析数据表",
       "Fields": [
         {
-          "Name": "time",
-          "Title": "时间",
-          "Type": "datetime"
+          "Name": "chan1",
+          "Title": "数据1",
+          "Type": "real"
         },
         {
-          "Name": "origin_data",
-          "Title": "原数据",
+          "Name": "chan2",
+          "Title": "数据2",
           "Type": "real"
-        }
+        },
+        {
+          "Name": "chan3",
+          "Title": "数据3",
+          "Type": "real"
+        },
+        {
+          "Name": "chan4",
+          "Title": "数据4",
+          "Type": "real"
+        },
+        {
+          "Name": "type",
+          "Title": "分类",
+          "Type": "string"
+        }		
       ]
-    }
-  ],
-  "OutputFields": [
-    {
-      "Name": "time",
-      "Type": "string"
-    },  
-    {
-      "Name": "origin_data",
-      "Type": "string"
-    },
-    {
-      "Name": "avg_data",
-      "Type": "string"
-    },	
-    {
-      "Name": "res_data",
-      "Type": "string"
     }
   ],
   "ResultFile":"result.json"

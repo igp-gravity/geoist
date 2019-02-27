@@ -1,0 +1,3 @@
+﻿table:gradata,原始曲线数据
+time,时间,string
+despiked,原数据,string

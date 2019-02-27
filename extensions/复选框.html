@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <link rel="stylesheet" type="text/css" href=".\js\iview.css">
+    <script type="text/javascript" src=".\js\vue.min.js"></script>
+    <script type="text/javascript" src=".\js\iview.min.js"></script>
+    <script type="text/javascript" src=".\js\jquery.js"></script>
+
+</head>
+<body>
+
+    <div id="app">
+	
+        <i-Row >   
+         
+            <i-Col span="24">
+                <div>
+				
+                    <i-Form ref="formValidate" :model="formValidate"   >
+					<!-- <Card  style="height :60px" >
+					
+                                <i-Col span="12">
+                                        <Form-Item label=" 时间(s) " >
+												<Tooltip content="填写时间阈值！" placement="top-start">
+                                                <Input-number v-model="formValidate.name1" placeholder="时间阈值"></Input-number>
+                                       </Form-Item>
+                                </i-Col>
+                                <i-Col span="12">
+                                        <Form-Item label="震中距(km)"  >
+										        <Tooltip content="填写震中距阈值！" placement="top-start">
+                                                <Input-number v-model="formValidate.name2" placeholder="震中距(km)"  > </Input-number>
+                                        </Form-Item>
+                                </i-Col>
+					</Card> -->
+					<Card  style="height :160px">
+				    <p slot="title">
+						
+						Classic film
+					</p>
+							   
+								<i-Col span="8">
+										<Form-Item  >    																
+												<Checkbox v-model="formValidate.name3">目录基础信息</Checkbox>  
+										</Form-Item>
+								 </i-Col>  
+							  
+							   
+							   <i-Col span="8">
+                                <Form-Item  >										
+                                   <Checkbox v-model="formValidate.name4">地震活动</Checkbox>                      
+                                </Form-Item>
+                                </i-Col>
+							 
+                           
+                             <i-Col span="8">
+                                <Form-Item >						     				
+                                    <Checkbox v-model="formValidate.name5">震源深度分布</Checkbox>  
+                                </Form-Item>
+                            </i-Col>
+							<i-Col span="8">
+                                <Form-Item >							    	
+                                   <Checkbox v-model="formValidate.name6">震级统计</Checkbox>                     
+                                </Form-Item>
+                              
+                            </i-Col> 
+                            <i-Col span="8">
+                                <Form-Item > 																	
+                                     <Checkbox v-model="formValidate.name7">地震频次统计</Checkbox>  
+                                </Form-Item>
+                            </i-Col>
+                           
+						      <i-Col span="8">
+                                 <Form-Item  >     																		
+                                    <Checkbox v-model="formValidate.name8">重复事件</Checkbox>
+                                </Form-Item>
+                            </i-Col>
+                              
+                            <i-Col span="8">
+                               <Form-Item >								
+                                    <Checkbox v-model="formValidate.name9">累积地震矩释放</Checkbox> 
+                                </Form-Item>
+                            </i-Col>  
+							<i-Col span="8">
+                                 <Form-Item >           																
+                                    <Checkbox v-model="formValidate.name10">筛选目录</Checkbox>
+                                </Form-Item>
+                            </i-Col>
+                    
+                        
+                            <i-Col span="8">
+                               <Form-Item >     																  
+                                    <Checkbox v-model="formValidate.name11">地震类型统计</Checkbox>
+                                </Form-Item>
+                            </i-Col>
+			
+                              </Card>                       
+                    </i-Form>
+                </div>
+            </i-Col>           
+        </i-Row>
+
+
+    </div>
+
+    <script>
+        var Main = {
+            data() {
+                return {
+                   
+                    formValidate: {
+                        name1: 2,                        
+                        name2: 15,
+						name3: true,
+						name4: true,                
+                        name5: true,	
+                        name6: true,	
+						name7: true,
+						name8: true,
+						name9: true,
+						name10: true,
+						name11: true,
+                    },
+
+                    
+                }
+            },
+
+        }
+
+        var Component = Vue.extend(Main)
+        var vue = new Component().$mount('#app')
+
+        ////保存数据到节点中
+        function GetData() {
+
+            var anObject = new Object();
+            anObject.pars = new Object();
+		    anObject.pars.name1 = vue.$data.formValidate.name1;
+			anObject.pars.name2 = vue.$data.formValidate.name2;
+		    anObject.pars.name3 = vue.$data.formValidate.name3;
+			anObject.pars.name4 = vue.$data.formValidate.name4;
+		    anObject.pars.name5 = vue.$data.formValidate.name5;
+			anObject.pars.name6 = vue.$data.formValidate.name6;
+			
+			anObject.pars.name7 = vue.$data.formValidate.name7;
+		    anObject.pars.name8 = vue.$data.formValidate.name8;
+			anObject.pars.name9 = vue.$data.formValidate.name9;
+		    anObject.pars.name10 = vue.$data.formValidate.name10;
+			anObject.pars.name11 = vue.$data.formValidate.name11;
+            // anObject.allfields = true;            
+            return JSON.stringify(anObject);
+        }
+
+        //SetData由节点编辑器在窗口打开时，自动执行。
+        function SetData(txt, fieldnames) {
+
+            
+            //赋值
+            if (txt !== null && txt !== '') {
+                var obj = JSON.parse(txt);
+
+                if (obj !== null) {
+					vue.$data.formValidate.name1 = obj.pars.name1 ; 
+					vue.$data.formValidate.name2 = obj.pars.name2 ;   
+					vue.$data.formValidate.name3 = obj.pars.name3 ;    
+					vue.$data.formValidate.name4 = obj.pars.name4 ;   
+					vue.$data.formValidate.name5 = obj.pars.name5 ;       					
+					vue.$data.formValidate.name6 = obj.pars.name6 ; 
+					vue.$data.formValidate.name7 = obj.pars.name7 ;   
+					vue.$data.formValidate.name8 = obj.pars.name8 ; 
+					vue.$data.formValidate.name9 = obj.pars.name9 ;   
+					vue.$data.formValidate.name10 = obj.pars.name10 ;    
+					vue.$data.formValidate.name11 = obj.pars.name11 ;   
+                }
+            }
+        }
+
+
+        ////
+        //vue.$data.formValidate.name1 = 'London'
+        //console.log(vue.$data.formValidate.name1)
+    </script>
+
+    <script>
+    </script>
+
+</body>
+
+</html>

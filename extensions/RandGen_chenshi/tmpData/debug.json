@@ -1,0 +1,12 @@
+﻿{
+  "pars": {
+    "Chan1": "正态分布",
+    "Chan2": "泊松分布",
+    "Chan3": "0-1分布",
+    "windowsize": 100
+  },
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "Url"
+}

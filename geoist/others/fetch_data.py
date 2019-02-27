@@ -15,7 +15,7 @@ Drepo = datarepo.create(
 	registry={"gradata.csv": "7fa07c6dd5cd56f09d9f608efd45cb2c361da38217b0725eadb1bcac39006eb1"}
 )
 
-Drepo.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
+#Drepo.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
 
 Drepo1 = datarepo.create(
     path=["~", ".catalog", "data"],

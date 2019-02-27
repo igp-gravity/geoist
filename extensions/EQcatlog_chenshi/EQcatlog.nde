@@ -7,47 +7,47 @@
   "ScriptFile": "EQcatlog.py",
   "OutputFields": [
     {
-      "Name": "Year",
+      "Name": "id",
       "Type": "string"
     },  
     {
-      "Name": "Month",
+      "Name": "year",
+      "Type": "string"
+    },  
+    {
+      "Name": "month",
       "Type": "string"
     },
     {
-      "Name": "Day",
+      "Name": "day",
       "Type": "string"
     },	
     {
-      "Name": "Hour",
+      "Name": "hour",
       "Type": "string"
     },
     {
-      "Name": "Min",
+      "Name": "min",
       "Type": "string"
     },
     {
-      "Name": "Sec",
+      "Name": "sec",
       "Type": "string"
     },
     {
-      "Name": "Lati",
+      "Name": "lat",
       "Type": "string"
     },
     {
-      "Name": "Long",
+      "Name": "lon",
       "Type": "string"
     },
     {
-      "Name": "Mag",
+      "Name": "mag",
       "Type": "string"
     },
     {
-      "Name": "Depth",
-      "Type": "string"
-    },
-    {
-      "Name": "ID",
+      "Name": "depth",
       "Type": "string"
     }
   ],

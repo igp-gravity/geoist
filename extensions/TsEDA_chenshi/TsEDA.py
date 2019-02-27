@@ -13,98 +13,78 @@ def run_TsEDA(data):
     #import shutil  
     #shutil.copy(argfile,  'debug.JSON') #仅在调试时候用    
     # part 2 ----------读取前节点界面参数---------- #
-    windowsize_str = data['pars']['windowsize'] 
-    print('debug: windowsize//'+str(windowsize_str))
-    window_size = int(windowsize_str) 
-    na_values = None
-    nan_value = 0
-    date_format = None
-    center = False
-    orig_file = data['tsdata'] #pathlib.Path(data_path,'gradata.txt')
-    print('debug: orig_file//'+str(orig_file))
+    Method = data['pars']['method'] 
+    print('debug: EDA分析方案//'+str(Method))
+    orig_file = data['inputdata']
+    print('debug: 分析数据文件//'+str(orig_file))    
     #####--------------End PART TWO--------------####
-    
     ## part 3 ----------设置程序运行参数---------- #
-    Res_flag = data['GetResult'] #Print,JSON
+    #Res_flag = data['GetResult'] #Print,JSON
     Mod_flag = data['DataMode']  #FileList,Url,DataTable
     # parameters for saving data
     tmppath = pathlib.Path(__file__).parent
     path = pathlib.Path(tmppath,'tmpData')
     if not path.exists():
         path.mkdir()    
-    res_file = pathlib.Path(tmppath,'tmpData','tsdata.csv')
-    png_file = pathlib.Path(tmppath,'tmpData','tsdata.png')
+    #csv_file = pathlib.Path(tmppath,'tmpData','tsdata.csv')
     png_file1 = pathlib.Path(tmppath,'tmpData','tsdata1.png')
-    html_file = pathlib.Path(tmppath,'tmpData','tsdata.html')
+    png_file2 = pathlib.Path(tmppath,'tmpData','tsdata2.png')
+    png_file3 = pathlib.Path(tmppath,'tmpData','tsdata3.png')
+    #html_file = pathlib.Path(tmppath,'tmpData','catalog.html')
     #####--------------End PART THREE--------------####
-    #
-    ## part 4 ----------专业逻辑实现部分---------- #
-    # data processing
-    import geoist.snoopy.tsa as tsa
-    data=pd.read_csv(pathlib.Path(orig_file),parse_dates=True,delimiter=";",index_col=[0],na_values=na_values)
-    data['origin_data'] = data[data.columns[0]].interpolate()  
-    res = tsa.adfuller(data['origin_data'].values)
-    res1 = tsa.acorr_ljungbox(data['origin_data'] ,lags = 1)
-    with open(pathlib.Path(res_file),'w') as f:
-        print('ADF and White noise tests for time series signal: {}'.format('original data'),file=f)
-        tsa.print_adf(res,'original data',file=f)
-        print(' ',file=f)
-        print('White noise test for {}:'.format('original data'),file=f)
-        print(' ' * 2 + 'test statistic: {}'.format(res1[0]),file=f)
-        print(' ' * 2 + 'p-value: {}'.format(res1[1]),file=f)    
-    
-    tsa.plot_acf(data['origin_data']).savefig(str(png_file1),format='png') 
-    data['mean_data'] = data['origin_data'].rolling(window=window_size).mean()
-    data['std_data'] = data['origin_data'].rolling(window=window_size).std()
-    data.plot(figsize=(15,12),y=['origin_data','mean_data','std_data'])
 
-    gi.log.info('windowsize = ' + str(window_size))
-    gi.log.info('data length = ' + str(len(data['origin_data'])))
-    # output html
-    if Mod_flag == 'Url':
-        import bokeh.plotting as bp
-        from bokeh.palettes import Spectral4
-        from bokeh.models import ColumnDataSource    
-        p = bp.figure(title="The preliminary result by windowsize = "+str(window_size)
-                     , plot_width=535, plot_height=350, x_axis_type="datetime")
-        bp.output_file(html_file, mode = 'inline')
-        source = ColumnDataSource(data)
-        
-        for data, name, color in zip([source.column_names[1], source.column_names[2], source.column_names[3]], ["ORI", "mean", "std"], Spectral4):
-           p.line(source.column_names[0], data, source=source,color=color, alpha=0.8, legend=name)
-        p.xaxis.axis_label = 'Date'
-        p.yaxis.axis_label = 'Value'
-        p.legend.location = "top_left"
-        p.legend.click_policy="hide"	
-        bp.save(p)
-        print(str(html_file)) #输出网络地址
-        gi.log.info('output html finished')
-     #output static pic
-    if Mod_flag == 'FileList':
-        SMALL_SIZE = 12
-        MEDIUM_SIZE = 15
-        BIGGER_SIZE = 18
-        plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-        plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
-        plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-        plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('legend', fontsize=MEDIUM_SIZE,loc='upper left')    # legend fontsize
-        plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title        
-        ax = data.plot(figsize=(15,12),y=[data.columns[0],'mean_data','std_data'])
-        ax.set_xlabel('Date')
-        ax.set_ylabel('Value')
-        plt.grid()
-        plt.legend()
-        plt.title("The preliminary result by windowsize={}".format(window_size),loc='left')
-        plt.savefig(str(png_file),format='png') 
-        gi.log.info('output png file finished')
-        print(png_file) #输出一个图片
-    #####--------------End PART FOUR--------------####
-    #
-    ## part 5 ------------输出数据------------------ #
-    print(res_file) #输出数据表格文件zai 
-    #####--------------End PART FIVE--------------####
+    ## part 4 ----------专业逻辑实现部分---------- #
+    # data processing "正态分布;0-1分布;卡方分布;泊松分布;指数分布"
+    import seaborn as sns
+    #np.random.seed(20190801) #随机数可以预测
+    d=pd.read_csv(pathlib.Path(orig_file),delimiter=';')
+    SMALL_SIZE = 12
+    MEDIUM_SIZE = 15
+    BIGGER_SIZE = 18
+    plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=MEDIUM_SIZE,loc='upper left')    # legend fontsize
+    plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title        
+    Method = 'AN3'
+    if Mod_flag == 'FileList': 
+        if Method == 'AN1':
+            sns.pairplot(d)
+            #plt.title("The EDA result by method={}".format(Method),loc='left')
+            plt.savefig(str(png_file1),format='png')
+            plt.figure(figsize=(15,12))
+            sns.heatmap(d.corr(), annot=True, fmt=".2f")
+            plt.title("The Heatmap of correlation by method={}".format(Method),loc='left')           
+            plt.savefig(str(png_file1),format='png')  
+            print(png_file1)
+        elif Method == 'AN2':
+            #g = sns.JointGrid(x='chan1', y='chan2',data = d)
+            #g = g.plot(sns.regplot, sns.distplot)             
+            sns.jointplot(data = d, x='chan1', y='chan2', kind='reg', color='r' )        
+            plt.savefig(str(png_file1),format='png')
+            sns.jointplot(data = d, x='chan1', y='chan3', kind='reg', color='g' )
+            plt.savefig(str(png_file2),format='png')
+            sns.jointplot(data = d, x='chan1', y='chan4', kind='reg', color='b' )
+            #sns.distplot(d['chan2'].dropna())
+            #sns.distplot(d['chan3'].dropna())
+            #sns.distplot(d['chan4'].dropna())
+            plt.savefig(str(png_file3),format='png') 
+            print(png_file1)
+            print(png_file2)
+            print(png_file3)            
+        else:
+            fig, axes = plt.subplots(2, 2,figsize=(15, 12)) #, sharex=True)  #ax = axes[0]
+            sns.distplot(d['chan1'].dropna(), ax = axes[0, 0])
+            sns.distplot(d['chan2'].dropna(), ax = axes[0, 1])
+            sns.distplot(d['chan3'].dropna(), ax = axes[1, 0])
+            sns.distplot(d['chan4'].dropna(), ax = axes[1, 1])
+            sns.plt.savefig(str(png_file1),format='png')  
+            print(png_file1)
+        gi.log.info('output png file finished={}'.format(Method))
+         #输出一个图片
+    #gi.log.info('data length = ' + str(len(d)))
 
 if __name__ == '__main__':
     print('debug: starting//TsEDA.py by chenshi')    
@@ -115,5 +95,3 @@ if __name__ == '__main__':
         data = json.load(f)    
     run_TsEDA(data)  #业务实现
     print('debug: TsEDA is finished.')
-
-

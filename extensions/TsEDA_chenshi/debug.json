@@ -1,0 +1,10 @@
+﻿{
+  "pars": {
+    "method": "AN1"
+  },
+  "inputdata": "C:\\Users\\chens\\AppData\\Local\\Temp\\inputdata.txt",
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "FileList"
+}

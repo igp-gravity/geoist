@@ -1,0 +1,9 @@
+﻿{
+  "pars": {
+    "Dataset": "CN"
+  },
+  "OutputPath": "C:\\Users\\chens\\AppData\\Local\\Temp\\",
+  "ResultFile": "C:\\Users\\chens\\AppData\\Local\\Temp\\result.json",
+  "GetResult": "Print",
+  "DataMode": "Url"
+}

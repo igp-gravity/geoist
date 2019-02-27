@@ -60,7 +60,7 @@ x2,y2,z2 = Exp.GetHypocenter(Dbm)
 p = [(90.,20.),(90.,40.),(105.,40.),(105.,20.),(90.,20.)]
 P = Ct.Polygon()
 P.Load(p)
-  
+
 cfg = {'Bounds': [70., 15., 135., 55.],
        'FigSize': [8., 6.],
        'Background': ['none',[0.9,0.8,0.6],[0.5,0.8,1.]],

@@ -1,0 +1,45 @@
+﻿{
+  "GroupName": "重磁位场",
+  "Name": "网格处理",
+  "SystemToolTip": "数据源为grd文件全路径，包含文件名。",
+  "Version": "1.2",
+  "Author": "陈石 at CEA",
+  "ScriptFile": "GridProc.py",
+  "InputTables": [
+    {
+      "Name": "grid",
+      "Title": "栅格数据",
+      "Fields": [
+        {
+          "Name": "format",
+          "Title": "格式",
+          "Type": "string"
+        },
+        {
+          "Name": "data",
+          "Title": "数据",
+          "Type": "Blob"
+        }
+      ]
+    }
+  ],
+  "OutputFields": [
+    {
+      "Name": "time",
+      "Type": "string"
+    },  
+    {
+      "Name": "origin_data",
+      "Type": "string"
+    },
+    {
+      "Name": "avg_data",
+      "Type": "string"
+    },	
+    {
+      "Name": "res_data",
+      "Type": "string"
+    }
+  ],
+  "ResultFile":"result.json"
+}
