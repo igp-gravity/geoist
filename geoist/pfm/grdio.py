@@ -14,6 +14,7 @@ import struct
 import numpy as np
 import scipy.interpolate as interp
 from matplotlib import pyplot as plt
+import warnings
 
 def _check_area(area):
     """
@@ -25,7 +26,7 @@ def _check_area(area):
         "Invalid area dimensions {}, {}. x1 must be < x2.".format(x1, x2)
     assert y1 <= y2, \
         "Invalid area dimensions {}, {}. y1 must be < y2.".format(y1, y2)
-        
+
 def regular(area, shape, z=None):
     """
     Create a regular grid.
@@ -165,69 +166,143 @@ class grddata(object):
         self.gtr = (0.0, 1.0, 0.0, 0.0, -1.0)
         self.wkt = ''
         self.units = ''
-    
+
     def fill_nulls(self, method='nearest'):
         """
             Fill in the NaNs or masked values on interpolated points using nearest
-            neighbors.        
+            neighbors.
             method='nearest' or 'linear' or 'cubic'
         """
         if np.ma.is_masked(self.data):
             nans = self.data.mask
         else:
             nans = np.isnan(self.data)
-          
-        nx,ny = nans.shape    
+
+        nx,ny = nans.shape
         ns = nans.reshape(nx*ny)
         shape = (nx, ny)
         xmax = self.xmin + (self.cols-1)*self.xdim
         ymax = self.ymin + (self.rows-1)*self.ydim
         area = (self.xmin, xmax, self.ymin, ymax)
-        x, y = regular(area, shape)            
+        x, y = regular(area, shape)
         dtmp = self.data.copy() #数组copy，不改变源数组
         dtmp1 = dtmp.reshape(nx*ny)
         ns1 = (ns == False)
         dtmp1[ns] = interp.griddata((x[ns1], y[ns1]), dtmp1[ns1], (x[ns], y[ns]),
-                                    method).ravel()  
+                                    method).ravel()
         self.data0 = dtmp1.reshape(nx,ny)
-      
-    def grd2xyz(self, flag = True):     
+
+    def grd2xyz(self, flag = True):
         """
         Return x,y,z 1-D array data from 2-D grid array.
-    
+
         Parameters:
           flag  : True  -  Output Grid Grid
-                False -  Output Bak Grid Grid  
+                False -  Output Bak Grid Grid
         Returns:
           x,y,z 1-D array data
-        """        
-        nx,ny = self.data.shape 
+        """
+        nx,ny = self.data.shape
         xmax = self.xmin + (self.cols-1)*self.xdim
         ymax = self.ymin + (self.rows-1)*self.ydim
-        
+
         shape = (nx, ny)
         area = (self.xmin, xmax, self.ymin, ymax)
-        x, y = regular(area, shape)  
+        x, y = regular(area, shape)
         if flag:
           z = self.data.reshape(nx*ny)
         else:
           z = self.data0.reshape(nx*ny)
         return (x, y, z)
-    
-    def load_surfer(self, fname, dtype='float64'):
+
+
+    def load_surfer(self, fname, *args, **kwargs):
         """
-        Read data from a Surfer ASCII grid file.
-    
+        Read data from a Surfer grid file.
+
         Parameters:
-    
+
+        * fname : str
+            Name of the Surfer grid file
+        * dtype : numpy dtype object or string
+            The type of variable used for the data. Default is numpy.float64 for
+            ascii data and is '=f' for binary data. Use numpy.float32 if the
+            data are large and precision is not an issue.
+        * header_format : header format (excluding the leading 'DSBB') following
+            the convention of the struct module. Only used for binary data.
+
+        Returns:
+
+        """
+        with open(fname,'rb') as f:
+            tmp = f.read(4)
+        if tmp == b'DSAA':
+            self._load_surfer_ascii(fname,*args,**kwargs)
+        elif tmp == b'DSBB':
+            self._load_surfer_dsbb(fname,*args,**kwargs)
+        else:
+            raise ValueError("Unknown header info {}.".format(tmp)
+                            +"Only DSAA or DSBB could be recognized.")
+
+    def _load_surfer_dsbb(self,fname,dtype='=f',header_format='cccchhdddddd'):
+        """
+        Read data from a Surfer DSBB grid file.
+
+        Parameters:
+
         * fname : str
             Name of the Surfer grid file
         * dtype : numpy dtype object or string
             The type of variable used for the data. Default is numpy.float64. Use
             numpy.float32 if the data are large and precision is not an issue.
-    
+        * header_format : header format following the convention of the
+            struct module.
+
         Returns:
-    
+
+        """
+        with open(fname,'rb') as f:
+            # read header
+            header_len = struct.calcsize(header_format)
+            header = f.read(header_len)
+            # read data
+            data = b''
+            for x in f:
+                data += x
+
+        # unpack header
+        s = struct.Struct(header_format)
+        (tmp,tmp,tmp,tmp,self.cols,self.rows,self.xmin,self.xmax,
+         self.ymin,self.ymax,self.dmin,self.dmax) = s.unpack(header)
+        if self.cols<=0 and self.rows<=0:
+            raise ValueError("Array shape can't be infered.")
+
+        # convert data to numpy array
+        self.data = np.frombuffer(data,dtype=dtype).reshape(self.cols,self.rows)
+        self.cols,self.rows = self.data.shape
+        if self.data.min()+1<self.dmin or self.data.max()-1>self.dmax:
+            warnings.warn("(min(z),max(z)) in the data is incompatible "
+                          +"with (zmin,zmax) in the header. "
+                          +"Please check whether the 'dtype' argument is "
+                          +"correct.(default is '=f')")
+        self.xdim = (self.xmax-self.xmin)/(self.rows-1)
+        self.ydim = (self.ymax-self.ymin)/(self.cols-1)
+
+
+    def _load_surfer_ascii(self, fname, dtype='float64'):
+        """
+        Read data from a Surfer ASCII grid file.
+
+        Parameters:
+
+        * fname : str
+            Name of the Surfer grid file
+        * dtype : numpy dtype object or string
+            The type of variable used for the data. Default is numpy.float64. Use
+            numpy.float32 if the data are large and precision is not an issue.
+
+        Returns:
+
         """
         # Surfer ASCII grid structure
         # DSAA            Surfer ASCII GRD ID
@@ -270,17 +345,65 @@ class grddata(object):
             self.dmin = dmin
             self.dmax = dmax
             self.cols = ny
-            self.rows = nx   
+            self.rows = nx
             self.nullvalue = 1.701410009187828e+38
             self.data = np.ma.masked_equal(field.reshape(nx,ny), self.nullvalue)
         #x, y = gridder.regular(area, shape)
         #data = dict(file=fname, shape=shape, area=area, data=field, x=x, y=y)
         #return data
-           
-    def export_surfer(self, fname, flag = True):
+
+    def export_surfer(self, fname, flag = True ,file_format='binary'):
+        """
+        Export a surfer grid
+
+        Parameters
+        ----------
+        fname : filename of grid dataset to export
+        flag  : True  -  Output Grid Grid
+                False -  Output Bak Grid Grid
+        file_format : binary/b - output binary format
+                      ascii/a - output ascii format
+        """
+        if file_format == 'binary' or file_format == 'b':
+            self._export_surfer_binary(fname,flag)
+        elif file_format == 'ascii' or file_format == 'a':
+            self._export_surfer_ascii(fname,flag)
+
+    def _export_surfer_ascii(self, fname, flag = True):
         """
         Export a surfer binary grid
-    
+
+        Parameters
+        ----------
+        fname : filename of grid dataset to export
+        flag  : True  -  Output Grid Grid
+                False -  Output Bak Grid Grid
+        """
+        xmax = self.xmin + (self.cols-1)*self.xdim
+        ymax = self.ymin + (self.rows-1)*self.ydim
+        with open(fname,'w') as fno:
+            fno.write('DSAA\n')
+            fno.write('{} {}\n'.format(self.cols,self.rows))
+            fno.write('{} {}\n'.format(self.xmin,self.xmax))
+            fno.write('{} {}\n'.format(self.ymin,self.ymax))
+            if flag:
+                fno.write('{} {}\n'.format(np.min(self.data),
+                                           np.max(self.data))
+                          )
+                ntmp = 1.701410009187828e+38
+                tmp = self.data.astype('f')
+                tmp = tmp.filled(ntmp)
+            else:
+                fno.write('{} {}\n'.format(np.min(self.data0),
+                                           np.max(self.data0))
+                          )
+                tmp = self.data0.astype('f')
+            np.savetxt(fno,tmp)
+
+    def _export_surfer_binary(self, fname, flag = True):
+        """
+        Export a surfer binary grid
+
         Parameters
         ----------
         fname : filename of grid dataset to export
@@ -307,44 +430,44 @@ class grddata(object):
                              self.xmin, xmax,
                              self.ymin, ymax,
                              np.min(self.data0),
-                             np.max(self.data0))            
+                             np.max(self.data0))
             fno.write(bintmp)
             tmp = self.data0.astype('f')
         #tmp = tmp[::-1]
         fno.write(tmp.tostring())
         fno.close()
-    
-    
+
+
     def export_ascii(self, fname):
         """
         Export Ascii file
-    
+
         Parameters
         ----------
         data : grid Data
             dataset to export
         """
         fno = open(fname, 'w')
-     
+
         fno.write("ncols \t\t\t" + str(self.cols))
         fno.write("\nnrows \t\t\t" + str(self.rows))
         fno.write("\nxllcorner \t\t\t" + str(self.xmin))
         fno.write("\nyllcorner \t\t\t" + str(self.ymin))
         fno.write("\ncellsize \t\t\t" + str(self.xdim))
         fno.write("\nnodata_value \t\t" + str(self.nullvalue))
-    
+
         tmp = self.data.filled(self.nullvalue)
-    
+
         for j in range(self.rows):
             fno.write("\n")
             for i in range(self.cols):
                 fno.write(str(tmp[j, i]) + " ")
-    
+
         fno.close()
 
 if __name__ == "__main__":
 
- # 使用方法示例，masked numpy ndarray   
+ # 使用方法示例，masked numpy ndarray
  grd1=grddata()
  grd1.load_surfer(r'D:\demo\demogrid.grd')
  if np.ma.is_masked(grd1.data):
@@ -352,12 +475,12 @@ if __name__ == "__main__":
    plt.imshow(grd1.data0)
  else:
    print('not null region in dataset')
- 
+
  #d1=grd1.data
  #grd1.data=d1*d1
 # v = d1.reshape(grd1.rows*grd1.cols)
 # #gridder.interpolation.fill_nans(x, y, v, xp, yp, vp):
 # plt.imshow(grd1.data)     #显示绘图结果
  grd1.export_surfer(r'D:\demo\demogrid3-blk.grd', flag = False)
- 
+
 
