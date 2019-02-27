@@ -279,6 +279,7 @@ class grddata(object):
 
         # convert data to numpy array
         self.data = np.frombuffer(data,dtype=dtype).reshape(self.cols,self.rows)
+        self.data = np.ma.MaskedArray(self.data)
         self.cols,self.rows = self.data.shape
         if self.data.min()+1<self.dmin or self.data.max()-1>self.dmax:
             warnings.warn("(min(z),max(z)) in the data is incompatible "
