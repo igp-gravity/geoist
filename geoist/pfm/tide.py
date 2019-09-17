@@ -8,7 +8,7 @@
  Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
  License     : Distributed under the MIT License. See LICENSE.txt for more info.
  Github      : https://igp-gravity.github.io/
- Description : Application for ***.
+ Description : code for UTC time, 1.16 don't multiply.
 """
 
 """Calculate gravitational tide based on Longman 1959."""
@@ -274,5 +274,17 @@ class TideModel():
         
 if __name__ == "__main__":
     g1=TideModel()
-    gdate = datetime(2018, 11, 1, 12, 00, 00)    
-    gm, gs, g =g1.solve_longman(45,105,100,gdate)
+    gdate = datetime(2019, 11, 10, 10, 00, 00)   
+    g1.duration = 10
+    g1.increment = 60
+    g1.start_time = gdate
+    g1.latitude = 45.0
+    g1.longitude = 105.0
+    g1.altitude = 0.0
+    g1.run_model()
+    g1.plot()
+    g1.write('d:/et20191110.txt')
+#    gm, gs, g0 =g1.solve_longman(45,105,0,gdate)
+#    gdate1 = datetime(1996, 10, 31, 8, 10, 00)     #0.0035347472772194496
+#    gm, gs, g00 =g1.solve_longman(22.+44/60,90.5,0.,gdate1)
+#    print(g00)

@@ -1,0 +1,575 @@
+<?xml version="1.0"?>
+<NodeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <NodeBase xsi:type="NodeTXTEx">
+      <Guid>e34ff149-515d-4ce8-be01-0e7f23b642de</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>50</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TXT+</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-9</Left>
+        <Top>-9</Top>
+        <Width>1938</Width>
+        <Height>1060</Height>
+      </ViewerPos>
+      <FileName />
+      <ReadMode>FileBody</ReadMode>
+      <Filebody>false</Filebody>
+      <SplitterDelimited>,</SplitterDelimited>
+      <SplitterFixed>10,20</SplitterFixed>
+      <HasHeader>false</HasHeader>
+      <EncodingSave>ASCII</EncodingSave>
+      <RemoveRept>false</RemoveRept>
+      <EnclosedInQuotes>false</EnclosedInQuotes>
+      <ReadOnlyFristRows>false</ReadOnlyFristRows>
+      <OnlyFristRows>-2147483648</OnlyFristRows>
+      <IgnoreTop>false</IgnoreTop>
+      <IgnoreTopCount>-2147483648</IgnoreTopCount>
+      <ReadNullRow>true</ReadNullRow>
+      <FolderFiles>
+        <IsFolder>false</IsFolder>
+        <FullName>$stream$\adj_cls.txt</FullName>
+      </FolderFiles>
+      <AllExt>true</AllExt>
+      <Ext />
+      <ExportFileName>false</ExportFileName>
+      <FullFileName>false</FullFileName>
+      <FieldFilters />
+      <PauseMilliSec>2000</PauseMilliSec>
+      <PauseTime>10</PauseTime>
+      <PauseMode>None</PauseMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeJsonToken">
+      <Guid>9cdce590-0208-4ccb-9c80-1d6986d169ab</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>165</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>解析Json</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>e34ff149-515d-4ce8-be01-0e7f23b642de</guid>
+      </PriorNodeGuid>
+      <CacheIt>true</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-9</Left>
+        <Top>-9</Top>
+        <Width>1938</Width>
+        <Height>1060</Height>
+      </ViewerPos>
+      <DataFieldName>ColumnName</DataFieldName>
+      <MutliCondtitions>
+        <MutliCondtition>
+          <Conditition>weight_SD_uGal</Conditition>
+          <Value>weight_SD_uGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>drift_uGal_hr</Conditition>
+          <Value>drift_uGal_hr</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>drift_err_uGal_hr</Conditition>
+          <Value>drift_err_uGal_hr</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>staid</Conditition>
+          <Value>staid</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>gvalue_mGal</Conditition>
+          <Value>gvalue_mGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>gerror_mGal</Conditition>
+          <Value>gerror_mGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>obsres_mGal</Conditition>
+          <Value>obsres_mGal</Value>
+        </MutliCondtition>
+      </MutliCondtitions>
+      <ExpandFields />
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>7e710462-f696-49d4-8226-3b956e7aed83</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>275</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>9cdce590-0208-4ccb-9c80-1d6986d169ab</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-807</Left>
+        <Top>201</Top>
+        <Width>2586</Width>
+        <Height>1372</Height>
+      </ViewerPos>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>weight_SD_uGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>weight_SD_uGal</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>drift_uGal_hr</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>drift_uGal_hr</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>drift_err_uGal_hr</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>drift_err_uGal_hr</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>obsres_mGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>obsres_mGal</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFiller">
+      <Guid>dbcdd24d-21f7-4ca7-b43c-98808c1d16d2</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>375</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>替换</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>7e710462-f696-49d4-8226-3b956e7aed83</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>271</Left>
+        <Top>0</Top>
+        <Width>1378</Width>
+        <Height>1041</Height>
+      </ViewerPos>
+      <FillerIf>1</FillerIf>
+      <FillerFields>
+        <string>staid</string>
+        <string>gvalue_mGal</string>
+        <string>gerror_mGal</string>
+      </FillerFields>
+      <FillerValue>RemoveStrings(@Fields,'[',']','"')</FillerValue>
+    </NodeBase>
+    <NodeBase xsi:type="NodeRowSplit">
+      <Guid>6695693e-c52e-494a-bd85-4006197b49db</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>470</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>行数据劈分</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>dbcdd24d-21f7-4ca7-b43c-98808c1d16d2</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>271</Left>
+        <Top>0</Top>
+        <Width>1378</Width>
+        <Height>1041</Height>
+      </ViewerPos>
+      <SplitFields>
+        <string>staid</string>
+        <string>gvalue_mGal</string>
+        <string>gerror_mGal</string>
+      </SplitFields>
+      <ColumnIdField>ColumnIDField</ColumnIdField>
+      <SplitChars>,</SplitChars>
+      <IsRegex>false</IsRegex>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>0e88f941-3e09-47ba-bd17-679162737ebc</Guid>
+      <CenterY>107.5</CenterY>
+      <CenterX>565</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title>过滤#1</Title>
+      <Name>过滤</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>6695693e-c52e-494a-bd85-4006197b49db</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-13</Left>
+        <Top>-13</Top>
+        <Width>2586</Width>
+        <Height>1386</Height>
+      </ViewerPos>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>staid</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>台站编号</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gvalue_mGal</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>平差值</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gerror_mGal</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>误差</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>ColumnIDField</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>序号</NewFieldName>
+          <NewDataType>Integer</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTXTEx">
+      <Guid>f22cce1e-19cf-4ce6-91a3-3ac8392a0ffb</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>115</CenterX>
+      <Description />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>TXT+</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid />
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-9</Left>
+        <Top>-9</Top>
+        <Width>1938</Width>
+        <Height>1060</Height>
+      </ViewerPos>
+      <FileName />
+      <ReadMode>FileBody</ReadMode>
+      <Filebody>false</Filebody>
+      <SplitterDelimited>,</SplitterDelimited>
+      <SplitterFixed>10,20</SplitterFixed>
+      <HasHeader>false</HasHeader>
+      <EncodingSave>ASCII</EncodingSave>
+      <RemoveRept>false</RemoveRept>
+      <EnclosedInQuotes>false</EnclosedInQuotes>
+      <ReadOnlyFristRows>false</ReadOnlyFristRows>
+      <OnlyFristRows>-2147483648</OnlyFristRows>
+      <IgnoreTop>false</IgnoreTop>
+      <IgnoreTopCount>-2147483648</IgnoreTopCount>
+      <ReadNullRow>true</ReadNullRow>
+      <FolderFiles>
+        <IsFolder>false</IsFolder>
+        <FullName>$stream$\bay_cls.txt</FullName>
+      </FolderFiles>
+      <AllExt>true</AllExt>
+      <Ext />
+      <ExportFileName>false</ExportFileName>
+      <FullFileName>false</FullFileName>
+      <FieldFilters />
+      <PauseMilliSec>2000</PauseMilliSec>
+      <PauseTime>10</PauseTime>
+      <PauseMode>None</PauseMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeJsonToken">
+      <Guid>509d7a8e-7fa0-4773-998d-004f987a6dbb</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>230</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>解析Json</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>f22cce1e-19cf-4ce6-91a3-3ac8392a0ffb</guid>
+      </PriorNodeGuid>
+      <CacheIt>true</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-9</Left>
+        <Top>-9</Top>
+        <Width>1938</Width>
+        <Height>1060</Height>
+      </ViewerPos>
+      <DataFieldName>ColumnName</DataFieldName>
+      <MutliCondtitions>
+        <MutliCondtition>
+          <Conditition>weight_SD_uGal</Conditition>
+          <Value>weight_SD_uGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>drift_uGal_hr</Conditition>
+          <Value>drift_uGal_hr</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>drift_err_uGal_hr</Conditition>
+          <Value>drift_err_uGal_hr</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>staid</Conditition>
+          <Value>staid</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>gvalue_mGal</Conditition>
+          <Value>gvalue_mGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>gerror_mGal</Conditition>
+          <Value>gerror_mGal</Value>
+        </MutliCondtition>
+        <MutliCondtition>
+          <Conditition>obsres_mGal</Conditition>
+          <Value>obsres_mGal</Value>
+        </MutliCondtition>
+      </MutliCondtitions>
+      <ExpandFields />
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>f8239525-6997-4d23-b832-627757953846</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>340</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>过滤</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>509d7a8e-7fa0-4773-998d-004f987a6dbb</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-807</Left>
+        <Top>201</Top>
+        <Width>2586</Width>
+        <Height>1372</Height>
+      </ViewerPos>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>weight_SD_uGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>weight_SD_uGal</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>drift_uGal_hr</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>drift_uGal_hr</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>drift_err_uGal_hr</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>drift_err_uGal_hr</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>obsres_mGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>obsres_mGal</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFiller">
+      <Guid>7ca4bf97-4e25-4188-831c-aa2453b6fcec</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>440</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>替换</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>f8239525-6997-4d23-b832-627757953846</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>271</Left>
+        <Top>0</Top>
+        <Width>1378</Width>
+        <Height>1041</Height>
+      </ViewerPos>
+      <FillerIf>1</FillerIf>
+      <FillerFields>
+        <string>staid</string>
+        <string>gvalue_mGal</string>
+        <string>gerror_mGal</string>
+      </FillerFields>
+      <FillerValue>RemoveStrings(@Fields,'[',']','"')</FillerValue>
+    </NodeBase>
+    <NodeBase xsi:type="NodeRowSplit">
+      <Guid>d248ae72-973b-48b8-a39e-a0430f48dafb</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>535</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>行数据劈分</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>7ca4bf97-4e25-4188-831c-aa2453b6fcec</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>271</Left>
+        <Top>0</Top>
+        <Width>1378</Width>
+        <Height>1041</Height>
+      </ViewerPos>
+      <SplitFields>
+        <string>staid</string>
+        <string>gvalue_mGal</string>
+        <string>gerror_mGal</string>
+      </SplitFields>
+      <ColumnIdField>ColumnIDField</ColumnIdField>
+      <SplitChars>,</SplitChars>
+      <IsRegex>false</IsRegex>
+    </NodeBase>
+    <NodeBase xsi:type="NodeFilter">
+      <Guid>f50e7f17-337f-48a1-90ac-9808b7f56374</Guid>
+      <CenterY>222.5</CenterY>
+      <CenterX>630</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title>过滤#1</Title>
+      <Name>过滤</Name>
+      <ShowName>false</ShowName>
+      <PriorNodeGuid>
+        <guid>d248ae72-973b-48b8-a39e-a0430f48dafb</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>3400</Left>
+        <Top>-13</Top>
+        <Width>1946</Width>
+        <Height>3359</Height>
+      </ViewerPos>
+      <FieldFilters>
+        <FieldFilter>
+          <FieldName>staid</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>台站编号</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gvalue_mGal</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>平差值</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gerror_mGal</FieldName>
+          <Filte>true</Filte>
+          <NewFieldName>误差</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>ColumnIDField</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>序号</NewFieldName>
+          <NewDataType>Integer</NewDataType>
+        </FieldFilter>
+      </FieldFilters>
+      <DefaultFilte>true</DefaultFilte>
+      <IsStandardMode>false</IsStandardMode>
+    </NodeBase>
+  </Items>
+  <OffsetX>0</OffsetX>
+  <OffsetY>0</OffsetY>
+  <Scale>1</Scale>
+  <Arthor>bushyao</Arthor>
+  <SQLiteIO>
+    <DbFullName>T3d59fc22333f4a7f8548b0802ed55b0c.bcdb</DbFullName>
+    <DmsFullName>D:\MyWorks\geoist\geoist\gravity\data\demo.DMS</DmsFullName>
+    <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
+    <RunMemoryMode>false</RunMemoryMode>
+  </SQLiteIO>
+  <Title>Stream</Title>
+  <Subject>2019/9/13 16:23:23</Subject>
+  <Arthor2>chenshi-X1</Arthor2>
+  <Manager />
+  <Company>DSS</Company>
+  <Category />
+  <Description />
+  <KeyWords />
+  <CheckIt>true</CheckIt>
+  <StreamID />
+  <EditorVersion>2019.2.7143.22726</EditorVersion>
+  <ReportTitleName />
+  <ListReportTitles />
+  <SelfRun>false</SelfRun>
+  <AttachFiles />
+  <Price>0</Price>
+  <PrivilegeType>公开</PrivilegeType>
+  <FunctionType>dms</FunctionType>
+  <Parameters />
+</NodeCollection>
