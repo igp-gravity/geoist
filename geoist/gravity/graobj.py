@@ -833,13 +833,14 @@ class Campaign(object):
         #print(m, n1, n2)
         k_ind = 0
         for ii in range(m):
+            k_ind = -1
             #print(self.agstation_list[ii]._sid)
             #print(pnt_id0)
             k_ind = pnt_id0.index(self.agstation_list[ii]._sid)
             dag[ii] = self.agstation_list[ii]._ref_gra
             wag[ii] = self.agstation_list[ii]._ref_gra_err**2 #sigma
             #print(k_ind)
-            if (k_ind < 1):
+            if (k_ind < 0):
                 print('Error, the AG station information cannot be find in Survey')
             uag[ii,n2+k_ind]=1
         #print(uag)   
