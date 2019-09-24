@@ -826,7 +826,7 @@ class Campaign(object):
         
         m = len(self.agstation_list)
         n1 = len(pnt_id0) 
-        n2 = sum(gravwork._gravlen[:,1])
+        n2 = sum(self._gravlen[:,1])
         uag = np.zeros([m, n1 + n2], dtype= int) 
         dag = np.zeros(m, dtype= float)
         wag = np.zeros(m, dtype= float)
