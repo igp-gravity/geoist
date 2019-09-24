@@ -263,8 +263,7 @@ class Network(object):
     - 
                 
     """     
-    sta_list = []
-    sta_table = []
+
     __type = {1: 'region', 2:'nationwide', 3: 'temporary',4: 'other'}
     
     def __init__(self, name, ntype):
@@ -272,7 +271,8 @@ class Network(object):
         """
         self.ntype=ntype
         self._name=name
-        
+        self.sta_list = []
+        self.sta_table = []
     def __str__(self):
         """Override the built-in method 'print' when applied to such object
         
