@@ -601,7 +601,7 @@ class Campaign(object):
         
         ag = AGstation()
         
-        gravwork.set_ag_sta(ag)                  #添加绝对点信息
+        gravwork.add_ag_sta(ag)                  #添加绝对点信息
         gravwork.add_surveys(survey_list)        #添加测量到平差任务
         gravwork.adj_method =  1                 #平差方法选择
         gravwork.pre_adj                         #准备平差矩阵（optional）
@@ -660,8 +660,8 @@ class Campaign(object):
     def obs_list(self):
         return self._obs_list 
             
-    def set_ag_sta(self, ag):
-        """
+    def add_ag_sta(self, ag):
+        """add the absolute gravity station to the Campaign class
         """
         if not isinstance(ag, AGstation):
             raise ValueError('Input is not a instance of AGstation class!')        
@@ -983,7 +983,7 @@ class Campaign(object):
         return is_good, hr_max
     
     @timeit('runadj')
-    def run_adj(self, filename = './adj_result.txt'):
+    def run_adj(self, filename = ''):
         #import geoist.gravity.adjmethods as adj
         if (len(self.mat_list)<1):
             raise ValueError('Please run pre_adj() to generate Matrix!')
@@ -1022,8 +1022,8 @@ class Campaign(object):
             dlen = len(self._gravlen)
             dobs = len(self.obs_list[0])
             self.survey_dic['weight_SD_uGal'] = (np.sqrt(np.exp(xopt.x))*1000).tolist()
-            self.survey_dic['drift_uGal_hr'] = np.squeeze(np.array(xx[0:dlen]*1000)).tolist()
-            self.survey_dic['drift_err_uGal_hr'] = (err[0:dlen]*1000).tolist()
+            self.survey_dic['drift_uGal_hr'] = np.squeeze(np.array(xx[dobs:]*1000)).tolist()
+            self.survey_dic['drift_err_uGal_hr'] = (err[dobs:]*1000).tolist()
             self.survey_dic['staid'] = self.obs_list[0]
             self.survey_dic['gvalue_mGal'] = np.squeeze(np.array(xx[:dobs])).tolist()
             self.survey_dic['gerror_mGal'] = err[:dobs].tolist()
@@ -1051,20 +1051,24 @@ class Campaign(object):
             self.survey_dic['obsres_mGal'] = np.squeeze(np.array(res)).tolist()
 
         elif self.adj_method == 'bay2':
-            print(self.adj_method)
+            print(self.adj_method) #TO-DO list
         else:
-            print(self.adj_method)
+            print(self.adj_method) #TO-DO list
 
-        try:
-            f = open(filename, mode = 'w')
-            f.write(json.dumps(self.survey_dic))
-            f.close
-        except IOError:
-            print('No file : %s' %(filename))
-        except ValueError:
-            print('check raw data file')
-        except IndexError:
-            print('check raw data file: possibly last line?')  
+        if (len(filename)>1):
+            try:
+                f = open(filename, mode = 'w')
+                f.write(json.dumps(self.survey_dic))
+                f.close
+            except IOError:
+                print('No file : %s' %(filename))
+            except ValueError:
+                print('check raw data file')
+            except IndexError:
+                print('check raw data file: possibly last line?')
+        else:
+            print('please check survey_dic results')
+            #return self.survey_dic # need remove @
 
     def save_mat_hdf5(self, filename):
         """save matrix to HDF5 file with Binary
@@ -1080,6 +1084,11 @@ class Campaign(object):
         h.create_dataset('wag', data = self.mat_list[6])
         h.create_dataset('glen', data = self._gravlen)
         h.close()
+    def save_mat_npz(self, filename):
+        """save matrix to NPY/NPZ format file before transfrom to sparse with CSR format
+           TO-DO by Bei
+        """
+        pass
 
     def save_sparse_mat_hdf5(self, filename):
         """save matrix to HDF5 file before transfrom to sparse with CSR format
@@ -1130,6 +1139,7 @@ class Campaign(object):
         except IndexError:
             print('check raw data file: possibly last line?')          
 
+
 def get_2d_list_slice(matrix, start_row, end_row, start_col, end_col):
     return [row[start_col:end_col] for row in matrix[start_row:end_row]]
 
@@ -1154,14 +1164,14 @@ if __name__ == '__main__':
     ag.ref_gra_err = 2.1E-3 
     print(ag)
     gravwork = Campaign('IGP201702', 1)
-    gravwork.set_ag_sta(ag)                  #添加绝对点信息
+    gravwork.add_ag_sta(ag)                  #添加绝对点信息
     gravwork.add_surveys(s1)        #添加测量到平差任务
     print(gravwork)
     gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
     if gravwork.pre_adj():
         #print(len(gravwork.mat_list[0]))
         gravwork.run_adj('./data/grav_baj.txt')
-        
+    #aa = json.load(open('./data/grav_baj.txt'))
     #gravwork.export_camp_json('./data/gravwork.json') #保存对象示例到磁盘
     #gravwork.save_mat_json('./data/gravmat.json') #保存平差矩阵到磁盘
     #gravwork.save_mat_hdf5('./data/gravmat1.h5')    
