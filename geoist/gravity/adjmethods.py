@@ -38,12 +38,12 @@ class Adjustment(object):
     result = []
     error = []
     residual = []
-    
+
     def __init__(self, name):
         """
         """
         self._name = name
-        
+
     def __str__(self):
         """Override the built-in method 'print' when applied to such object
         
@@ -248,6 +248,7 @@ class Bayadj(Adjustment):
     - goadj : to optimize the weights or hyperparameters
     - result : to forward the gravity values with optimized weights                
     """     
+    bsm = 2 #the order of smooth of meter drift
 
     @staticmethod
     def likelihood(x, *args): #x,Uall,Uss,Y,gravlen,wag
@@ -258,7 +259,7 @@ class Bayadj(Adjustment):
         |       Wb ||     Uss|     |0  | 
         Input params(S,Y) must be np.matrix
         """
-        uall, uss, Y, wag, gravlen = args
+        uall, uss, Y, wag, gravlen, bsm= args
         lens = len(gravlen)
 
         uall = np.matrix(uall)
@@ -271,10 +272,13 @@ class Bayadj(Adjustment):
             W = slg.block_diag(W, np.diag(w))
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
-        len2 = int(len(uss)/lens)
+        #len2 = int(len(uss)/lens) #多台重力仪观测不一致
+        #bsm = 2
+        len2 = gravlen[0,1] - bsm
         wb = np.ones(len2)/np.exp(x[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
+            len2 = gravlen[k,1] - bsm
             wb = np.ones(len2)/np.exp(x[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -340,10 +344,13 @@ class Bayadj(Adjustment):
             W = slg.block_diag(W, np.diag(w))
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
-        len2 = int(len(uss)/lens)
+        #len2 = int(len(uss)/lens)
+        #cls.bsm = 2
+        len2 = glen[0,1] - cls.bsm
         wb = np.ones(len2)/np.exp(xopt[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
+            len2 = glen[k,1] - cls.bsm
             wb = np.ones(len2)/np.exp(xopt[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -390,7 +397,7 @@ class Bayadj(Adjustment):
         ub = np.matrix(bb)
         uss = np.matrix(uss)
 
-        args = (ua, uss, ub, wag, glen)
+        args = (ua, uss, ub, wag, glen, cls.bsm)
         return cls.optimization(cls.likelihood, x0, args)
 
 
@@ -415,8 +422,9 @@ class Bayadj1(Bayadj):
         |   Wag    ||Uag     |     |dag|
         |       Wb ||     Uss|     |0  | 
         Input params(S,Y) must be np.matrix
+        kstart is the index of fix meter scale factor
         """
-        uall, uss, Y, wag, gravlen, Y2 = args
+        uall, uss, Y, wag, gravlen, Y2, bsm, kstart = args
         lens = len(gravlen)
 
         uall = np.matrix(uall)
@@ -424,7 +432,7 @@ class Bayadj1(Bayadj):
         kk = 0
         for i in range(lens):   #scale factor of meter
             len3 = int(gravlen[i,0])
-            for j in range(len3):
+            for j in range(kstart,len3):
                 sf = np.exp(x[-i])
                 Y[:,kk] = Y[:,kk]*sf + Y2[:,kk]
                 kk += 1
@@ -438,10 +446,13 @@ class Bayadj1(Bayadj):
             W = slg.block_diag(W, np.diag(w))
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
-        len2 = int(len(uss)/lens)
+        #len2 = int(len(uss)/lens)
+        #bsm = 2
+        len2 = gravlen[0,1] - bsm
         wb = np.ones(len2)/np.exp(x[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
+            len2 = gravlen[k,1] - bsm
             wb = np.ones(len2)/np.exp(x[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -468,7 +479,7 @@ class Bayadj1(Bayadj):
 
         return f0 + f1 - f2 + f3
     @classmethod
-    def result1(cls, xopt, mat_list, glen):
+    def result1(cls, xopt, mat_list, glen, kstart):
         """forward result with the optimated weights
         """
         udd = mat_list[0]
@@ -500,7 +511,7 @@ class Bayadj1(Bayadj):
         kk = 0
         for i in range(lens):   #scale factor of meter
             len3 = int(glen[i,0])
-            for j in range(len3):
+            for j in range(kstart, len3):
                 sf = np.exp(xopt[-i])
                 bb[:,kk] = bb[:,kk]*sf + ubb2[:,kk]
                 kk += 1
@@ -516,10 +527,12 @@ class Bayadj1(Bayadj):
             W = slg.block_diag(W, np.diag(w))
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
-        len2 = int(len(uss)/lens)
+        #len2 = int(len(uss)/lens)
+        len2 = glen[0,1] - cls.bsm
         wb = np.ones(len2)/np.exp(xopt[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
+            len2 = glen[k,1] - cls.bsm
             wb = np.ones(len2)/np.exp(xopt[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -529,7 +542,7 @@ class Bayadj1(Bayadj):
         
         return cls.forward(Wall, A, b)
     @classmethod
-    def goadj1(cls, mat_list, glen, xinit, dinit, sfinit):
+    def goadj1(cls, mat_list, glen, xinit, dinit, sfinit, kstart = 0):
         """Go adjustment using the matrix list
            the inversed weights will be estimated.  
         """
@@ -570,7 +583,7 @@ class Bayadj1(Bayadj):
         uss = np.matrix(uss)
         ub2 = np.matrix(ubb2)
 
-        args = (ua, uss, ub, wag, glen, ub2)
+        args = (ua, uss, ub, wag, glen, ub2, cls.bsm, kstart)
         return cls.optimization(cls.likelihood1, x0, args)
 
 class Bayadj2(Bayadj):

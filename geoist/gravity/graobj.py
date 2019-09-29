@@ -74,7 +74,7 @@ class Meter(object):
         s = json.dumps(m1.__dict__)
     """    
     
-    _scalefactor = 1.0
+    #_scalefactor = 1.0
     count = 0
     
     def __init__(self, gtype, gsn):
@@ -82,6 +82,7 @@ class Meter(object):
         """
         self._mtype = gtype
         self._msn = gsn
+        self._scalefactor = 1.0
         Meter.count += 1
         
     @property
@@ -127,7 +128,12 @@ class Meter(object):
         print(Meter.count)
 
     def read_table(self, filename):
-        pass
+        """read the scalefactor table if LCR gravimeter
+        """
+        self.table_data = []
+        #if self.msn
+        print(self.msn, len(self.table_data))
+        
 
     def export_table(self, filename):
         pass
@@ -420,7 +426,8 @@ class Survey(Chanlist):
         self._time_tag = time_tag
         self.meter_list = []
         self.loop_list = [] 
-        self.survey_table = []        
+        self.survey_table = []
+        self.meter_sf_index = 0
     def __str__(self):
         """Override the built-in method 'print' when applied to such object
         
@@ -1034,8 +1041,9 @@ class Campaign(object):
             xinit = 0.01
             dinit = 1.0  #initial drift SD value
             sfinit = 1.0
+            kstart = self.survey_list[0].meter_sf_index #不用标定格值的仪器数
             xopt = adj.Bayadj1.goadj1(self.mat_list, self._gravlen,
-                                     xinit, dinit, sfinit)
+                                     xinit, dinit, sfinit, kstart)
             print('The optimization has finished. ABIC value is = %f'%xopt.fun)
             for ii in xopt.x :
                 print(np.sqrt(np.exp(ii)))
@@ -1155,6 +1163,7 @@ if __name__ == '__main__':
     s1.add_meter(m1)
     s1.add_meter(m2)
     s1.net = n1
+    s1.meter_sf_index = 1 # if select bay1, please check this parameter
     s1.read_survey_file('./data/sd1wn12.G147')
     s1.read_survey_file('./data/sd1wn06.G570')
     s1.corr_aux_effect()

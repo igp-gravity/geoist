@@ -68,9 +68,9 @@
       <IsExpressionDescription>false</IsExpressionDescription>
       <ViewerPos>
         <Left>-9</Left>
-        <Top>-9</Top>
-        <Width>1938</Width>
-        <Height>1060</Height>
+        <Top>0</Top>
+        <Width>2283</Width>
+        <Height>1260</Height>
       </ViewerPos>
       <DataFieldName>ColumnName</DataFieldName>
       <MutliCondtitions>
@@ -222,8 +222,8 @@
     </NodeBase>
     <NodeBase xsi:type="NodeFilter">
       <Guid>0e88f941-3e09-47ba-bd17-679162737ebc</Guid>
-      <CenterY>107.5</CenterY>
-      <CenterX>565</CenterX>
+      <CenterY>102.5</CenterY>
+      <CenterX>560</CenterX>
       <Description />
       <ToolTip />
       <EditMode>Edit</EditMode>
@@ -277,6 +277,7 @@
       <CenterY>222.5</CenterY>
       <CenterX>115</CenterX>
       <Description />
+      <ToolTip />
       <EditMode>Edit</EditMode>
       <Title />
       <Name>TXT+</Name>
