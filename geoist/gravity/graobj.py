@@ -880,27 +880,37 @@ class Campaign(object):
         #num_loop = len(self.survey_list[index].loop_list)
         loop_meter = []
         loop_time = []
+        loop_obsmeter = []
         for ll in self.survey_list[index].loop_list:
             #print([int(r1/10000.) for r1 in ll.obstime])
             loop_time.append([int(r1/10000.) for r1 in ll.obstime])
+            loop_obsmeter.append(ll.metername)
             loop_meter.append(ll.meter)
-        #print(loop_meter)
+
         loop_time1 = list(flatten(loop_time))
-        #print(loop_time1)
+        loop_obsmeter1 = list(flatten(loop_obsmeter))
+        #print('bbbbb',len(loop_time1))
+        #print(len(loop_obsmeter1),len(loop_time1))
+        #print(loop_obsmeter1)
         gravlen = np.zeros([num_meter,3])
         for ii in range(num_meter):
+          loop_time2 = []
+          mname = self.survey_list[index].meter_list[ii].msn
           meterx = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,0,1)
           #daysx = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,8,9)
           kt1 = meterx.count([self.survey_list[index].meter_list[ii].msn])
           #print(loop_meter)
           #print(loop_time)
-
           kt2 = loop_meter.count(self.survey_list[index].meter_list[ii].msn)
           gravlen[ii,0] = int(kt1 - kt2)
-          kt3 = len(set(loop_time1)) #20191014
+          for ll, tt in zip(loop_obsmeter1, loop_time1):
+              if (ll.lower() == mname.lower()):
+                  loop_time2.append(tt)
+
+          kt3 = len(set(loop_time2)) #20191014
           gravlen[ii,1] = int(kt2)
           gravlen[ii,2] = int(kt3)
-          #print(kt1,kt2,kt3)
+         #print(kt1,kt2,kt3)
         #print(gravlen)
         self._gravlen = gravlen.astype(int) #save to object
         ls_all = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,1,2)
@@ -1116,6 +1126,7 @@ class Campaign(object):
             
         elif self.adj_method == 'bay':
             print(self.adj_method)
+            #print(self._gravlen)
 
             xinit = 0.01
             dinit = 1.0 #initial drift SD value
@@ -1262,7 +1273,7 @@ def flatten(items):
 
 if __name__ == '__main__':
     
-    m1 = Meter('LCR','G873')
+    m1 = Meter('LCR','G147')
     m1.read_table('./data/table1.dat')
     m2 = Meter('LCR','G570')
     m2.read_table('./data/table1.dat')
@@ -1271,11 +1282,11 @@ if __name__ == '__main__':
     print(n1)
     s1 = Survey('HBtest', '200901')
     s1.add_meter(m1)
-    #s1.add_meter(m2)
+    s1.add_meter(m2)
     s1.net = n1
     s1.meter_sf_index = 1 # if select bay1, please check this parameter
-    s1.read_survey_file('./data/HBZL1608.873') #sd1wn12.G147
-    #s1.read_survey_file('./data/sd1wn06.G570')
+    s1.read_survey_file('./data/sd1wn12.G147') #sd1wn12.G147
+    s1.read_survey_file('./data/sd1wn06.G570')
     s1.corr_aux_effect()
     print(s1)         
     ag = AGstation('地球所','13012112','A', 116.31, 39.946, 51.9)

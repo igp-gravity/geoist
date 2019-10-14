@@ -385,6 +385,8 @@ class Bayadj(Adjustment):
         zc0 = np.zeros([m, n1], dtype = float)
         ac = np.hstack([zc0 ,uss])
         #print(aa.shape, ac.shape)
+        #print(glen)
+        #print(len(glen))
         aa = np.vstack([aa, ab])
         aa = np.vstack([aa, ac])
 
