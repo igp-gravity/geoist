@@ -83,6 +83,7 @@ class Meter(object):
         self._mtype = gtype
         self._msn = gsn
         self._scalefactor = 1.0
+        self.table_data = []
         Meter.count += 1
         
     @property
@@ -131,8 +132,36 @@ class Meter(object):
         """read the scalefactor table if LCR gravimeter
         """
         self.table_data = []
+        try:
+            f = open(filename, mode = 'r')
+            if len(self.msn) > 0:
+                print('The table of {} meter will load'.format(self.msn))
+            else:
+                print('Please set the SN of meter!')
+                return
+            i = 0
+            iflag = False
+            for line in f:
+                i += 1
+                line = line.strip()  # Clean line
+                # Skip blank and comment lines
+                if (not line) or (line[0] == '/') or (line[0] == '#'): continue
+                if (line[0:5] == '99999') or (line[0:5] == '66666'): break
+                if (line[0:5] == '88888'): iflag = False
+                if iflag:
+                    vals=line.split()
+                    self.table_data.append(vals)
+                if (line.lower() == self.msn.lower()):
+                    iflag = True
+            f.close
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')
         #if self.msn
-        print(self.msn, len(self.table_data))
+        print('The {} values has been read.'.format(len(self.table_data)))
         
 
     def export_table(self, filename):
@@ -405,13 +434,13 @@ class Loop(Chanlist):
          self.airpress.append(float(vals[5])) 
          self.temp.append(float(vals[6]))          
          self.tide_grav.append(0.0)
-         self.airpress_grav.append(0.0)         
-         
+         self.airpress_grav.append(0.0)
+
 class Survey(Chanlist):
     """
     Survey reading dataset from recording files.
     The instance of Survey class must be setted before send to Campaign class.
-    % 55555 一天测量结束, one loop
+    % 55555 一个闭合结束, one loop
     % 99999 整个测量结束, one survey
     % 44444 66666 一天内中断
     """
@@ -477,7 +506,8 @@ class Survey(Chanlist):
             iy=2000+iy
             
         day_fraction = ih / 24.0 + imin / 1440.0 + 0.0 / 86400.
-        days_val = date(iy, im, idd).toordinal() + day_fraction  
+        days_val = date(iy, im, idd).toordinal() #+ day_fraction
+        #print(days_val)
         time_list = [iy, im, idd, ih, imin, days_val, hour_val]
         
         return time_list
@@ -507,14 +537,23 @@ class Survey(Chanlist):
         return sfval
     
     def corr_aux_effect(self, alpha = 1.16, beta = -0.3):
-        """
+        """Get gravity by table of LCG type meter
         Get earthtide and atomsphere effect 
         """
         j = 0
-        for slp in self.loop_list:           
+        for slp in self.loop_list:
             i = 0
+            gra_list = []
+            for sname in self.meter_list:
+                if (sname.msn == slp.metername[0]):
+                    if (len(sname.table_data) > 1):
+                        table_list = sname.table_data
+                        gra_list = self.read2mgal(slp.obsval, table_list)
+                        break
+             #Just for LCG meter
             for stime in slp.obstime:
                 tt = self.tran_datetime(int(stime))
+                #gdate0 = datetime(int(tt[0]), int(tt[1]), int(tt[2])) #20191013
                 slocid = slp.stationid[i]
                 slon, slat, selev = self._get_pnt_loc(slocid)
                 gdate = datetime(int(tt[0]), int(tt[1]), int(tt[2]), 
@@ -525,14 +564,41 @@ class Survey(Chanlist):
                 slp.tide_grav[i] = -g #*alpha -1.0 ****
                 slp.airpress_grav[i] = slp.airpress[i]*beta*0.001   
                 sfval = self._get_meter_sf(slp.metername[i])
-                slist = [slp.metername[i], slocid, tt[5], tt[6], slp.obsval[i], sfval,
+                if (len(gra_list) == 0):
+                    slist = [slp.metername[i], slocid, tt[5], tt[6], slp.obsval[i], sfval,
+                         slp.tide_grav[i], slp.airpress_grav[i], i+1]
+                else:
+                    slist = [slp.metername[i], slocid, tt[5], tt[6], gra_list[i], sfval,
                          slp.tide_grav[i], slp.airpress_grav[i], i+1]
                 self.survey_table.append(slist)
                 i += 1  
             j += 1
             
-        return 
-    
+        return
+
+    @staticmethod
+    def read2mgal(read_list, table_list):
+        """Transform the reading to gravity value using table_data of meter.      
+        read2mgal is staticmethod
+        Method : x1val*(table(j,2)+(dtd(i)-table(j,1))*table(j,3))
+        Returns
+        -------
+        gra_list: the gravity values
+
+        """
+        gra_list = []
+        if len(table_list) > 0:
+            for reading in read_list:
+                i = 0
+                for table in table_list[:-1]:
+                    i += 1
+                    tt = [float(f) for f in table]
+                    tt1 = [float(f) for f in table_list[i]]
+                    if (reading >= tt[0]) and (reading < tt1[0]):
+                        gval = tt[1] + (reading - tt[0])*tt[2]
+                        gra_list.append(gval)
+        return gra_list
+
     def read_survey_file(self, filename):
         if not isinstance(self.net, Network):
             raise ValueError('Property net must be set!')  
@@ -568,8 +634,8 @@ class Survey(Chanlist):
                     self.loop_list.append(l1tmp)
                     break #loop
                 else:    
-                    l1tmp.add_recording(vals)     
-                                                                                                                   
+                    l1tmp.add_recording(vals)
+
         except IOError:
             print('No file : %s' %(filename))            
         except ValueError:
@@ -720,12 +786,15 @@ class Campaign(object):
         hour_val = []
         press_val = []
         day_num = []
+        loop_num = []
+
         for reci in rec_vals:
             hour_val.append(reci[3])
             g_val.append(reci[4]*reci[5])
             et_val.append(reci[6])
             press_val.append(reci[7])
-            day_num.append(reci[8]) 
+            day_num.append(reci[2])
+            loop_num.append(reci[8])
         iprev = 1
 
         data_num = []
@@ -745,7 +814,7 @@ class Campaign(object):
         dcnos = []
         dcnoe = []
         k = 0
-        #print(range(int(kt[1])))
+        #print(kt)
         
         for i in range(int(kt[1])):
             jtval=data_num[i]
@@ -754,7 +823,7 @@ class Campaign(object):
             for j in range(data_num[i]-1):
                 jt2=jt1-jtval+j
                 jt0=jt1-jtval+1            
-                if (day_num[jt2] < jtval):
+                if (loop_num[jt2] < jtval):
                     #print(jt2, jt0)
                     DYn[k] = g_val[jt2+1] - g_val[jt2]
                     #print( g_val[jt2+1] , g_val[jt2])
@@ -777,13 +846,16 @@ class Campaign(object):
                     dcnoe.append(pnt_no[jt2+1])
                     k=k+1    
        # print(DYn) #Um2/Um3/hrs/DYn/data_num/day_num
+        #print('dddddd' ,k)
         obs_mat = []
         obs_mat.append(Um2)
         obs_mat.append(Um3.astype(int))
         obs_mat.append(hoursdd1)
-        obs_mat.append(DYn) 
-        obs_mat.append(data_num) 
-        obs_mat.append(day_num) 
+        obs_mat.append(DYn)
+        obs_mat.append(data_num)
+        obs_mat.append(loop_num)
+        obs_mat.append(day_num)
+
         return obs_mat, dcnos, dcnoe
     
         
@@ -797,7 +869,6 @@ class Campaign(object):
         """
         #obs_mat  = np.ndarray([2, 3])
         #time_mat = np.ndarray([2, 3])
-
         # Get all meter obs station list
         #get_2d_list_slice()
         #self.survey_list[0].survey_table
@@ -805,22 +876,31 @@ class Campaign(object):
         obs_len = len(self.survey_list[index].survey_table)
         #kt1 =  #segment number
         #kt2 =  #days
-        
         num_meter = len(self.survey_list[index].meter_list)
         #num_loop = len(self.survey_list[index].loop_list)
         loop_meter = []
+        loop_time = []
         for ll in self.survey_list[index].loop_list:
+            #print([int(r1/10000.) for r1 in ll.obstime])
+            loop_time.append([int(r1/10000.) for r1 in ll.obstime])
             loop_meter.append(ll.meter)
-        #print(loop_meter)  
-
-        gravlen = np.zeros([num_meter,2])
+        #print(loop_meter)
+        loop_time1 = list(flatten(loop_time))
+        #print(loop_time1)
+        gravlen = np.zeros([num_meter,3])
         for ii in range(num_meter):
           meterx = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,0,1)
           #daysx = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,8,9)
           kt1 = meterx.count([self.survey_list[index].meter_list[ii].msn])
+          #print(loop_meter)
+          #print(loop_time)
+
           kt2 = loop_meter.count(self.survey_list[index].meter_list[ii].msn)
           gravlen[ii,0] = int(kt1 - kt2)
+          kt3 = len(set(loop_time1)) #20191014
           gravlen[ii,1] = int(kt2)
+          gravlen[ii,2] = int(kt3)
+          #print(kt1,kt2,kt3)
         #print(gravlen)
         self._gravlen = gravlen.astype(int) #save to object
         ls_all = get_2d_list_slice(self.survey_list[index].survey_table, 0,obs_len,1,2)
@@ -833,27 +913,34 @@ class Campaign(object):
         
         m = len(self.agstation_list)
         n1 = len(pnt_id0) 
-        n2 = sum(self._gravlen[:,1])
+        n2 = sum(self._gravlen[:,2]) #20191014
         uag = np.zeros([m, n1 + n2], dtype= int) 
         dag = np.zeros(m, dtype= float)
         wag = np.zeros(m, dtype= float)
         #print(m, n1, n2)
         k_ind = 0
+        #print('99999')
         for ii in range(m):
             k_ind = -1
             #print(self.agstation_list[ii]._sid)
             #print(pnt_id0)
-            k_ind = pnt_id0.index(self.agstation_list[ii]._sid)
+            #print(k_ind)
+            try:
+                k_ind = pnt_id0.index(self.agstation_list[ii]._sid)
+            except ValueError:
+                print('the AG station {} information cannot be find in Survey'.format(self.agstation_list[ii]._sid))
+            #print(self.agstation_list[ii]._sid)
             dag[ii] = self.agstation_list[ii]._ref_gra
             wag[ii] = self.agstation_list[ii]._ref_gra_err**2 #sigma
-            #print(k_ind)
-            if (k_ind < 0):
-                print('Error, the AG station information cannot be find in Survey')
+
+            #if (k_ind < 0):
+            #    print('Error, the AG station information cannot be find in Survey')
             uag[ii,n2+k_ind]=1
         #print(uag)   
          #to-do list
         dcs = []
         dce = []
+
         for ii in range(num_meter):   
             
             #mat_list = self.tran_obs_array() 
@@ -868,9 +955,9 @@ class Campaign(object):
                 if (jj[0] == meter_name):
                     recs.append(jj)
             #print(recs[0])
-            #print(recs[1])
+            #print(recs[2])
             obs_mat, dcnos, dcnoe = self.tran_obs_array(recs, pnt_id0, gravlen[ii,:]) #step 1   
-            #obs_mat : Um2/Um3/hrs/DYn/data_num/day_num
+            #obs_mat : Um2/Um3/hrs/DYn/data_num/loop_num/day_num
             maxhrs = 16.0 #the max working duration per day.
             isgood, hourmax = self.check_hs(obs_mat[2], maxhrs) 
             
@@ -878,9 +965,9 @@ class Campaign(object):
                 print('the max hour is %f, which is too long in one day!'%hourmax)
             else:
                 print('the max work hour in the survey is %f '%hourmax)
-            ud = self.gen_drift(obs_mat[2], obs_mat[4], obs_mat[5])   #step 2
+            ud = self.gen_drift(obs_mat[2], obs_mat[4], obs_mat[6])  #obs_mat[5]  #step 2
             #print(int(gravlen[ii,1]))
-            sm = self.smooth_matrix(int(gravlen[ii,1]), 2) #order equals to two. #step 3
+            sm = self.smooth_matrix(int(gravlen[ii,2]), 2) #order equals to two. #step 3
             #print(sm)
             print('segment g(mGal) max = %f/ min =%f'%(max(obs_mat[3]),min(obs_mat[3])))
             print('segment time(hr) max = %f/ min =%f'%(max(obs_mat[2][:,1]),min(obs_mat[2][:,1])))
@@ -908,7 +995,7 @@ class Campaign(object):
                 
             dcs.append(dcnos)
             dce.append(dcnoe)
-            #print(udd)
+
         mat_list =[]
         mat_list.append(udd)
         mat_list.append(uss)
@@ -918,7 +1005,7 @@ class Campaign(object):
         mat_list.append(dag)
         mat_list.append(wag)
         mat_list.append(dbb2) #only be used when adj_method = bay1
-
+        #print(uag.shape)
         dno_list =[]
         dno_list.append(pnt_id0) #slon, slat, selev = self._get_pnt_loc(slocid)
         dno_list.append(dcs)
@@ -968,14 +1055,27 @@ class Campaign(object):
         
         """
         kt0 = sum(data_num)-len(data_num) #有效测段数
-        kt2 = len(data_num) #测量记录数   
+        kt2 = len(set(day_num)) #len(data_num) #测量天数 //测量记录数
         uarray = np.zeros([kt0, kt2])
+        #print(data_num)
+        #print(day_num)
+        #print(len(data_num))
         #print(kt0, kt2)
         k = 0
-        for i in range(kt2) : #total days        
-            for j in range(data_num[i]-1): #data(i)-1 total segment in each day
-                uarray[k, i] = hrs[k,1]                                
+        ii = 0
+        for i in range(len(data_num)): #kt2) : #total days
+            for j in range(data_num[i]-1): #data(i)-1 total segment in each loop
+                uarray[k, ii] = hrs[k,1]
+                if (j == (data_num[i]-2)):
+                    kk = sum(data_num[:i+1]) -1
+                    #print(kk,ii,j)
+                    if (i<len(data_num)-1):
+                        if (day_num[kk] != day_num[kk+1]):
+                            #print(kk, day_num[kk+2])
+                            ii +=1
+                #print(kk, data_num[i], ii)
                 k = k+1
+        #print(uarray.shape)
         return uarray
 
     @staticmethod
@@ -1151,24 +1251,34 @@ class Campaign(object):
 def get_2d_list_slice(matrix, start_row, end_row, start_col, end_col):
     return [row[start_col:end_col] for row in matrix[start_row:end_row]]
 
+def flatten(items): 
+    """Yield items from any nested iterable; see REF."""
+    from collections.abc import Iterable
+    for x in items: 
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)): 
+            yield from flatten(x) 
+        else: 
+            yield x
 
 if __name__ == '__main__':
     
-    m1 = Meter('LCR','G147')
+    m1 = Meter('LCR','G873')
+    m1.read_table('./data/table1.dat')
     m2 = Meter('LCR','G570')
+    m2.read_table('./data/table1.dat')
     n1 = Network('NorthChina',1)
-    n1.read_pnts('./data/hball8.txt')
+    n1.read_pnts('./data/DAHB.DZJ')
     print(n1)
     s1 = Survey('HBtest', '200901')
     s1.add_meter(m1)
-    s1.add_meter(m2)
+    #s1.add_meter(m2)
     s1.net = n1
     s1.meter_sf_index = 1 # if select bay1, please check this parameter
-    s1.read_survey_file('./data/sd1wn12.G147')
-    s1.read_survey_file('./data/sd1wn06.G570')
+    s1.read_survey_file('./data/HBZL1608.873') #sd1wn12.G147
+    #s1.read_survey_file('./data/sd1wn06.G570')
     s1.corr_aux_effect()
     print(s1)         
-    ag = AGstation('地球所','11000220','A', 116.31, 39.946, 51.9)
+    ag = AGstation('地球所','13012112','A', 116.31, 39.946, 51.9)
     ag.ref_gra = 0.0
     ag.ref_gra_err = 2.1E-3 
     print(ag)
@@ -1178,7 +1288,7 @@ if __name__ == '__main__':
     print(gravwork)
     gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
     if gravwork.pre_adj():
-        #print(len(gravwork.mat_list[0]))
+        print(len(gravwork.mat_list[0]))
         gravwork.run_adj('./data/grav_baj.txt')
     #aa = json.load(open('./data/grav_baj.txt'))
     #gravwork.export_camp_json('./data/gravwork.json') #保存对象示例到磁盘

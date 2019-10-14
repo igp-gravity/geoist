@@ -274,11 +274,11 @@ class Bayadj(Adjustment):
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
         #len2 = int(len(uss)/lens) #多台重力仪观测不一致
         #bsm = 2
-        len2 = gravlen[0,1] - bsm
+        len2 = gravlen[0,2] - bsm
         wb = np.ones(len2)/np.exp(x[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
-            len2 = gravlen[k,1] - bsm
+            len2 = gravlen[k,2] - bsm #20191014
             wb = np.ones(len2)/np.exp(x[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -315,6 +315,7 @@ class Bayadj(Adjustment):
         uag = mat_list[4]
         dag = mat_list[5]
         wag = mat_list[6]
+        #print(glen)
 
         m, n = uss.shape
         m1, n1 = urr.shape
@@ -346,18 +347,20 @@ class Bayadj(Adjustment):
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
         #len2 = int(len(uss)/lens)
         #cls.bsm = 2
-        len2 = glen[0,1] - cls.bsm
+        len2 = glen[0,2] - cls.bsm #20191014
         wb = np.ones(len2)/np.exp(xopt[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
-            len2 = glen[k,1] - cls.bsm
+            len2 = glen[k,2] - cls.bsm
             wb = np.ones(len2)/np.exp(xopt[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
         Wall = slg.block_diag(W, Wb)
-
         Wall = np.matrix(Wall)
-        
+        #print(np.diag(Wall))
+        #print(np.linalg.cond(A))
+        #print(np.linalg.cond(Wall))
+
         return cls.forward(Wall, A, b)
     @classmethod
     def goadj(cls, mat_list, glen, xinit, dinit):
@@ -381,7 +384,7 @@ class Bayadj(Adjustment):
         ab = np.hstack([uag[:,n:] ,zb0])
         zc0 = np.zeros([m, n1], dtype = float)
         ac = np.hstack([zc0 ,uss])
-
+        #print(aa.shape, ac.shape)
         aa = np.vstack([aa, ab])
         aa = np.vstack([aa, ac])
 
@@ -448,11 +451,11 @@ class Bayadj1(Bayadj):
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
         #len2 = int(len(uss)/lens)
         #bsm = 2
-        len2 = gravlen[0,1] - bsm
+        len2 = gravlen[0,2] - bsm #20191014
         wb = np.ones(len2)/np.exp(x[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
-            len2 = gravlen[k,1] - bsm
+            len2 = gravlen[k,2] - bsm
             wb = np.ones(len2)/np.exp(x[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
@@ -528,11 +531,11 @@ class Bayadj1(Bayadj):
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))
         #len2 = int(len(uss)/lens)
-        len2 = glen[0,1] - cls.bsm
+        len2 = glen[0,2] - cls.bsm #20191014
         wb = np.ones(len2)/np.exp(xopt[lens])
         Wb = np.diag(wb)
         for k in range(1, lens):
-            len2 = glen[k,1] - cls.bsm
+            len2 = glen[k,2] - cls.bsm
             wb = np.ones(len2)/np.exp(xopt[lens + k])
             Wb = slg.block_diag(Wb, np.diag(wb))
 
