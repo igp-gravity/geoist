@@ -95,21 +95,48 @@ class Adjustment(object):
         err = np.sqrt(np.diag(np.linalg.inv(A.T*W*A)))
         res = b- A*X
         return X, err, res
-    
-    @staticmethod 
-    def optimization(likelihood, x0, args, method = 1, xmin = [], xmax = [] ): 
+
+
+    @staticmethod
+    def optimization(likelihood, x0, args, method = 1, maxiter = 1000, xmin = [], xmax = [] ):
         """There are 4 method available. 
         1: Nelder-Mead simplex ; 
         2: Netwon; 
         3: Dual Annealing, can set bounds
         4: Basinhopping, can set bounds
         """
+        Nfeval = 1
+        #print(Nfeval, id(Nfeval))
+        def callback(xk):
+            nonlocal Nfeval
+            xx = np.sqrt(np.exp(xk[:]))*1000
+            #print(id(Nfeval))
+            if Nfeval%10 == 0:
+                if (len(xk) == 2):
+                    print('{0:4d} {1: 3.6f} {2: 3.6f}'.format(Nfeval, *xx))
+                elif (len(xk) == 4):
+                    print('{0:4d} {1: 3.6f} {2: 3.6f} {3: 3.6f} {4: 3.6f}'.format(Nfeval, *xx))
+                else:
+                    print('{0:4d} {1: 3.6f} ...'.format(Nfeval, *xx))
+
+            Nfeval += 1
+
         if (method == 1):
+            print('Nelder-Mead simplex method used for optimization')
+            if (len(x0) == 2):
+                print('{0:4s}   {1:9s}   {2:9s} '.format('Iter', ' X1', ' X2'))
+            elif (len(x0) == 4):
+                print('{0:4s}   {1:9s}   {2:9s}   {3:9s}   {4:9s} '.format('Iter', ' X1', ' X2', ' X3', ' X4'))
+            else:
+                print('{0:4s}   {1:9s}  ...'.format('Iter', ' X1'))
             xopt = opt.minimize(likelihood, x0, args, method='nelder-mead',
-                                options={'disp': True})
+                                options={'maxiter':maxiter,'disp': True}, callback = callback)
         elif (method == 2):
-            test = lambda x: 100*(x[1]-x[0]**2)**2+(1-x[0])**2
+            #test = lambda x: 100*(x[1]-x[0]**2)**2+(1-x[0])**2
             #xopt = opt.fmin(func = likelihood, x0)
+            print('BFGS method used for optimization')
+            xopt = opt.minimize(likelihood, x0, args, method='BFGS',
+                                options={'disp': True})
         elif (method == 3):
             xopt = opt.dual_annealing(likelihood, bounds=list(zip(xmin, xmax)), 
                                       seed=1234)
@@ -363,7 +390,7 @@ class Bayadj(Adjustment):
 
         return cls.forward(Wall, A, b)
     @classmethod
-    def goadj(cls, mat_list, glen, xinit, dinit):
+    def goadj(cls, mat_list, glen, xinit, dinit, method = 1, maxiter = 1000):
         """Go adjustment using the matrix list
            the inversed weights will be estimated.  
         """
@@ -403,7 +430,7 @@ class Bayadj(Adjustment):
         uss = np.matrix(uss)
 
         args = (ua, uss, ub, wag, glen, cls.bsm)
-        return cls.optimization(cls.likelihood, x0, args)
+        return cls.optimization(cls.likelihood, x0, args, method, maxiter)
 
 
 class Bayadj1(Bayadj):

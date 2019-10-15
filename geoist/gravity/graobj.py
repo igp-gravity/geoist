@@ -627,7 +627,8 @@ class Survey(Chanlist):
                     l1tmp = Loop(vals[0],vals[2])
                     flag = 0
                     
-                if (line[0:5] == '55555'): 
+                if (line[0:5] == '55555') or (line[0:5] == '33333') or \
+                (line[0:5] == '44444') or (line[0:5] == '66666'):
                     self.loop_list.append(l1tmp) #loop
                     flag = 1
                 elif (line[0:5] == '99999'): 
@@ -1100,7 +1101,7 @@ class Campaign(object):
         return is_good, hr_max
     
     @timeit('runadj')
-    def run_adj(self, filename = ''):
+    def run_adj(self, filename = '', method = 1, maxiter = 1000):
         #import geoist.gravity.adjmethods as adj
         if (len(self.mat_list)<1):
             raise ValueError('Please run pre_adj() to generate Matrix!')
@@ -1130,7 +1131,7 @@ class Campaign(object):
 
             xinit = 0.01
             dinit = 1.0 #initial drift SD value
-            xopt = adj.Bayadj.goadj(self.mat_list, self._gravlen, xinit, dinit)
+            xopt = adj.Bayadj.goadj(self.mat_list, self._gravlen, xinit, dinit, method, maxiter)
 
             print('The optimization has finished. ABIC value is = %f'%xopt.fun)
             #print(xopt.x)
@@ -1274,9 +1275,9 @@ def flatten(items):
 if __name__ == '__main__':
     
     m1 = Meter('LCR','G147')
-    m1.read_table('./data/table1.dat')
+    #m1.read_table('./data/table1.dat')
     m2 = Meter('LCR','G570')
-    m2.read_table('./data/table1.dat')
+    #m2.read_table('./data/table1.dat')
     n1 = Network('NorthChina',1)
     n1.read_pnts('./data/DAHB.DZJ')
     print(n1)
@@ -1284,12 +1285,12 @@ if __name__ == '__main__':
     s1.add_meter(m1)
     s1.add_meter(m2)
     s1.net = n1
-    s1.meter_sf_index = 1 # if select bay1, please check this parameter
+    #s1.meter_sf_index = 1 # if select bay1, please check this parameter
     s1.read_survey_file('./data/sd1wn12.G147') #sd1wn12.G147
     s1.read_survey_file('./data/sd1wn06.G570')
     s1.corr_aux_effect()
     print(s1)         
-    ag = AGstation('地球所','13012112','A', 116.31, 39.946, 51.9)
+    ag = AGstation('地球所','11000220','A', 116.31, 39.946, 51.9)
     ag.ref_gra = 0.0
     ag.ref_gra_err = 2.1E-3 
     print(ag)
@@ -1297,10 +1298,10 @@ if __name__ == '__main__':
     gravwork.add_ag_sta(ag)                  #添加绝对点信息
     gravwork.add_surveys(s1)        #添加测量到平差任务
     print(gravwork)
-    gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
+    gravwork.adj_method = 1 #1:cls ; 2:Baj; 3:Baj1
     if gravwork.pre_adj():
         print(len(gravwork.mat_list[0]))
-        gravwork.run_adj('./data/grav_baj.txt')
+        gravwork.run_adj('./data/grav_baj.txt', 1, 1000) #1:simplex 2:BFGS
     #aa = json.load(open('./data/grav_baj.txt'))
     #gravwork.export_camp_json('./data/gravwork.json') #保存对象示例到磁盘
     #gravwork.save_mat_json('./data/gravmat.json') #保存平差矩阵到磁盘
