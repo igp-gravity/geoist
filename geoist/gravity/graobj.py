@@ -468,7 +468,10 @@ class Survey(Chanlist):
     
     def add_meter(self, meter):
         if not isinstance(meter, Meter):
-            raise ValueError('Input is not a instance of Meter class!')        
+            raise ValueError('Input is not a instance of Meter class!')
+        for i in self.meter_list:
+            if (i.msn == meter.msn):
+                raise ValueError('Meter {} has been added in the survey.'.format(meter.msn))
         self.meter_list.append(meter)
     @property
     def name(self):
@@ -599,7 +602,7 @@ class Survey(Chanlist):
                         gra_list.append(gval)
         return gra_list
 
-    def read_survey_file(self, filename):
+    def read_survey_file(self, filename, rename = ''):
         if not isinstance(self.net, Network):
             raise ValueError('Property net must be set!')  
         if len(self.meter_list) < 1:
@@ -608,7 +611,10 @@ class Survey(Chanlist):
         try:
             fh = open(filename, 'r')  
             #print("number of lines: %d"%len([1 for line in open(filename, 'r')]))
-            i = 0 
+            if len(rename.strip())> 0:
+                print('{} has all been renamed by {}'.format(filename, rename))
+
+            i = 0
             flag = 0
             for line in fh:    
                 i += 1
@@ -621,7 +627,9 @@ class Survey(Chanlist):
                    continue
 
                 vals=line.split()
-                 
+                if len(rename.strip())> 0:
+                    vals[0] = rename.strip()
+
                 if (i == 1): l1tmp = Loop(vals[0],vals[2])
                 
                 #print(l1tmp) 
@@ -790,6 +798,7 @@ class Campaign(object):
         press_val = []
         day_num = []
         loop_num = []
+        ####print(len(rec_vals))
 
         for reci in rec_vals:
             hour_val.append(reci[3])
@@ -967,19 +976,19 @@ class Campaign(object):
             for jj in self.survey_list[index].survey_table:
                 if (jj[0] == meter_name):
                     recs.append(jj)
-            #print(recs[0])
-            #print(recs[2])
+            #print(len(self.survey_list[index].survey_table))
+            #print(recs[0], jj[1],recs[-1])
             obs_mat, dcnos, dcnoe = self.tran_obs_array(recs, pnt_id0, gravlen[ii,:]) #step 1   
             #obs_mat : Um2/Um3/hrs/DYn/data_num/loop_num/day_num
             maxhrs = 16.0 #the max working duration per day.
             isgood, hourmax = self.check_hs(obs_mat[2], maxhrs) 
-            
+            #print(obs_mat[2].shape)
             if not isgood:
                 print('the max hour is %f, which is too long in one day!'%hourmax)
             else:
                 print('the max work hour in the survey is %f '%hourmax)
             ud = self.gen_drift(obs_mat[2], obs_mat[4], obs_mat[6])  #obs_mat[5]  #step 2
-            #print(int(gravlen[ii,1]))
+            ####print(int(gravlen[ii,1]))
             sm = self.smooth_matrix(int(gravlen[ii,2]), 2) #order equals to two. #step 3
             #print(sm)
             print('segment g(mGal) max = %f/ min =%f'%(max(obs_mat[3]),min(obs_mat[3])))
@@ -1111,6 +1120,7 @@ class Campaign(object):
         if self.adj_method == 'cls':
             # initial adjustment class
             print(self.adj_method)
+            ####print(self.mat_list[2].shape)
 
             xinit = 0.01
             xopt = adj.Clsadj.goadj(self.mat_list, self._gravlen, xinit) 
@@ -1275,35 +1285,77 @@ def flatten(items):
             yield x
 
 if __name__ == '__main__':
-    
-    m1 = Meter('LCR','G147')
-    #m1.read_table('./data/table1.dat')
-    m2 = Meter('LCR','G570')
-    #m2.read_table('./data/table1.dat')
+    m1 = Meter('CG-5','C098')
+    m1.msf = 1.00009
+    m2 = Meter('CG-5','C099')
+    m2.msf = 1.000637
+    m3 = Meter('CG-5','C097')
+    m3.msf = 1.000163
+    #m3.read_table('./data/table.dat')
+    m4 = Meter('CG-5','C0981')
+    m4.msf = 1.00009
     n1 = Network('NorthChina',1)
-    n1.read_pnts('./data/hball8.txt')
+    n1.read_pnts('./data/SDQSX8.DZJ')
     print(n1)
-    s1 = Survey('HBtest', '200901')
+    s1 = Survey('DQSW+SX', '201508')
     s1.add_meter(m1)
     s1.add_meter(m2)
+    s1.add_meter(m3)
+    #s1.add_meter(m4)
     s1.net = n1
-    #s1.meter_sf_index = 1 # if select bay1, please check this parameter
-    s1.read_survey_file('./data/simd1nf.G147') #sd1wn12.G147
-    s1.read_survey_file('./data/simd2dn.G570')
+    s1.read_survey_file('./data/QSCW201508p.098')
+    s1.read_survey_file('./data/QSCW201508p.099')
+    s1.read_survey_file('./data/SXCW971508p.ori')
+    s1.read_survey_file('./data/SXCW981508p.ori')
     s1.corr_aux_effect()
-    print(s1)         
-    ag = AGstation('地球所','11000220','A', 116.31, 39.946, 51.9)
-    ag.ref_gra = 0.0
-    ag.ref_gra_err = 2.1E-3 
-    print(ag)
-    gravwork = Campaign('IGP201702', 1)
-    gravwork.add_ag_sta(ag)                  #添加绝对点信息
+    print(s1)
+    #查找一个测量工程中某个测点号对应的坐标
+    slon, slat, selev = s1._get_pnt_loc('11003902')
+    #查找一个测量工程中某台重力仪的格值
+    sf_val = s1._get_meter_sf('C097')
+    
+    ag1 = AGstation('白山洞绝对','11014121','A', 116.169, 40.018, 212.5)
+    ag1.ref_gra = 1110.54453
+    ag1.ref_gra_err = 5.0E-3 
+    
+    gravwork = Campaign('IGP201604', 1)
+    gravwork.add_ag_sta(ag1)                  #添加绝对点信息 可以添加多次
+    
     gravwork.add_surveys(s1)        #添加测量到平差任务
     print(gravwork)
-    gravwork.adj_method = 1 #1:cls ; 2:Baj; 3:Baj1
-    if gravwork.pre_adj():
-        print(len(gravwork.mat_list[0]))
-        gravwork.run_adj('./data/grav_baj2.txt', 3, 1000) #1:simplex 2:BFGS
+    #开始平差pre_adj是完成从观测文件重，生成平差矩阵的
+    gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
+    
+    gravwork.pre_adj()
+    gravwork.run_adj('./data/grav_cls.txt',3)
+    # m1 = Meter('LCR','G147')
+    # #m1.read_table('./data/table1.dat')
+    # m2 = Meter('LCR','G570')
+    # #m2.read_table('./data/table1.dat')
+    # n1 = Network('NorthChina',1)
+    # n1.read_pnts('./data/hball8.txt')
+    # print(n1)
+    # s1 = Survey('HBtest', '200901')
+    # s1.add_meter(m1)
+    # s1.add_meter(m2)
+    # s1.net = n1
+    # #s1.meter_sf_index = 1 # if select bay1, please check this parameter
+    # s1.read_survey_file('./data/simd1nf.G147') #sd1wn12.G147
+    # s1.read_survey_file('./data/simd2dn.G570')
+    # s1.corr_aux_effect()
+    # print(s1)         
+    # ag = AGstation('地球所','11000220','A', 116.31, 39.946, 51.9)
+    # ag.ref_gra = 0.0
+    # ag.ref_gra_err = 2.1E-3 
+    # print(ag)
+    # gravwork = Campaign('IGP201702', 1)
+    # gravwork.add_ag_sta(ag)                  #添加绝对点信息
+    # gravwork.add_surveys(s1)        #添加测量到平差任务
+    # print(gravwork)
+    # gravwork.adj_method = 1 #1:cls ; 2:Baj; 3:Baj1
+    # if gravwork.pre_adj():
+    #     print(len(gravwork.mat_list[0]))
+    #     gravwork.run_adj('./data/grav_baj2.txt', 3, 1000) #1:simplex 2:BFGS
     #aa = json.load(open('./data/grav_baj.txt'))
     #gravwork.export_camp_json('./data/gravwork.json') #保存对象示例到磁盘
     #gravwork.save_mat_json('./data/gravmat.json') #保存平差矩阵到磁盘

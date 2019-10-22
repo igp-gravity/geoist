@@ -117,7 +117,7 @@ class Adjustment(object):
                 elif (len(xk) == 4):
                     print('{0:4d} {1: 3.6f} {2: 3.6f} {3: 3.6f} {4: 3.6f}'.format(Nfeval, *xx))
                 else:
-                    print('{0:4d} {1: 3.6f} {2: 3.6f} {3: 3.6f} {4: 3.6f} ...'.format(Nfeval, *xx))
+                    print('{0:4d} {1: 3.6f} ...'.format(Nfeval, *xx))
 
             Nfeval += 1
 
@@ -128,7 +128,7 @@ class Adjustment(object):
             elif (len(x0) == 4):
                 print('{0:4s}   {1:9s}   {2:9s}   {3:9s}   {4:9s} '.format('Iter', ' X1', ' X2', ' X3', ' X4'))
             else:
-                print('{0:4s}   {1:9s}   {2:9s}   {3:9s}   {4:9s} ...'.format('Iter', ' X1', ' X2', ' X3', ' X4'))
+                print('{0:4s}   {1:9s} ...'.format('Iter', ' X1'))
             xopt = opt.minimize(likelihood, x0, args, method='nelder-mead',
                                 options={'maxiter':maxiter,'disp': True}, callback = callback)
         elif (method == 2):
@@ -136,11 +136,11 @@ class Adjustment(object):
             #xopt = opt.fmin(func = likelihood, x0)
             print('BFGS method used for optimization')
             xopt = opt.minimize(likelihood, x0, args, method='BFGS',
-                                options={'maxiter':maxiter, 'disp': True})
+                                options={'maxiter':maxiter, 'disp': True}, callback = callback)
         elif (method == 3):
             print('L-BFGS-B method used for optimization')
             xopt = opt.minimize(likelihood, x0, args, method='L-BFGS-B',
-                                options={'disp': None})
+                                options={'maxiter':maxiter,'disp': None}, callback = callback)
         else:
             #x0 = [10., 10.] # the starting point
             #xmin = [1., 1.] # the bounds
@@ -220,7 +220,7 @@ class Clsadj(Adjustment):
         aa = np.hstack([aa ,mat_list[3]])
         aa = np.vstack([aa ,uag[:, n-len(glen):]])
         bb = np.hstack([ubb, dag])        
-        
+        ####print(len(ubb),len(dag))
         A = np.matrix(aa)
         b = np.matrix(bb).T
 
@@ -361,11 +361,13 @@ class Bayadj(Adjustment):
 
         bb = np.hstack([ubb, dag])
         bb0 = np.zeros(m, dtype = float)
+        ####print(len(bb),len(bb0))
         bb = np.hstack([bb, bb0])
         
         A = np.matrix(aa)
         b = np.matrix(bb).T
         lens = len(glen)
+
         k = 0 
         w = np.ones(glen[0,0])/np.exp(xopt[0])
         W = np.diag(w)
