@@ -613,10 +613,12 @@ class Survey(Chanlist):
             for line in fh:    
                 i += 1
                 line = line.strip()  # Clean line
-                # Skip blank and comment lines
-                if (not line) or (line[0].lower() == 'a') or (line[0] == '#'): 
+                # Skip blank and comment lines # (line[0].isalpha())
+
+                if (not line) or (line[0].lower() == 'a') or (line[0] == '#') or (len(line)>6 and len(line)<15):
                    i -= 1
-                   continue   
+                   print(line)
+                   continue
 
                 vals=line.split()
                  
