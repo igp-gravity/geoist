@@ -117,7 +117,7 @@ class Adjustment(object):
                 elif (len(xk) == 4):
                     print('{0:4d} {1: 3.6f} {2: 3.6f} {3: 3.6f} {4: 3.6f}'.format(Nfeval, *xx))
                 else:
-                    print('{0:4d} {1: 3.6f} ...'.format(Nfeval, *xx))
+                    print('{0:4d} {1: 3.6f} {2: 3.6f} {3: 3.6f} {4: 3.6f} ...'.format(Nfeval, *xx))
 
             Nfeval += 1
 
@@ -128,7 +128,7 @@ class Adjustment(object):
             elif (len(x0) == 4):
                 print('{0:4s}   {1:9s}   {2:9s}   {3:9s}   {4:9s} '.format('Iter', ' X1', ' X2', ' X3', ' X4'))
             else:
-                print('{0:4s}   {1:9s}  ...'.format('Iter', ' X1'))
+                print('{0:4s}   {1:9s}   {2:9s}   {3:9s}   {4:9s} ...'.format('Iter', ' X1', ' X2', ' X3', ' X4'))
             xopt = opt.minimize(likelihood, x0, args, method='nelder-mead',
                                 options={'maxiter':maxiter,'disp': True}, callback = callback)
         elif (method == 2):
@@ -136,10 +136,11 @@ class Adjustment(object):
             #xopt = opt.fmin(func = likelihood, x0)
             print('BFGS method used for optimization')
             xopt = opt.minimize(likelihood, x0, args, method='BFGS',
-                                options={'disp': True})
+                                options={'maxiter':maxiter, 'disp': True})
         elif (method == 3):
-            xopt = opt.dual_annealing(likelihood, bounds=list(zip(xmin, xmax)), 
-                                      seed=1234)
+            print('L-BFGS-B method used for optimization')
+            xopt = opt.minimize(likelihood, x0, args, method='L-BFGS-B',
+                                options={'disp': None})
         else:
             #x0 = [10., 10.] # the starting point
             #xmin = [1., 1.] # the bounds
@@ -179,10 +180,10 @@ class Clsadj(Adjustment):
         S = np.matrix(S)
         Y = np.matrix(Y).T
         k = 0 
-        w = np.ones(gravlen[0,0])/x[0]
+        w = np.ones(gravlen[0,0])/np.exp(x[0])
         W = np.diag(w)
         for k in range(1, lens):
-            w = np.ones(gravlen[k,0])/x[k]
+            w = np.ones(gravlen[k,0])/np.exp(x[k])
             W = slg.block_diag(W, np.diag(w))
        
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))       
@@ -193,6 +194,7 @@ class Clsadj(Adjustment):
         #print(S.shape)
         #print(W.shape)
         f1 = sum(np.log(ff))
+        #print(min(ff))
         X = np.linalg.inv(S.T*W*S)*S.T*W*Y
         f2 = np.sum((S*X-Y).T*W*(S*X-Y))  #min AT P A
         return f1 + f2
@@ -223,10 +225,10 @@ class Clsadj(Adjustment):
         b = np.matrix(bb).T
 
         k = 0
-        w = np.ones(glen[0,0])/xopt[0]
+        w = np.ones(glen[0,0])/np.exp(xopt[0])
         W = np.diag(w)
         for k in range(1, len(glen)):
-            w = np.ones(glen[k,0])/xopt[k]
+            w = np.ones(glen[k,0])/np.exp(xopt[k])
             W = slg.block_diag(W, np.diag(w))
         W = slg.block_diag(W, np.linalg.inv(np.diag(wag)))       
         W = np.matrix(W)
@@ -255,7 +257,7 @@ class Clsadj(Adjustment):
         aa = np.vstack([aa ,uag[:, n-len(glen):]])
         bb = np.hstack([ubb, dag])        
         
-        x0 = np.ones(len(glen))*xinit**2
+        x0 = np.log(np.ones(len(glen))*xinit**2)
         #print(x0.shape)
         ua = np.matrix(aa)
         ub = np.matrix(bb)

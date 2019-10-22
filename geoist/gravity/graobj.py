@@ -1114,10 +1114,10 @@ class Campaign(object):
             xopt = adj.Clsadj.goadj(self.mat_list, self._gravlen, xinit) 
             print('The optimization has finished. AIC value is = %f'%xopt.fun)
             for ii in xopt.x :
-                print(np.sqrt(ii)*1000, 'uGal')
+                print(np.sqrt(np.exp(ii))*1000, 'uGal')
             xx, err, res = adj.Clsadj.result(xopt.x,self.mat_list, self._gravlen)
             dlen = len(self._gravlen)
-            self.survey_dic['weight_SD_uGal'] = (np.sqrt(xopt.x)*1000).tolist()
+            self.survey_dic['weight_SD_uGal'] = (np.sqrt(np.exp(xopt.x))*1000).tolist()
             self.survey_dic['drift_uGal_hr'] = np.squeeze(np.array(xx[0:dlen]*1000)).tolist()
             self.survey_dic['drift_err_uGal_hr'] = (err[0:dlen]*1000).tolist()
             self.survey_dic['staid'] = self.obs_list[0]
@@ -1279,15 +1279,15 @@ if __name__ == '__main__':
     m2 = Meter('LCR','G570')
     #m2.read_table('./data/table1.dat')
     n1 = Network('NorthChina',1)
-    n1.read_pnts('./data/DAHB.DZJ')
+    n1.read_pnts('./data/hball8.txt')
     print(n1)
     s1 = Survey('HBtest', '200901')
     s1.add_meter(m1)
     s1.add_meter(m2)
     s1.net = n1
     #s1.meter_sf_index = 1 # if select bay1, please check this parameter
-    s1.read_survey_file('./data/sd1wn12.G147') #sd1wn12.G147
-    s1.read_survey_file('./data/sd1wn06.G570')
+    s1.read_survey_file('./data/simd1nf.G147') #sd1wn12.G147
+    s1.read_survey_file('./data/simd2dn.G570')
     s1.corr_aux_effect()
     print(s1)         
     ag = AGstation('地球所','11000220','A', 116.31, 39.946, 51.9)
@@ -1301,7 +1301,7 @@ if __name__ == '__main__':
     gravwork.adj_method = 1 #1:cls ; 2:Baj; 3:Baj1
     if gravwork.pre_adj():
         print(len(gravwork.mat_list[0]))
-        gravwork.run_adj('./data/grav_baj.txt', 1, 1000) #1:simplex 2:BFGS
+        gravwork.run_adj('./data/grav_baj2.txt', 3, 1000) #1:simplex 2:BFGS
     #aa = json.load(open('./data/grav_baj.txt'))
     #gravwork.export_camp_json('./data/gravwork.json') #保存对象示例到磁盘
     #gravwork.save_mat_json('./data/gravmat.json') #保存平差矩阵到磁盘
