@@ -235,7 +235,7 @@ class Clsadj(Adjustment):
         
         return cls.forward(W, A, b)
     @classmethod
-    def goadj(cls, mat_list, glen, xinit):
+    def goadj(cls, mat_list, glen, xinit, method = 1, maxiter = 1000):
         """Go adjustment using the matrix list
         the inversed weights will be estimated.
         """
@@ -263,7 +263,7 @@ class Clsadj(Adjustment):
         ub = np.matrix(bb)
         #uw = np.matrix(uw)
         args = (ua, ub, wag, glen)
-        return cls.optimization(cls.likelihood, x0, args)
+        return cls.optimization(cls.likelihood, x0, args, method, maxiter)
 
 class Bayadj(Adjustment):
     """Bayesian Adjustment using non-Linear drift model
