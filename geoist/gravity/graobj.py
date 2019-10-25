@@ -456,7 +456,8 @@ class Survey(Chanlist):
         self.meter_list = []
         self.loop_list = [] 
         self.survey_table = []
-        self.meter_sf_index = 0
+        self._meter_sf_index = [] #20191024
+        self._meter_sf = []
     def __str__(self):
         """Override the built-in method 'print' when applied to such object
         
@@ -478,8 +479,23 @@ class Survey(Chanlist):
         return self._name 
     @property
     def time_tag(self):
-        return self._time_tag    
-    
+        return self._time_tag
+
+    @property
+    def meter_sf_index(self):
+        return self._meter_sf_index
+
+    @meter_sf_index.setter
+    def meter_sf_index(self, value):
+        if not isinstance(value, list):
+            raise ValueError('Input is not a instance of List!')
+        if len(self.meter_list) < 1:
+            raise ValueError('Meter MUST be firstly added in Survey!')
+        self._meter_sf_index = value
+        self._meter_sf = []
+        for mm in self.meter_list:
+            self._meter_sf.append(mm.msf)
+
     @property
     def net(self):
         return self._net 
@@ -1001,7 +1017,7 @@ class Campaign(object):
             else:
                 dyn = obs_mat[3] - um2[:,0] - um2[:,1]
                 dyn2 = obs_mat[3] - um2[:,0] - um2[:,1]
-            #print(ii)
+            #print(sum(dyn),sum(dyn2))
             if (ii == 0):
                 udd = ud
                 uss = sm
@@ -1165,13 +1181,18 @@ class Campaign(object):
             xinit = 0.01
             dinit = 1.0  #initial drift SD value
             sfinit = 1.0
-            kstart = self.survey_list[0].meter_sf_index #不用标定格值的仪器数
+            if (len(self.survey_list[0].meter_sf_index) != len(self.survey_list[0].meter_list)):
+                raise ValueError('Please check meter_sf_index of Survey object!')
+
+            kstart = self.survey_list[0].meter_sf_index #标定格值的仪器设置
+            kvalues = self.survey_list[0]._meter_sf #先验仪器格值
+
             xopt = adj.Bayadj1.goadj1(self.mat_list, self._gravlen,
-                                     xinit, dinit, sfinit, kstart)
+                                     xinit, dinit, sfinit, kstart, kvalues, method, maxiter)
             print('The optimization has finished. ABIC value is = %f'%xopt.fun)
             for ii in xopt.x :
-                print(np.sqrt(np.exp(ii)))
-            xx, err, res = adj.Bayadj1.result1(xopt.x,self.mat_list, self._gravlen)
+                print(np.sqrt(np.exp(ii))*1000)
+            xx, err, res = adj.Bayadj1.result1(xopt.x,self.mat_list, self._gravlen, kstart, kvalues)
             dlen = len(self._gravlen)
             dobs = len(self.obs_list[0])
             self.survey_dic['weight_SD_uGal'] = (np.sqrt(np.exp(xopt.x))).tolist()
@@ -1301,13 +1322,14 @@ if __name__ == '__main__':
     s1.add_meter(m1)
     s1.add_meter(m2)
     s1.add_meter(m3)
-    #s1.add_meter(m4)
+    s1.add_meter(m4)
     s1.net = n1
     s1.read_survey_file('./data/QSCW201508p.098')
     s1.read_survey_file('./data/QSCW201508p.099')
     s1.read_survey_file('./data/SXCW971508p.ori')
-    s1.read_survey_file('./data/SXCW981508p.ori')
+    s1.read_survey_file('./data/SXCW981508p.ori','C0981')
     s1.corr_aux_effect()
+    s1.meter_sf_index = [0, 0, 0, 0]
     print(s1)
     #查找一个测量工程中某个测点号对应的坐标
     slon, slat, selev = s1._get_pnt_loc('11003902')
@@ -1324,10 +1346,10 @@ if __name__ == '__main__':
     gravwork.add_surveys(s1)        #添加测量到平差任务
     print(gravwork)
     #开始平差pre_adj是完成从观测文件重，生成平差矩阵的
-    gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
+    gravwork.adj_method = 3 #1:cls ; 2:Baj; 3:Baj1
     
     gravwork.pre_adj()
-    gravwork.run_adj('./data/grav_cls.txt',3)
+    gravwork.run_adj('./data/grav_baj.txt',3)
     # m1 = Meter('LCR','G147')
     # #m1.read_table('./data/table1.dat')
     # m2 = Meter('LCR','G570')
