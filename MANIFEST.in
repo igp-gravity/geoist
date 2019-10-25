@@ -4,4 +4,8 @@ include geoist/pfm/*.COF
 include geoist/pfm/data/*
 include geoist/snoopy/data/*
 include geoist/dataset/*
+include geoist/magmod/data/*
+include geoist/magmod/tests/data/*.tsv
+include geoist/magmod/magnetic_model/tests/data/*.txt
+include geoist/magmod/magnetic_model/tests/data/*.cdf
 recursive-include geoist/ *.txt
