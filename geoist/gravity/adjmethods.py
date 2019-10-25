@@ -292,6 +292,7 @@ class Bayadj(Adjustment):
         lens = len(gravlen)
 
         uall = np.matrix(uall)
+        #print(sum(np.matrix(Y).T),Y.shape)
         Y = np.matrix(Y).T
         k = 0 
         w = np.ones(gravlen[0,0])/np.exp(x[0])
@@ -405,6 +406,7 @@ class Bayadj(Adjustment):
         uag = mat_list[4]
         dag = mat_list[5]
         wag = mat_list[6]
+        #print(sum(ubb))
 
         m, n = uss.shape
         m1, n1 = urr.shape
@@ -454,26 +456,33 @@ class Bayadj1(Bayadj):
     def likelihood1(x, *args): #x,Uall,Uss,Y,gravlen,wag
         """给定超参数后，计算ABIC数值
         W       S         W Y       
-        |Wrg       ||Urr  Udd| =   |Dbb|
+        |Wrg       ||Urr  Udd| =   |Dbb|*sf
         |   Wag    ||Uag     |     |dag|
         |       Wb ||     Uss|     |0  | 
         Input params(S,Y) must be np.matrix
         kstart is the index of fix meter scale factor
         """
-        uall, uss, Y, wag, gravlen, Y2, bsm, kstart = args
+        uall, uss, Y, wag, gravlen, Y2, bsm, kstart, kvalues= args
         lens = len(gravlen)
-
         uall = np.matrix(uall)
-
         kk = 0
+        #print(Y.shape,Y2.shape)
+        Y1t = np.zeros(Y.shape)
+        kp = 0
         for i in range(lens):   #scale factor of meter
             len3 = int(gravlen[i,0])
-            for j in range(kstart,len3):
-                sf = np.exp(x[-i])
-                Y[:,kk] = Y[:,kk]*sf + Y2[:,kk]
+            if (kstart[i] > 0): #20191024
+                sf = np.exp(x[2*lens+kp])
+                kp +=1
+            else:
+                sf = kvalues[i]
+            #print(i,sf,kstart[i],2*lens+kp)
+            for j in range(len3): #(kstart,len3):
+                Y1t[:,kk] = Y[:,kk]*sf + Y2[:,kk]
                 kk += 1
 
-        Y = np.matrix(Y).T
+        #print(sum(np.matrix(Y1t).T))
+        Y1t = np.matrix(Y1t).T
         k = 0
         w = np.ones(gravlen[0,0])/np.exp(x[0])
         W = np.diag(w)
@@ -508,14 +517,14 @@ class Bayadj1(Bayadj):
 
         f1 = sum(np.log(np.abs(u0)))
         f2 = sum(np.log(u210))
-        X = v0.T*(np.mat(np.diag(1./u0)))*l0.T*uall.T*Wall*Y
-        f3 = (uall*X-Y).T*Wall*(uall*X-Y) #min AT P A
+        X = v0.T*(np.mat(np.diag(1./u0)))*l0.T*uall.T*Wall*Y1t
+        f3 = (uall*X-Y1t).T*Wall*(uall*X-Y1t) #min AT P A
         f0 = sum(np.log(1./np.diag(W)))
         f3 = f3[0,0]
 
         return f0 + f1 - f2 + f3
     @classmethod
-    def result1(cls, xopt, mat_list, glen, kstart):
+    def result1(cls, xopt, mat_list, glen, kstart, kvalues):
         """forward result with the optimated weights
         """
         udd = mat_list[0]
@@ -543,18 +552,27 @@ class Bayadj1(Bayadj):
         bb = np.hstack([ubb, dag])
         bb0 = np.zeros(m, dtype = float)
         bb = np.hstack([bb, bb0])
+        bbt = np.zeros(bb.shape)
+
         lens = len(glen)
         kk = 0
+        kp = 0
+        #print(bb.shape,ubb2.shape)
         for i in range(lens):   #scale factor of meter
             len3 = int(glen[i,0])
-            for j in range(kstart, len3):
-                sf = np.exp(xopt[-i])
-                bb[:,kk] = bb[:,kk]*sf + ubb2[:,kk]
+            if (kstart[i] > 0):
+                sf = np.exp(xopt[2*lens+kp])
+                kp += 1
+            else:
+                sf = kvalues[i]
+            print('The optimized SF is {0: 3.6f}/{1: 1d}'.format(sf, kstart[i]))
+            for j in range(len3):
+                bbt[kk] = bb[kk]*sf + ubb2[kk]
                 kk += 1
 
         A = np.matrix(aa)
-        b = np.matrix(bb).T
-
+        b = np.matrix(bbt).T
+        #print(bb.shape,b.shape)
         k = 0
         w = np.ones(glen[0,0])/np.exp(xopt[0])
         W = np.diag(w)
@@ -578,7 +596,7 @@ class Bayadj1(Bayadj):
         
         return cls.forward(Wall, A, b)
     @classmethod
-    def goadj1(cls, mat_list, glen, xinit, dinit, sfinit, kstart = 0):
+    def goadj1(cls, mat_list, glen, xinit, dinit, sfinit, kstart, kvalues, method = 1, maxiter = 1000):
         """Go adjustment using the matrix list
            the inversed weights will be estimated.  
         """
@@ -590,6 +608,7 @@ class Bayadj1(Bayadj):
         dag = mat_list[5]
         wag = mat_list[6]
         ubb2 = mat_list[7]
+        #print(sum(ubb))
 
         m, n = uss.shape
         m1, n1 = urr.shape
@@ -610,17 +629,18 @@ class Bayadj1(Bayadj):
 
         x0 = np.ones(len(glen))*xinit**2
         d0 = np.ones(len(glen))*dinit**2
-        sf0 = np.ones(len(glen))*sfinit**2
-
+        #print(int(sum(kstart))) #20191025
+        sf0 = np.ones(int(sum(kstart)))*sfinit
         x0 = np.log(np.hstack([x0, d0, sf0]))
+        #print(x0)
 
         ua = np.matrix(aa)
         ub = np.matrix(bb)
         uss = np.matrix(uss)
         ub2 = np.matrix(ubb2)
 
-        args = (ua, uss, ub, wag, glen, ub2, cls.bsm, kstart)
-        return cls.optimization(cls.likelihood1, x0, args)
+        args = (ua, uss, ub, wag, glen, ub2, cls.bsm, kstart, kvalues)
+        return cls.optimization(cls.likelihood1, x0, args, method, maxiter)
 
 class Bayadj2(Bayadj):
     """Bayesian Adjustment using non-Linear drift model
