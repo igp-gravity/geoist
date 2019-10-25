@@ -31,12 +31,12 @@ jobs:
       #    displayName: 'activate conda and install additional packages'
 
   - bash: conda env create --yes --quiet --name geoist
-    displayName: Create Anaconda environment
+    displayName: 'Create Anaconda environment'
 
   - bash: |
       source activate geoist
       conda install --yes --quiet --name geoist cython scipy pytest pandas matplotlib h5py numpy MarkDown rasterio seaborn patsy statsmodels numba
-     displayName: Install Anaconda packages
+     displayName: 'Install Anaconda packages'
 
   - bash: |
       source activate geoist
