@@ -1139,7 +1139,7 @@ class Campaign(object):
             ####print(self.mat_list[2].shape)
 
             xinit = 0.01
-            xopt = adj.Clsadj.goadj(self.mat_list, self._gravlen, xinit) 
+            xopt = adj.Clsadj.goadj(self.mat_list, self._gravlen, xinit, method, maxiter) 
             print('The optimization has finished. AIC value is = %f'%xopt.fun)
             for ii in xopt.x :
                 print(np.sqrt(np.exp(ii))*1000, 'uGal')

@@ -17,7 +17,7 @@ m2.msf = 1.000637
 m3 = gg.Meter('CG-5','C097')
 m3.msf = 1.000163
 #m3.read_table('./data/table.dat')
-m4 = gg.Meter('CG-5','C098')
+m4 = gg.Meter('CG-5','C0981')
 m4.msf = 1.00009
 n1 = gg.Network('NorthChina',1)
 n1.read_pnts('./data/SDQSX8.DZJ')
@@ -31,7 +31,7 @@ s1.net = n1
 s1.read_survey_file('./data/QSCW201508p.098')
 s1.read_survey_file('./data/QSCW201508p.099')
 s1.read_survey_file('./data/SXCW971508p.ori')
-s1.read_survey_file('./data/SXCW981508p.ori')
+s1.read_survey_file('./data/SXCW981508p.ori', 'C0981')
 
 
 s1.corr_aux_effect()
@@ -62,7 +62,7 @@ gravwork.add_ag_sta(ag1)                  #添加绝对点信息 可以添加多
 gravwork.add_surveys(s1)        #添加测量到平差任务
 print(gravwork)
 #开始平差pre_adj是完成从观测文件重，生成平差矩阵的
-gravwork.adj_method = 1 #1:cls ; 2:Baj; 3:Baj1
+gravwork.adj_method = 2 #1:cls ; 2:Baj; 3:Baj1
 #写法1：平差结果导出到txt，json格式
 #if gravwork.pre_adj():
 #    #print(len(gravwork.mat_list[0]))
