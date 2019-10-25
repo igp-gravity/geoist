@@ -36,7 +36,7 @@ jobs:
   - bash: |
       source activate geoist
       conda install --yes --quiet --name geoist cython scipy pytest pandas matplotlib h5py numpy MarkDown rasterio seaborn patsy statsmodels numba
-     displayName: 'Install Anaconda packages'
+    displayName: 'Install Anaconda packages'
 
   - bash: |
       source activate geoist
