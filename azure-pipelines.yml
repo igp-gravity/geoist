@@ -39,7 +39,7 @@ jobs:
     displayName: 'Install Anaconda packages'
 
   - bash: |
-      source activate geoist
+      conda activate geoist
       pytest ./geoist --junitxml=junit/test-results.xml
     displayName: 'pytest'
       # pytest ./geoist --doctest-modules --junitxml=junit/test-results.xml
