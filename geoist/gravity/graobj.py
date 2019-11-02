@@ -77,13 +77,17 @@ class Meter(object):
     #_scalefactor = 1.0
     count = 0
     
-    def __init__(self, gtype, gsn):
+    def __init__(self, gtype, gsn, alias = ''):
         """
         """
         self._mtype = gtype
         self._msn = gsn
         self._scalefactor = 1.0
         self.table_data = []
+        if (len(alias)>0):
+            self._alias = alias
+        else:
+            self._alias = gsn
         Meter.count += 1
         
     @property
@@ -151,7 +155,8 @@ class Meter(object):
                 if iflag:
                     vals=line.split()
                     self.table_data.append(vals)
-                if (line.lower() == self.msn.lower()):
+                #if (line.lower() == self.msn.lower()): #20191102
+                if (line.lower() == self._alias.lower()):
                     iflag = True
             f.close
         except IOError:
@@ -165,7 +170,21 @@ class Meter(object):
         
 
     def export_table(self, filename):
-        pass
+        try:
+            if len(self.table_data)>0:
+                f = open(filename, mode = 'w')
+                f.write(list2json(self.table_data))
+                f.close
+            else:
+                print('There is not recording in Table.')
+
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')  
+
     
     def save_meter(self, filename):
         try:
@@ -288,7 +307,7 @@ class AGstation(Station):
             raise ValueError('ref V gravity gradient value must be an float!')
         self._ref_v_gd = value 
 
-        
+
 class Network(object):
     """Gravity Network Configure
     
@@ -669,7 +688,7 @@ class Survey(Chanlist):
             print('Reading at line %d : check raw data file'%(i))
         except IndexError:
             print('Reading at line %d : check raw data file: possibly last line?'%(i))       
-           
+
 
 class Campaign(object):
     """
@@ -766,6 +785,35 @@ class Campaign(object):
         if not isinstance(ag, AGstation):
             raise ValueError('Input is not a instance of AGstation class!')        
         self.agstation_list.append(ag)
+
+    def add_ag_from_file(self, filename):
+        """add the absolute gravity station to the Campaign class from the file
+        """
+        #20191102
+        try:
+            f = open(filename, 'r')
+            #print("number of lines: %d"%len([1 for line in open(filename, 'r')]))
+
+            for line in f:
+                line = line.strip()
+                if (not line) or (line[0] == '#'):
+                   print('Heading of AG file:',line)
+                   continue
+
+                vals=line.split()
+                ag1 = AGstation(vals[0],vals[1],vals[2],vals[3],vals[4],vals[5])
+                #('白山洞绝对','11014121','A', 116.169, 40.018, 212.5)
+                ag1.ref_gra = vals[6] #1110.54453
+                ag1.ref_gra_err = vals[7]#5.0E-3
+                self.agstation_list.append(ag1)
+            f.close
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')          
+
 
     def add_surveys(self, survey):
         """
@@ -1195,9 +1243,12 @@ class Campaign(object):
             xx, err, res = adj.Bayadj1.result1(xopt.x,self.mat_list, self._gravlen, kstart, kvalues)
             dlen = len(self._gravlen)
             dobs = len(self.obs_list[0])
-            self.survey_dic['weight_SD_uGal'] = (np.sqrt(np.exp(xopt.x))).tolist()
-            self.survey_dic['drift_uGal_hr'] = np.squeeze(np.array(xx[0:dlen]*1000)).tolist()
-            self.survey_dic['drift_err_uGal_hr'] = (err[0:dlen]*1000).tolist()
+            #print(dlen, np.sum(kstart))
+            #print(kvalues) #20191102
+            self.survey_dic['opt_scale_factor'] = (np.exp(xopt.x[-np.sum(kstart):])).tolist()
+            self.survey_dic['weight_SD_uGal'] = (np.sqrt(np.exp(xopt.x[:-np.sum(kstart)]))).tolist()
+            self.survey_dic['drift_uGal_hr'] = np.squeeze(np.array(xx[dobs:]*1000)).tolist()
+            self.survey_dic['drift_err_uGal_hr'] = (err[dobs:]*1000).tolist()
             self.survey_dic['staid'] = self.obs_list[0]
             self.survey_dic['gvalue_mGal'] = np.squeeze(np.array(xx[:dobs])).tolist()
             self.survey_dic['gerror_mGal'] = err[:dobs].tolist()
@@ -1292,11 +1343,104 @@ class Campaign(object):
         except IndexError:
             print('check raw data file: possibly last line?')          
 
+    def export_segment(self, filename):
+        """Export segment point list to JSON file
+        """
+        try:
+            if len(self.obs_list)>0:
+                s1 = self.survey_list[0]
+                key1 = [str(x.msn)+'s' for x in s1.meter_list]
+                key2 = [str(x.msn)+'e' for x in s1.meter_list]
+                #s1._get_pnt_loc()
+                lst1 = [np.squeeze(oo).tolist() for oo in self.obs_list[1]]
+                lst2 = [np.squeeze(oo).tolist() for oo in self.obs_list[2]]
+                list_json = dict(zip(key1+key2, lst1+lst2))
+
+                f = open(filename, mode = 'w')
+                f.write(json.dumps(list_json, indent=2, ensure_ascii=False))
+                f.close
+            else:
+                print('Not DATA, Please run pre_adj firstly.')
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')          
+
+    def export_station(self, filename):
+        """Export gravity stations to file
+        """
+        try:
+            if len(self.obs_list)>0:
+                s1 = self.survey_list[0]
+                f = open(filename, mode = 'w')
+                for sta in self.obs_list[0]:
+                    lon,lat,elev = s1._get_pnt_loc(sta)
+                    f.write('{},{},{},{}\n'.format(sta,lon,lat,elev))
+                f.close
+            else:
+                print('Not DATA, Please run pre_adj firstly.')
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')
+
+
+    def export_dc(self, filename):
+        """Export gravity difference in each segment to TXT file
+        """
+
+        try:
+            if len(self.obs_list)>0:
+                lst1 =[]
+                lst2 =[]
+                for o1, o2 in zip(self.obs_list[1],self.obs_list[2]):
+                    lst1 += np.squeeze(o1).tolist()
+                    lst2 += np.squeeze(o2).tolist()
+
+                lll = [int(int(l1)*1E8+int(l2)) for l1,l2 in zip(lst1,lst2)]
+                ll0 = list(set(lll))
+                print('{} segments have been read, {} dc is unique'.format(len(lll),len(ll0)))
+                f = open(filename, mode = 'w')
+                if len(self.survey_dic) >0:
+                    v1 = self.survey_dic['staid']
+                    v2 = self.survey_dic['gvalue_mGal']
+                    v3 = self.survey_dic['gerror_mGal']
+                    f.write('{},{},{},{}\n'.format('P1','P2','DC','Err'))
+                    for llx in ll0:
+                        ix = lll.index(llx)
+                        jx1 = v1.index(str(lst1[ix]))
+                        jx2 = v1.index(str(lst2[ix]))
+                        valx = v2[jx1] - v2[jx2]
+                        vale = np.sqrt(v3[jx1]**2 + v3[jx2]**2)
+                        f.write('{},{},{},{}\n'.format(lst1[ix],lst2[ix],valx,vale))
+                else:
+                    print('Not DATA, Please run adjustment firstly.')
+
+                f.close
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')          
+
+
 
 def get_2d_list_slice(matrix, start_row, end_row, start_col, end_col):
     return [row[start_col:end_col] for row in matrix[start_row:end_row]]
 
-def flatten(items): 
+
+def list2json(lst):
+    keys = [str(x) for x in np.arange(len(lst))]
+    list_json = dict(zip(keys, lst))
+    str_json = json.dumps(list_json, indent=2, ensure_ascii=False)  # json转为string
+    return str_json
+
+def flatten(items):
     """Yield items from any nested iterable; see REF."""
     from collections.abc import Iterable
     for x in items: 
@@ -1310,9 +1454,9 @@ if __name__ == '__main__':
     m1.msf = 1.00009
     m2 = Meter('CG-5','C099')
     m2.msf = 1.000637
-    m3 = Meter('CG-5','C097')
+    m3 = Meter('CG-5','C097', 'C097') #第三个参数为读参数仪器号
     m3.msf = 1.000163
-    #m3.read_table('./data/table.dat')
+    #m3.read_table('./data/table.dat') #m3.export_table('D:\\table.txt')
     m4 = Meter('CG-5','C0981')
     m4.msf = 1.00009
     n1 = Network('NorthChina',1)
@@ -1329,7 +1473,7 @@ if __name__ == '__main__':
     s1.read_survey_file('./data/SXCW971508p.ori')
     s1.read_survey_file('./data/SXCW981508p.ori','C0981')
     s1.corr_aux_effect()
-    s1.meter_sf_index = [0, 0, 0, 0]
+    s1.meter_sf_index = [0, 1, 0, 1]
     print(s1)
     #查找一个测量工程中某个测点号对应的坐标
     slon, slat, selev = s1._get_pnt_loc('11003902')
@@ -1349,7 +1493,7 @@ if __name__ == '__main__':
     gravwork.adj_method = 3 #1:cls ; 2:Baj; 3:Baj1
     
     gravwork.pre_adj()
-    gravwork.run_adj('./data/grav_baj.txt',3)
+    gravwork.run_adj('./data/grav_baj1.txt',3)
     # m1 = Meter('LCR','G147')
     # #m1.read_table('./data/table1.dat')
     # m2 = Meter('LCR','G570')
