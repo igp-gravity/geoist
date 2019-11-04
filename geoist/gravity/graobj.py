@@ -791,6 +791,7 @@ class Campaign(object):
         """
         #20191102
         try:
+            print(filename)
             f = open(filename, 'r')
             #print("number of lines: %d"%len([1 for line in open(filename, 'r')]))
 
@@ -803,8 +804,10 @@ class Campaign(object):
                 vals=line.split()
                 ag1 = AGstation(vals[0],vals[1],vals[2],vals[3],vals[4],vals[5])
                 #('白山洞绝对','11014121','A', 116.169, 40.018, 212.5)
-                ag1.ref_gra = vals[6] #1110.54453
-                ag1.ref_gra_err = vals[7]#5.0E-3
+                ag1.ref_gra = float(vals[6]) #1110.54453
+                ag1.ref_gra_err = float(vals[7])#5.0E-3
+                print('AG station {} has been loaded.'.format(vals[0]))
+
                 self.agstation_list.append(ag1)
             f.close
         except IOError:
