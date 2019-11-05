@@ -1403,8 +1403,14 @@ class Campaign(object):
                 for o1, o2 in zip(self.obs_list[1],self.obs_list[2]):
                     lst1 += np.squeeze(o1).tolist()
                     lst2 += np.squeeze(o2).tolist()
+                lll = []
+                for l1,l2 in zip(lst1,lst2):
+                    if (int(l1) > int(l2)):
+                        lll.append(int(int(l1)*1E8+int(l2)))
+                    else:
+                        lll.append(int(int(l2)*1E8+int(l1)))
 
-                lll = [int(int(l1)*1E8+int(l2)) for l1,l2 in zip(lst1,lst2)]
+                #lll = [int(int(l1)*1E8+int(l2)) for l1,l2 in zip(lst1,lst2)]
                 ll0 = list(set(lll))
                 print('{} segments have been read, {} dc is unique'.format(len(lll),len(ll0)))
                 f = open(filename, mode = 'w')
@@ -1431,6 +1437,45 @@ class Campaign(object):
         except IndexError:
             print('check raw data file: possibly last line?')          
 
+    def export_dc_all(self, filename):
+        """Export gravity difference in each segment to TXT file
+        """
+
+        try:
+            if len(self.obs_list)>0:
+                lst1 =[]
+                lst2 =[]
+                for o1, o2 in zip(self.obs_list[1],self.obs_list[2]):
+                    lst1 += np.squeeze(o1).tolist()
+                    lst2 += np.squeeze(o2).tolist()
+                lll = [int(int(l1)*1E8+int(l2)) for l1,l2 in zip(lst1,lst2)]
+                print('{} segments have been read'.format(len(lst1),len(lst2)))
+                f = open(filename, mode = 'w')
+                if len(self.survey_dic) >0:
+                    v1 = self.survey_dic['staid']
+                    v2 = self.survey_dic['gvalue_mGal']
+                    v3 = self.survey_dic['gerror_mGal']
+                    v4 = self.survey_dic['obsres_mGal']
+                    f.write('{},{},{},{},{}\n'.format('P1','P2','DC','Err','res'))
+                    k = 0
+                    for llx in lll:
+                        ix = lll.index(llx)
+                        jx1 = v1.index(str(lst1[ix]))
+                        jx2 = v1.index(str(lst2[ix]))
+                        valx = v2[jx1] - v2[jx2]
+                        vale = np.sqrt(v3[jx1]**2 + v3[jx2]**2)
+                        f.write('{},{},{},{},{}\n'.format(lst1[ix],lst2[ix],valx,vale,v4[k]))
+                        k += 1
+                else:
+                    print('Not DATA, Please run adjustment firstly.')
+
+                f.close
+        except IOError:
+            print('No file : %s' %(filename))            
+        except ValueError:
+            print('check raw data file')
+        except IndexError:
+            print('check raw data file: possibly last line?')
 
 
 def get_2d_list_slice(matrix, start_row, end_row, start_col, end_col):
