@@ -468,6 +468,7 @@ class Bayadj1(Bayadj):
         kk = 0
         #print(Y.shape,Y2.shape)
         Y1t = np.zeros(Y.shape)
+        Y1t = Y.copy()
         kp = 0
         for i in range(lens):   #scale factor of meter
             len3 = int(gravlen[i,0])
@@ -480,7 +481,6 @@ class Bayadj1(Bayadj):
             for j in range(len3): #(kstart,len3):
                 Y1t[:,kk] = Y[:,kk]*sf + Y2[:,kk]
                 kk += 1
-
         #print(sum(np.matrix(Y1t).T))
         Y1t = np.matrix(Y1t).T
         k = 0
@@ -553,6 +553,7 @@ class Bayadj1(Bayadj):
         bb0 = np.zeros(m, dtype = float)
         bb = np.hstack([bb, bb0])
         bbt = np.zeros(bb.shape)
+        bbt = bb.copy()
 
         lens = len(glen)
         kk = 0
