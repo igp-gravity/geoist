@@ -2,7 +2,7 @@
 Gravity corrections (normal gravity and Bouguer)
 ------------------------------------------------------
 
-The :mod:`fatiando.gravmag` package has function for performing gravity
+The :mod:`geoist.gravmag` package has function for performing gravity
 corrections to obtain the gravity disturbance (measured gravity minus normal
 gravity). Particularly, there are functions for calculating normal gravity at
 any height using a closed-form formula instead of using the free-air
