@@ -1439,6 +1439,7 @@ class Campaign(object):
 
     def export_dc_all(self, filename):
         """Export gravity difference in each segment to TXT file
+        export col names : P1,P2,DC,Err,res,meter
         """
 
         try:
@@ -1450,13 +1451,20 @@ class Campaign(object):
                     lst2 += np.squeeze(o2).tolist()
                 lll = [int(int(l1)*1E8+int(l2)) for l1,l2 in zip(lst1,lst2)]
                 print('{} segments have been read'.format(len(lst1),len(lst2)))
+                s1 = self.survey_list[0]
+                key1 = [str(x.msn) for x in s1.meter_list]
+                mlist = []
+                for kk in range(len(key1)):
+                    for kkk in range(self._gravlen[kk,0]):
+                        mlist.append(key1[kk])
+
                 f = open(filename, mode = 'w')
                 if len(self.survey_dic) >0:
                     v1 = self.survey_dic['staid']
                     v2 = self.survey_dic['gvalue_mGal']
                     v3 = self.survey_dic['gerror_mGal']
                     v4 = self.survey_dic['obsres_mGal']
-                    f.write('{},{},{},{},{}\n'.format('P1','P2','DC','Err','res'))
+                    f.write('{},{},{},{},{},{}\n'.format('P1','P2','DC','Err','res','meter'))
                     k = 0
                     for llx in lll:
                         ix = lll.index(llx)
@@ -1464,7 +1472,7 @@ class Campaign(object):
                         jx2 = v1.index(str(lst2[ix]))
                         valx = v2[jx1] - v2[jx2]
                         vale = np.sqrt(v3[jx1]**2 + v3[jx2]**2)
-                        f.write('{},{},{},{},{}\n'.format(lst1[ix],lst2[ix],valx,vale,v4[k]))
+                        f.write('{},{},{},{},{},{}\n'.format(lst1[ix],lst2[ix],valx,vale,v4[k],mlist[k]))
                         k += 1
                 else:
                     print('Not DATA, Please run adjustment firstly.')
