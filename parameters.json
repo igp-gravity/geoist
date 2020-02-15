@@ -1,0 +1,8 @@
+{
+   "resource": "https://graph.microsoft.com/",
+   "tenant" : "{your_directoryId}",
+   "authorityHostUrl" : "https://login.microsoftonline.com",
+   "clientid" : "{your_app_id}",
+   "username" : "{username}",
+   "password" : "{password}"
+ }

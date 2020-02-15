@@ -85,6 +85,8 @@ doi: 10.1007/s001900000116.
 """
 
 import numpy
+import pywt
+from scipy.sparse import csr_matrix
 
 from . import giutils
 from .giconstants import G, SI2EOTVOS, CM, T2NT, SI2MGAL
@@ -1006,4 +1008,140 @@ def kernelyz(xp, yp, zp, prism):
     y1, y2 = prism.y1, prism.y2
     z1, z2 = prism.z1, prism.z2
     _prism.gyz(xp, yp, zp, x1, x2, y1, y2, z1, z2, 1, res)
+    return res
+
+
+def gz_kernel(xp, yp, zp, prisms, dens=None):
+    """
+    Calculates the kernel of gz.
+
+    .. note:: The coordinate system of the input parameters is to be
+        x -> North, y -> East and z -> **DOWN**.
+
+    .. note:: All input values in **SI** units(!) and output in **mGal**!
+
+    Parameters:
+
+    * xp, yp, zp : arrays
+        Arrays with the x, y, and z coordinates of the computation points.
+    * prisms : list of :class:`~geoist.mesher.Prism`
+        The density model used to calculate the gravitational effect.
+        Prisms must have the property ``'density'``. Prisms that don't have
+        this property will be ignored in the computations. Elements of *prisms*
+        that are None will also be ignored. *prisms* can also be a
+        :class:`~geoist.mesher.PrismMesh`.
+    * dens : float or None
+        If not None, will use this value instead of the ``'density'`` property
+        of the prisms. Use this, e.g., for sensitivity matrix building.
+
+    Returns:
+
+    * res : array
+        The kernel calculated on xp, yp, zp of prisms.
+
+    """
+    if xp.shape != yp.shape or xp.shape != zp.shape:
+        raise ValueError("Input arrays xp, yp, and zp must have same length!")
+    size = len(xp)
+    n_prism = len(prisms)
+    res = numpy.zeros((size,n_prism), dtype=numpy.float)
+    x1 = numpy.zeros(n_prism, dtype=numpy.float)
+    x2 = numpy.zeros(n_prism, dtype=numpy.float)
+    y1 = numpy.zeros(n_prism, dtype=numpy.float)
+    y2 = numpy.zeros(n_prism, dtype=numpy.float)
+    z1 = numpy.zeros(n_prism, dtype=numpy.float)
+    z2 = numpy.zeros(n_prism, dtype=numpy.float)
+    density = numpy.zeros(n_prism,dtype=numpy.float)
+    for i,prism in enumerate(prisms):
+        x1[i] = prism.x1
+        x2[i] = prism.x2
+        y1[i] = prism.y1
+        y2[i] = prism.y2
+        z1[i] = prism.z1
+        z2[i] = prism.z2
+        density[i] = prism.props['density']
+    if dens is not None:
+        density = dens
+    for i,x in enumerate(xp):
+        tmp = numpy.zeros(n_prism,dtype=numpy.float)
+        _prism.gz_prisms(xp[i], yp[i], zp[i], x1, x2, y1, y2, z1, z2, density, tmp)
+        res[i,:] = tmp
+    res *= G * SI2MGAL
+    return res
+
+def gz_ckernel(xp, yp, zp, prisms, dim=None,dens=None,wavelet='db1',levels=1,thresh=1.0e-4):
+    """
+    Calculates the compressed kernel matrix of gz.
+
+    .. note:: The coordinate system of the input parameters is to be
+        x -> North, y -> East and z -> **DOWN**.
+
+    .. note:: All input values in **SI** units(!) and output in **mGal**!
+
+    Parameters:
+
+    * xp, yp, zp : arrays
+        Arrays with the x, y, and z coordinates of the computation points.
+    * prisms : list of :class:`~geoist.mesher.Prism`
+        The density model used to calculate the gravitational effect.
+        Prisms must have the property ``'density'``. Prisms that don't have
+        this property will be ignored in the computations. Elements of *prisms*
+        that are None will also be ignored. *prisms* can also be a
+        :class:`~geoist.mesher.PrismMesh`.
+    * dens : float or None
+        If not None, will use this value instead of the ``'density'`` property
+        of the prisms. Use this, e.g., for sensitivity matrix building.
+
+    Returns:
+
+    * res : csr_matrix
+        The compressed kernel calculated on xp, yp, zp of prisms.
+
+    """
+    if xp.shape != yp.shape or xp.shape != zp.shape:
+        raise ValueError("Input arrays xp, yp, and zp must have same length!")
+    size = len(xp)
+    n_prism = len(prisms)
+    if dim is None:
+        dim = [int(numpy.power(n_prism,1./3.))]*3
+    res = numpy.zeros((size,n_prism), dtype=numpy.float)
+    x1 = numpy.zeros(n_prism, dtype=numpy.float)
+    x2 = numpy.zeros(n_prism, dtype=numpy.float)
+    y1 = numpy.zeros(n_prism, dtype=numpy.float)
+    y2 = numpy.zeros(n_prism, dtype=numpy.float)
+    z1 = numpy.zeros(n_prism, dtype=numpy.float)
+    z2 = numpy.zeros(n_prism, dtype=numpy.float)
+    density = numpy.zeros(n_prism,dtype=numpy.float)
+    for i,prism in enumerate(prisms):
+        x1[i] = prism.x1
+        x2[i] = prism.x2
+        y1[i] = prism.y1
+        y2[i] = prism.y2
+        z1[i] = prism.z1
+        z2[i] = prism.z2
+        density[i] = prism.props['density']
+    if dens is not None:
+        density = dens
+    count = 0
+    data = []
+    indices = []
+    indptr = [0]
+    tmpptr = 0
+    for i,x in enumerate(xp):
+        tmp = numpy.zeros(n_prism,dtype=numpy.float)
+        _prism.gz_prisms(xp[i], yp[i], zp[i], x1, x2, y1, y2, z1, z2, density, tmp)
+        tmp = pywt.fswavedecn(tmp.reshape(*dim),wavelet,levels=levels)
+        for key in tmp.detail_keys():
+            maxa = numpy.max(numpy.abs(tmp[key]))
+            filt_data = numpy.abs(tmp[key]) < (thresh*maxa)
+            count += numpy.sum(filt_data)
+            tmp[key][filt_data] = 0.0
+        rowdata = tmp.coeffs.ravel() * G * SI2MGAL
+        data.append(rowdata[rowdata != 0.0])
+        tmpind = numpy.where(rowdata != 0.0)[0]
+        indices.append(tmpind)
+        tmpptr += len(tmpind)
+        indptr.append(tmpptr)
+    res = csr_matrix((numpy.hstack(data),numpy.hstack(indices),indptr),
+                     shape=(len(xp),len(prisms)))
     return res

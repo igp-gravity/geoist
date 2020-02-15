@@ -480,29 +480,33 @@ def potential(numpy.ndarray[DTYPE_T, ndim=1] xp not None,
                     kernel = kernelpot(dx, dy, dz, r)
                     res[l] += ((-1.)**(i + j + k))*kernel*density
 
+
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def ckernel(numpy.ndarray[DTYPE_T, ndim=1] xp not None,
-            numpy.ndarray[DTYPE_T, ndim=1] yp not None,
-            numpy.ndarray[DTYPE_T, ndim=1] zp not None,
-            double x1, double x2, double y1, double y2, double z1, double z2,
-            double density,
-            numpy.ndarray[DTYPE_T, ndim=1] res not None):
+def gz_prisms(double xp,double yp,double zp,
+            numpy.ndarray[DTYPE_T, ndim=1] x1 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] x2 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] y1 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] y2 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] z1 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] z2 not None,
+            numpy.ndarray[DTYPE_T, ndim=1] density not None,
+              numpy.ndarray[DTYPE_T, ndim=1] res not None):
     cdef unsigned int l, size, i, j, k
-    cdef numpy.ndarray[DTYPE_T, ndim=1] x, y, z
+    cdef numpy.ndarray[DTYPE_T, ndim=2] x, y, z
     cdef DTYPE_T kernel, r, dx, dy, dz
-    size = len(xp)
-    x = numpy.array([x2, x1], dtype=DTYPE)
-    y = numpy.array([y2, y1], dtype=DTYPE)
-    z = numpy.array([z2, z1], dtype=DTYPE)
+    size = len(x1)
+    x = numpy.hstack([x2.reshape(-1,1), x1.reshape(-1,1)])
+    y = numpy.hstack([y2.reshape(-1,1), y1.reshape(-1,1)])
+    z = numpy.hstack([z2.reshape(-1,1), z1.reshape(-1,1)])
     for l in range(size):
         # Evaluate the integration limits
         for k in range(2):
-            dz = z[k] - zp[l]
+            dz = z[l,k] - zp
             for j in range(2):
-                dy = y[j] - yp[l]
+                dy = y[l,j] - yp
                 for i in range(2):
-                    dx = x[i] - xp[l]
+                    dx = x[l,i] - xp
                     r = sqrt(dx**2 + dy**2 + dz**2)
                     kernel = kernelz(dx, dy, dz, r)
-                    res[l] += ((-1.)**(i + j + k))*kernel*density
+                    res[l] += ((-1.)**(i + j + k))*kernel*density[l]

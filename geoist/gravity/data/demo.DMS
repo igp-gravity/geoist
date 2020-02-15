@@ -38,7 +38,7 @@
       <ReadNullRow>true</ReadNullRow>
       <FolderFiles>
         <IsFolder>false</IsFolder>
-        <FullName>$stream$\adj_cls.txt</FullName>
+        <FullName>D:\MyWorks\geoist\examples\data\grav_baj.txt</FullName>
       </FolderFiles>
       <AllExt>true</AllExt>
       <Ext />
@@ -62,15 +62,15 @@
       <PriorNodeGuid>
         <guid>e34ff149-515d-4ce8-be01-0e7f23b642de</guid>
       </PriorNodeGuid>
-      <CacheIt>true</CacheIt>
+      <CacheIt>false</CacheIt>
       <OnlyOneViewer>false</OnlyOneViewer>
       <DefaultEvalIt>false</DefaultEvalIt>
       <IsExpressionDescription>false</IsExpressionDescription>
       <ViewerPos>
-        <Left>-9</Left>
-        <Top>0</Top>
-        <Width>2283</Width>
-        <Height>1260</Height>
+        <Left>-13</Left>
+        <Top>-13</Top>
+        <Width>2586</Width>
+        <Height>1386</Height>
       </ViewerPos>
       <DataFieldName>ColumnName</DataFieldName>
       <MutliCondtitions>
@@ -104,6 +104,7 @@
         </MutliCondtition>
       </MutliCondtitions>
       <ExpandFields />
+      <IsPath>false</IsPath>
     </NodeBase>
     <NodeBase xsi:type="NodeFilter">
       <Guid>7e710462-f696-49d4-8226-3b956e7aed83</Guid>
@@ -123,10 +124,10 @@
       <DefaultEvalIt>false</DefaultEvalIt>
       <IsExpressionDescription>false</IsExpressionDescription>
       <ViewerPos>
-        <Left>-807</Left>
-        <Top>201</Top>
+        <Left>-13</Left>
+        <Top>-13</Top>
         <Width>2586</Width>
-        <Height>1372</Height>
+        <Height>1386</Height>
       </ViewerPos>
       <FieldFilters>
         <FieldFilter>
@@ -222,7 +223,7 @@
     </NodeBase>
     <NodeBase xsi:type="NodeFilter">
       <Guid>0e88f941-3e09-47ba-bd17-679162737ebc</Guid>
-      <CenterY>102.5</CenterY>
+      <CenterY>107.5</CenterY>
       <CenterX>560</CenterX>
       <Description />
       <ToolTip />
@@ -248,19 +249,19 @@
           <FieldName>staid</FieldName>
           <Filte>true</Filte>
           <NewFieldName>台站编号</NewFieldName>
-          <NewDataType>Text</NewDataType>
+          <NewDataType>Integer</NewDataType>
         </FieldFilter>
         <FieldFilter>
           <FieldName>gvalue_mGal</FieldName>
           <Filte>true</Filte>
           <NewFieldName>平差值</NewFieldName>
-          <NewDataType>Text</NewDataType>
+          <NewDataType>Real</NewDataType>
         </FieldFilter>
         <FieldFilter>
           <FieldName>gerror_mGal</FieldName>
           <Filte>true</Filte>
           <NewFieldName>误差</NewFieldName>
-          <NewDataType>Text</NewDataType>
+          <NewDataType>Real</NewDataType>
         </FieldFilter>
         <FieldFilter>
           <FieldName>ColumnIDField</FieldName>
@@ -309,7 +310,7 @@
       <ReadNullRow>true</ReadNullRow>
       <FolderFiles>
         <IsFolder>false</IsFolder>
-        <FullName>$stream$\bay_cls.txt</FullName>
+        <FullName>$stream$\grav_cls.txt</FullName>
       </FolderFiles>
       <AllExt>true</AllExt>
       <Ext />
@@ -333,7 +334,7 @@
       <PriorNodeGuid>
         <guid>f22cce1e-19cf-4ce6-91a3-3ac8392a0ffb</guid>
       </PriorNodeGuid>
-      <CacheIt>true</CacheIt>
+      <CacheIt>false</CacheIt>
       <OnlyOneViewer>false</OnlyOneViewer>
       <DefaultEvalIt>false</DefaultEvalIt>
       <IsExpressionDescription>false</IsExpressionDescription>
@@ -375,6 +376,7 @@
         </MutliCondtition>
       </MutliCondtitions>
       <ExpandFields />
+      <IsPath>false</IsPath>
     </NodeBase>
     <NodeBase xsi:type="NodeFilter">
       <Guid>f8239525-6997-4d23-b832-627757953846</Guid>
@@ -394,8 +396,8 @@
       <DefaultEvalIt>false</DefaultEvalIt>
       <IsExpressionDescription>false</IsExpressionDescription>
       <ViewerPos>
-        <Left>-807</Left>
-        <Top>201</Top>
+        <Left>-85</Left>
+        <Top>26</Top>
         <Width>2586</Width>
         <Height>1372</Height>
       </ViewerPos>
@@ -419,9 +421,21 @@
           <NewDataType>Text</NewDataType>
         </FieldFilter>
         <FieldFilter>
-          <FieldName>obsres_mGal</FieldName>
+          <FieldName>staid</FieldName>
           <Filte>false</Filte>
-          <NewFieldName>obsres_mGal</NewFieldName>
+          <NewFieldName>staid</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gvalue_mGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>gvalue_mGal</NewFieldName>
+          <NewDataType>Text</NewDataType>
+        </FieldFilter>
+        <FieldFilter>
+          <FieldName>gerror_mGal</FieldName>
+          <Filte>false</Filte>
+          <NewFieldName>gerror_mGal</NewFieldName>
           <NewDataType>Text</NewDataType>
         </FieldFilter>
       </FieldFilters>
@@ -453,9 +467,7 @@
       </ViewerPos>
       <FillerIf>1</FillerIf>
       <FillerFields>
-        <string>staid</string>
-        <string>gvalue_mGal</string>
-        <string>gerror_mGal</string>
+        <string>obsres_mGal</string>
       </FillerFields>
       <FillerValue>RemoveStrings(@Fields,'[',']','"')</FillerValue>
     </NodeBase>
@@ -483,9 +495,7 @@
         <Height>1041</Height>
       </ViewerPos>
       <SplitFields>
-        <string>staid</string>
-        <string>gvalue_mGal</string>
-        <string>gerror_mGal</string>
+        <string>obsres_mGal</string>
       </SplitFields>
       <ColumnIdField>ColumnIDField</ColumnIdField>
       <SplitChars>,</SplitChars>
@@ -493,8 +503,8 @@
     </NodeBase>
     <NodeBase xsi:type="NodeFilter">
       <Guid>f50e7f17-337f-48a1-90ac-9808b7f56374</Guid>
-      <CenterY>222.5</CenterY>
-      <CenterX>630</CenterX>
+      <CenterY>172.5</CenterY>
+      <CenterX>670</CenterX>
       <Description />
       <ToolTip />
       <EditMode>Edit</EditMode>
@@ -509,10 +519,10 @@
       <DefaultEvalIt>false</DefaultEvalIt>
       <IsExpressionDescription>false</IsExpressionDescription>
       <ViewerPos>
-        <Left>3400</Left>
+        <Left>-13</Left>
         <Top>-13</Top>
-        <Width>1946</Width>
-        <Height>3359</Height>
+        <Width>2586</Width>
+        <Height>1386</Height>
       </ViewerPos>
       <FieldFilters>
         <FieldFilter>
@@ -543,6 +553,143 @@
       <DefaultFilte>true</DefaultFilte>
       <IsStandardMode>false</IsStandardMode>
     </NodeBase>
+    <NodeBase xsi:type="NodeChartP">
+      <Guid>2ef7f6ff-524c-4544-a7f0-b5359053337b</Guid>
+      <CenterY>50</CenterY>
+      <CenterX>642.5</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>折线图</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>0e88f941-3e09-47ba-bd17-679162737ebc</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>-13</Left>
+        <Top>-13</Top>
+        <Width>2586</Width>
+        <Height>1386</Height>
+      </ViewerPos>
+      <ChartId>XYLine</ChartId>
+      <Multi>Value</Multi>
+      <ChartName>XYChart</ChartName>
+      <SeriesName>Line</SeriesName>
+      <Setting>X=台站编号;Y=平差值</Setting>
+      <StyleName>Paper</StyleName>
+      <ShowLable>false</ShowLable>
+      <Symbol>Ellipse</Symbol>
+      <SymbolSize>5</SymbolSize>
+      <ChartTitle />
+      <TitleX>xxx</TitleX>
+      <TitleY>yyy</TitleY>
+      <ImageWidth>1000</ImageWidth>
+      <ImageHeight>600</ImageHeight>
+    </NodeBase>
+    <NodeBase xsi:type="NodeTable">
+      <Guid>2dffe56b-1a48-408d-9a51-c59ed0088f2b</Guid>
+      <CenterY>92.5</CenterY>
+      <CenterX>740</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>浏览数据</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>f50e7f17-337f-48a1-90ac-9808b7f56374</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>179</Left>
+        <Top>0</Top>
+        <Width>2202</Width>
+        <Height>1470</Height>
+      </ViewerPos>
+      <FieldFormats />
+      <AutoWidthFit>true</AutoWidthFit>
+      <Expression />
+    </NodeBase>
+    <NodeBase xsi:type="NodeHtmlReport">
+      <Guid>8a34a0da-35e0-4764-b1ae-b73108315041</Guid>
+      <CenterY>277.5</CenterY>
+      <CenterX>745</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>浏览报告</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>7278f866-f9cb-4503-852c-62768e579191</guid>
+      </PriorNodeGuid>
+      <CacheIt>false</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>true</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <ViewerPos>
+        <Left>380</Left>
+        <Top>42</Top>
+        <Width>1799</Width>
+        <Height>1276</Height>
+      </ViewerPos>
+      <ImageMaxWidth>1100</ImageMaxWidth>
+      <PageWidth>1100</PageWidth>
+      <MarkDownText />
+      <ReportMode>Default</ReportMode>
+      <NameColumnType>Title</NameColumnType>
+      <HasImage>true</HasImage>
+      <HasDescription>true</HasDescription>
+      <ExportTitleInfo>false</ExportTitleInfo>
+      <ExportTitleFieldName>Name</ExportTitleFieldName>
+      <TitleGrade>1</TitleGrade>
+      <ExportStreamFormat>HTML_TAG</ExportStreamFormat>
+      <IsTempletefile>false</IsTempletefile>
+      <Templetefile />
+      <Templete />
+      <AutoExpendTable>true</AutoExpendTable>
+      <AcceptEnter>true</AcceptEnter>
+    </NodeBase>
+    <NodeBase xsi:type="NodeStreamCollection">
+      <Guid>7278f866-f9cb-4503-852c-62768e579191</Guid>
+      <CenterY>297.5</CenterY>
+      <CenterX>610</CenterX>
+      <Description />
+      <ToolTip />
+      <EditMode>Edit</EditMode>
+      <Title />
+      <Name>文件收集器</Name>
+      <ShowName>true</ShowName>
+      <PriorNodeGuid>
+        <guid>f50e7f17-337f-48a1-90ac-9808b7f56374</guid>
+      </PriorNodeGuid>
+      <CacheIt>true</CacheIt>
+      <OnlyOneViewer>false</OnlyOneViewer>
+      <DefaultEvalIt>false</DefaultEvalIt>
+      <IsExpressionDescription>false</IsExpressionDescription>
+      <BatchModeEx>Parameter</BatchModeEx>
+      <ParaGuids />
+      <BatchEvalParameterName />
+      <BatchEvalParameterValues />
+      <InputNodes>
+        <SCInputNode>
+          <Text>$name</Text>
+          <gid>f50e7f17-337f-48a1-90ac-9808b7f56374</gid>
+          <Text2Stream>false</Text2Stream>
+        </SCInputNode>
+      </InputNodes>
+      <NameAsBefore>false</NameAsBefore>
+      <ByFieldMode>true</ByFieldMode>
+      <FieldNameMode>OnlyFieldName</FieldNameMode>
+    </NodeBase>
   </Items>
   <OffsetX>0</OffsetX>
   <OffsetY>0</OffsetY>
@@ -554,6 +701,48 @@
     <ClearDataBeforeRunning>false</ClearDataBeforeRunning>
     <RunMemoryMode>false</RunMemoryMode>
   </SQLiteIO>
+  <FieldFormats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Integer</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Right</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:0.##}</DisplayFormatEx>
+      <DecimalPlaces>2</DecimalPlaces>
+      <DataType>Real</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Text</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx />
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>Boolean</DataType>
+      <Visible>true</Visible>
+    </Formats>
+    <Formats>
+      <Justify>Auto</Justify>
+      <ColumnWidth>-1</ColumnWidth>
+      <DisplayFormatEx>{0:G}</DisplayFormatEx>
+      <DecimalPlaces>-1</DecimalPlaces>
+      <DataType>DateTime</DataType>
+      <Visible>true</Visible>
+    </Formats>
+  </FieldFormats>
   <Title>Stream</Title>
   <Subject>2019/9/13 16:23:23</Subject>
   <Arthor2>chenshi-X1</Arthor2>
@@ -562,15 +751,29 @@
   <Category />
   <Description />
   <KeyWords />
-  <CheckIt>true</CheckIt>
   <StreamID />
-  <EditorVersion>2019.2.7143.22726</EditorVersion>
-  <ReportTitleName />
-  <ListReportTitles />
+  <EditorVersion>2019.4.7225.36547</EditorVersion>
+  <ReportTitleName>样式一</ReportTitleName>
+  <ListReportTitles>PD94bWwgdmVyc2lvbj0iMS4wIj8+DQo8QXJyYXlPZlJlcG9ydFRpdGxlcyB4bWxuczp4c2Q9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hIiB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIj4NCiAgPFJlcG9ydFRpdGxlcz4NCiAgICA8SXRlbXM+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT4xPC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjI8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT40PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD4xPC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezF9LnsyfS57M30uezR9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9IDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjY8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX0uezJ9LnszfS57NH0uezV9Lns2fSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuIA8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KICA8UmVwb3J0VGl0bGVzPg0KICAgIDxJdGVtcz4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjE8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjY8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57MX3jgIEgPC9UaXRsZUZvcm1hdD4NCiAgICAgIDwvUmVwb3J0VGl0bGVJdGVtPg0KICAgICAgPFJlcG9ydFRpdGxlSXRlbT4NCiAgICAgICAgPFRpdGxlR3JhZGU+MjwvVGl0bGVHcmFkZT4NCiAgICAgICAgPEJlZ2luSWQ+MDwvQmVnaW5JZD4NCiAgICAgICAgPFN0eWxlSWQ+NjwvU3R5bGVJZD4NCiAgICAgICAgPFRpdGxlRm9ybWF0Pih7Mn0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjM8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57M30uIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjQ8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD57NH0pIDwvVGl0bGVGb3JtYXQ+DQogICAgICA8L1JlcG9ydFRpdGxlSXRlbT4NCiAgICAgIDxSZXBvcnRUaXRsZUl0ZW0+DQogICAgICAgIDxUaXRsZUdyYWRlPjU8L1RpdGxlR3JhZGU+DQogICAgICAgIDxCZWdpbklkPjA8L0JlZ2luSWQ+DQogICAgICAgIDxTdHlsZUlkPjE8L1N0eWxlSWQ+DQogICAgICAgIDxUaXRsZUZvcm1hdD4oezV9KSA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgICA8UmVwb3J0VGl0bGVJdGVtPg0KICAgICAgICA8VGl0bGVHcmFkZT42PC9UaXRsZUdyYWRlPg0KICAgICAgICA8QmVnaW5JZD4wPC9CZWdpbklkPg0KICAgICAgICA8U3R5bGVJZD41PC9TdHlsZUlkPg0KICAgICAgICA8VGl0bGVGb3JtYXQ+ezZ9LiA8L1RpdGxlRm9ybWF0Pg0KICAgICAgPC9SZXBvcnRUaXRsZUl0ZW0+DQogICAgPC9JdGVtcz4NCiAgICA8TmFtZT7moLflvI/kuow8L05hbWU+DQogIDwvUmVwb3J0VGl0bGVzPg0KPC9BcnJheU9mUmVwb3J0VGl0bGVzPg==</ListReportTitles>
   <SelfRun>false</SelfRun>
+  <CheckIt>true</CheckIt>
+  <TransMean>true</TransMean>
   <AttachFiles />
   <Price>0</Price>
   <PrivilegeType>公开</PrivilegeType>
   <FunctionType>dms</FunctionType>
-  <Parameters />
+  <Parameters>
+    <StreamParameter>
+      <Name>name</Name>
+      <Title>名称</Title>
+      <ParaValue xsi:type="xsd:string">1</ParaValue>
+      <RunID>0</RunID>
+      <ParagramEditor>TextBox</ParagramEditor>
+      <ShowInUI>true</ShowInUI>
+      <DataType>Text</DataType>
+      <NodeGuids>
+        <guid>7278f866-f9cb-4503-852c-62768e579191</guid>
+      </NodeGuids>
+    </StreamParameter>
+  </Parameters>
 </NodeCollection>
