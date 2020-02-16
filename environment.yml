@@ -18,6 +18,7 @@ dependencies:
           - matplotlib
           - h5py
           - numpy
+          - appdirs
             #          - pygmi , not used
           - MarkDown
           - rasterio

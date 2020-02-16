@@ -38,7 +38,7 @@ jobs:
 
   - bash: |
       source activate geoist
-      conda install --yes --quiet --name geoist cython scipy pytest pandas matplotlib h5py numpy MarkDown rasterio seaborn patsy statsmodels numba
+      conda install --yes --quiet --name geoist cython scipy pytest pandas matplotlib h5py numpy MarkDown rasterio seaborn patsy statsmodels numba 
     displayName: 'Install Anaconda packages'
 
   - bash: |
@@ -64,5 +64,5 @@ jobs:
       versionSpec: '3.x'
       architecture: 'x64'
 
-  - script: python -m pip install Cython numpy && python setup.py sdist
+  - script: python -m pip install Cython numpy appdirs && python setup.py sdist
     displayName: 'Build sdist'
