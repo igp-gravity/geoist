@@ -39,3 +39,5 @@ def get_ext(filename):
 
 from geoist import _logger as log
 from geoist import _version as ver
+
+log.info('import')
