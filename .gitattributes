@@ -1,2 +1,5 @@
 ./geoist/_version.py export-subst
 *.xz filter=lfs diff=lfs merge=lfs -text
+*.js linguist-language=python
+*.css linguist-language=python
+*.html linguist-language=python
