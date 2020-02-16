@@ -7,11 +7,13 @@ Created on Sat Sep 15 18:00:46 2018
 
 import logging
 import pathlib
+import geoist
 
 def setlogger(modname=__name__, level = logging.INFO, logfile = 'geoist.log'):
     logger = logging.getLogger(modname)
     logger.setLevel(level=level)
-    filepath = pathlib.Path(__file__).parent
+    filepath = geoist.USER_DATA_PATH
+    #filepath = pathlib.Path(__file__).parent
     handler = logging.FileHandler(pathlib.Path(filepath,logfile))
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)

@@ -4,7 +4,11 @@ Functions to load sample data
 import os
 import numpy as np
 import pandas as pd
+import geoist
 from . import datarepo
+import shutil
+import sys
+import zipfile
 
 Drepo = datarepo.create(
     path=["~", ".verde", "data"],
@@ -26,7 +30,59 @@ Drepo1 = datarepo.create(
 	registry={}
 )
 
+Gitee_repo_url = 'https://gitee.com/cea2020/geodataset/raw/master/demodata/'
+Coding_repo_url = 'https://cea2020.coding.net/p/geodataset/d/geodataset/git/raw/master/'
 
+def delete_downloads():
+    """Delete all downloaded examples to free space or update the files."""
+    shutil.rmtree(geoist.EXAMPLES_PATH)
+    os.makedirs(geoist.EXAMPLES_PATH)
+    return True
+
+
+def _decompress(filename):
+    zip_ref = zipfile.ZipFile(filename, 'r')
+    zip_ref.extractall(geoist.EXAMPLES_PATH)
+    return zip_ref.close()
+
+def _get_gitee_file_url(prjname, filename):
+    return 'https://gitee.com/cea2020/{}/raw/master/{}'.format(prjname, filename)
+
+def _get_coding_file_url(prjname, dataname, filename):
+    return 'https://cea2020.coding.net/p/{}/d/{}/git/raw/master/{}'.format(prjname, dataname, filename)
+	
+def _retrieve_file(url, filename):
+    # First check if file has already been downloaded
+    local_path = os.path.join(geoist.EXAMPLES_PATH, os.path.basename(filename))
+    local_path_no_zip = local_path.replace('.zip', '')
+    if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
+        return local_path
+    # Make sure folder exists!
+    if not os.path.isdir(os.path.dirname((local_path))):
+        os.makedirs(os.path.dirname((local_path)))    
+	# grab the correct url retriever
+    import requests
+    response = requests.get(url, stream=True)
+
+    if response.status_code == 200:
+        with open(local_path, 'wb') as f:
+            for chunk in response.iter_content(1024):
+                f.write(chunk)
+    else:
+        raise IOError(response)
+
+    if geoist.get_ext(local_path) in ['.zip']:
+        _decompress(local_path)
+        local_path = local_path[:-4]
+    return local_path
+
+def _download_file(filename, prjname = 'geodataset'):
+    url = _get_gitee_file_url(prjname, filename)
+    return _retrieve_file(url, filename)
+
+
+
+###############################################################
 def _setup_map(
     ax, xticks, yticks, crs, region, land=None, ocean=None, borders=None, states=None
 ):
