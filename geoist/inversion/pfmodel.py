@@ -1,3 +1,7 @@
+"""
+3D density structure inversion with gravity anomaly.
+"""
+
 import os
 import pathlib
 from datetime import datetime
@@ -25,6 +29,9 @@ use_gpu = 0
 # if use_gpu > 0:
 #     import cupy as cp
 def check_gpu():
+    """
+    Check GPU setup.
+    """
     print(use_gpu)    
 # A helper decorator print time consumption of f.
 def timeit(f):

@@ -62,11 +62,13 @@ def _retrieve_file(url, filename):
         os.makedirs(os.path.dirname((local_path)))    
 	# grab the correct url retriever
     import requests
-    response = requests.get(url, stream=True)
-
+    response = requests.get(url) #, stream=True)
+    # datafile = io.StringIO(response.content.decode('utf8'))
+    # print(datafile)
+    # print(response)
     if response.status_code == 200:
         with open(local_path, 'wb') as f:
-            for chunk in response.iter_content(1024):
+            for chunk in response.iter_content(chunk_size = 1024):
                 f.write(chunk)
     else:
         raise IOError(response)
