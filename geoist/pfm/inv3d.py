@@ -1,22 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Feb 14 09:18:25 2020
 
-Funtion:
-    
-     3D grave&mag inversion using the space-domain approach with Bayes inference
+Funtion:3D grave&mag inversion using the space-domain approach with Bayes inference
 
-Author:  Shi CHEN   @ IGP-CEA
-         Bei ZHANGE @ IGP-CEA
-
-####################################################
-            MIT license
-        Copyright @ GEOIST 2020 
-         All right reserved 
-####################################################
-
-Module which contains the main classes of the pyBACGS
-            
 CLASS list:
     Model
     ModelBuilder

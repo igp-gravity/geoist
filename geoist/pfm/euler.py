@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 """
- Name        : euler.py
- Created on  : 2018/11/24 08:57
- Author      : Steve Chen <chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
  Description : Euler deconvolution methods for potential fields.
-
 
 * :class:`~geoist.pfm.euler.EulerDeconv`: The classic 3D solution to
   Euler's equation for potential fields (Reid et al., 1990). Runs on the whole
@@ -24,8 +15,6 @@
 Reid, A. B., J. M. Allsop, H. Granser, A. J. Millett, and I. W. Somerton
 (1990), Magnetic interpretation in three dimensions using Euler deconvolution,
 Geophysics, 55(1), 80-91, doi:10.1190/1.1442774.
-
-----
 
 """
 

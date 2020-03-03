@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
 """
------------------------------------------------------------------------------------
- Name        : normgra.py
- Created on  : 2018/11/24 08:57
- Author      : Steve Chen <chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
- Description : Gravity of ellipsoid models and common reductions (Bouguer, free-air).
------------------------------------------------------------------------------------
 **Reference ellipsoids**
 
 This module uses instances of

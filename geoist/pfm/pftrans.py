@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
 """
- -------------------------------------------------------------------------------
- Name        : pftrans.py
- Created on  : 2018/11/24 17:00
- Author      : Steve Chen <chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
- Description : 
-     Potential field transformations, like upward continuation and derivatives.
+Potential field transformations, like upward continuation and derivatives.
 .. note:: Most, if not all, functions here required gridded data.
 """
 
