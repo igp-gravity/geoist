@@ -354,5 +354,5 @@ from .hyper_param import LCurve
 from .geometry import Polygon, Square, Prism, Tesseroid, Sphere
 from .geometry import PolygonalPrism
 from .mesh import SquareMesh, PointGrid, PrismRelief, PrismMesh, TesseroidMesh
-
+from .pfmodel import *
 

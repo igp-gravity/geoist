@@ -9,6 +9,11 @@ classes defined by it.
 # Set up data directory
 import appdirs
 import os
+from ._version import get_versions as _get_versions
+
+# Get the version number through versioneer
+__version__ = _get_versions()["version"]
+__commit__ = _get_versions()["full-revisionid"]
 
 USER_DATA_PATH = appdirs.user_data_dir('geoist')
 if not os.path.exists(USER_DATA_PATH):

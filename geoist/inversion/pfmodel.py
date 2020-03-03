@@ -66,6 +66,9 @@ def free_gpu():
 
 
 class SmoothOperator:
+    """
+    SmoothOperator for ABIC.
+    """
     def __init__(self):
         self.axis = {'zyx':{'x':-1,'y':-2,'z':-3},
                      'xyz':{'x':-3,'y':-2,'z':-1}}
@@ -92,11 +95,11 @@ class SmoothOperator:
         return v
 
 class AbicLSQOperator(tptz.LSQOperator):
-    '''An operator doing matrix vector multiplication. The matrix is:
+    """An operator doing matrix vector multiplication. The matrix is:
         $\alpha_g G^TG + \sum \alpha_i W^TB_i^TB_iW$. Where $\alpha$'s are
         weights, $G$ is kernel matrix, $W$ is depth constraint, $B_i$'s are
         other constrains.
-    '''
+    """
     def __init__(self,
                  toep,
                  depth_constraint=None,
