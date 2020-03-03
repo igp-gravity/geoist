@@ -499,7 +499,7 @@ def get_versions():
             root = os.path.dirname(root)
     except NameError:
         return {"version": "0+unknown", 
-		        "full-revisionid": None,
+                "full-revisionid": None,
                 "dirty": None,
                 "error": "unable to find root of source tree",
                 "date": None}
@@ -517,6 +517,6 @@ def get_versions():
         pass
 
     return {"version": "0+unknown", 
-	        "full-revisionid": None,
+            "full-revisionid": None,
             "dirty": None,
             "error": "unable to compute version", "date": None}
