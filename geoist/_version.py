@@ -498,7 +498,8 @@ def get_versions():
         for i in cfg.versionfile_source.split('/'):
             root = os.path.dirname(root)
     except NameError:
-        return {"version": "0+unknown", "full-revisionid": None,
+        return {"version": "0+unknown", 
+		        "full-revisionid": None,
                 "dirty": None,
                 "error": "unable to find root of source tree",
                 "date": None}
@@ -515,6 +516,7 @@ def get_versions():
     except NotThisMethod:
         pass
 
-    return {"version": "0+unknown", "full": None,
+    return {"version": "0+unknown", 
+	        "full-revisionid": None,
             "dirty": None,
             "error": "unable to compute version", "date": None}
