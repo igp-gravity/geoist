@@ -1,15 +1,16 @@
-# -*- coding: utf-8 -*-
+# Name        : gmt.py
+# Created on  : 2018/09/11 17:00
+# Author      : Steve Chen<chenshi@cea-igp.ac.cn>
+# Affiliation : Institute of Geophysics, CEA.
+# Version     : 0.1.0
+# Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+# License     : Distributed under the MIT License. See LICENSE.txt for more info.
+# Github      : https://igp-gravity.github.io/
+
 """
- Name        : gmt.py
- Created on  : 2018/09/11 17:00
- Author      : Steve Chen<chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
  Description : Application for GMT io
 """
+# -*- coding: utf-8 -*-
 
 #python 3 compatibility
 from __future__ import print_function

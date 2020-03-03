@@ -1,10 +1,7 @@
+"""
+日志管理
+"""
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Sep 15 18:00:46 2018
-
-@author: chens
-"""
-
 import logging
 import pathlib
 import geoist

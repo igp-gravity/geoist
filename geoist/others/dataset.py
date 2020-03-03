@@ -1,21 +1,21 @@
-# -*- coding: utf-8 -*-
-"""
- Name        : dataset.py
- Created on  : 2018/09/11 17:00
- Author      : Steve Chen<chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
- Description : This file is part of GEOIST, which is free software for geophysicist
-               who need to process and analysis data and study inversion problem 
-               and distributed in the hope that it will be useful. Anyone can 
-               download and know news from above Github website address.
-               
-       Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- 
-"""
+# Name        : dataset.py
+# Created on  : 2018/09/11 17:00
+# Author      : Steve Chen<chenshi@cea-igp.ac.cn>
+# Affiliation : Institute of Geophysics, CEA.
+# Version     : 0.1.0
+# License     : Distributed under the MIT License. See LICENSE.txt for more info.
+# Github      : https://igp-gravity.github.io/
+# Description : This file is part of GEOIST, which is free software for geophysicist
+#               who need to process and analysis data and study inversion problem 
+#               and distributed in the hope that it will be useful. Anyone can 
+#               download and know news from above Github website address.     
+#          
+# Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
 
+"""
+  DataSet 
+"""
+# -*- coding: utf-8 -*-
 #python 3 compatibility
 from __future__ import print_function
 

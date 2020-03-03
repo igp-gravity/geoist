@@ -49,6 +49,10 @@ extensions = [
             include_dirs=COMMON_INCLUDE_DIRS,
         ),
 ]
+
+exts = cythonize(extensions)
+
+
 install_requires = ["numpy","matplotlib","scipy","h5py","numba","pandas",
                     "pytest","future","Cython",'statsmodels>=0.9.0',"PyWavelets",
                     "seaborn","patsy", "appdirs"]
@@ -63,7 +67,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/igp-gravity/geoist",
     packages=setuptools.find_packages(),
-    ext_modules=cythonize(extensions),
+    ext_modules=exts,
     include_package_data=True,
     install_requires=install_requires,
     classifiers=(
@@ -71,4 +75,18 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ),
+)
+
+# Fortran extension
+
+from numpy.distutils.core import Extension as npExtension
+from numpy.distutils.core import setup as npsetup
+
+ext_cpwt = npExtension(name='geoist.flex.cpwt',
+                sources=['geoist/flex/cpwt/cpwt.f90', 'geoist/flex/cpwt/cpwt_sub.f90'])
+				
+ext_flex = npExtension(name='geoist.flex.flex',
+                sources=['geoist/flex/flex/flex.f90'])
+npsetup(
+  ext_modules         = [ext_cpwt, ext_flex],
 )
