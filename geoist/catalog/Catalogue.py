@@ -11,7 +11,7 @@ eventID,Agency,year,month,day,hour,minute,second,longitude,latitude,SemiMajor90,
 import math as ma
 import copy as cp
 import _pickle as pk
-
+from datetime import datetime
 from . import AsciiTools as AT
 from . import CatUtils as CU
 
@@ -141,6 +141,58 @@ class Database(object):
         #AddEvent
         self.AddEvent(I, L, M, O)
 
+  def Import0(self, FileName, Header=[],
+                             Delimiter=',',
+                             SkipLine=0,
+                             Comment='#', flag=True):
+
+    tab = AT.AsciiTable()
+    tab.Import(FileName, header=Header,
+                         delimiter=Delimiter,
+                         skipline=SkipLine,
+                         comment=Comment,
+                         dtype='s')
+    
+    for I,D in enumerate(tab.data):
+      #print(D.keys())
+      if flag:
+          D = CU.lower_to_capital(D)
+      #print(D)
+      if 'Id' in D.keys():
+        I = D['Id']
+      else:
+        I += 1
+           
+      L = CU.LocationInit()
+      M = CU.MagnitudeInit()
+      for K in tab.header:
+        if flag:  
+            K = str.capitalize(K)
+        if K in L:
+          L[K] = D[K]
+        if K in M:
+          M[K] = D[K]
+          
+      if 'Log' in D.keys():
+        O = D['Log']
+      else:
+        O = '' #D['Type']
+        
+      if 'Time' in D.keys():
+          #print(D['Time'])   
+          dd = datetime.strptime(D['Time'],'%Y-%m-%dT%H:%M:%S.%fZ')
+          L['Year'] = dd.year
+          L['Month'] = dd.month
+          L['Day'] = dd.day
+          L['Hour'] = dd.hour
+          L['Minute'] = dd.minute
+          L['Second'] = dd.second + dd.microsecond/1E6
+      if 'Mag' in D.keys():
+          M['MagSize'] = D['Mag']
+          M['MagType'] = D['Magtype']
+           
+           
+      self.AddEvent(I, L, M, O)
       
   #---------------------------------------------------------------------------------------
 
@@ -155,7 +207,7 @@ class Database(object):
                          skipline=SkipLine,
                          comment=Comment,
                          dtype='s')
-
+    
     for I,D in enumerate(tab.data):
       if 'Id' in D.keys():
         I = D['Id']
@@ -168,10 +220,12 @@ class Database(object):
           L[K] = D[K]
         if K in M:
           M[K] = D[K]
+          
       if 'Log' in D.keys():
         O = D['Log']
       else:
         O = ''
+
       self.AddEvent(I, L, M, O)
 
   #---------------------------------------------------------------------------------------
@@ -200,7 +254,7 @@ class Database(object):
     tab.header = ['Id','Year','Month','Day','Hour','Minute','Second',
                   'Latitude','Longitude','Depth',
                   'SecError','LatError','LonError','DepError',
-                  'LocCode','MagSize','MagError','MagType','MagCode','Log']
+                  'LocCode','MagSize','MagError','MagType','MagCode','Log','Place', 'Type']
 
     DbC = self.Copy()
 

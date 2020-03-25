@@ -4,11 +4,11 @@ EXAMPLE 6 - Area selection
 
 from os.path import dirname
 
-from geoist.cattools import Catalogue as Cat
-from geoist.cattools import Exploration as Exp
-from geoist.cattools import Selection as Sel
-from geoist.cattools import MapTools as Map
-from geoist.cattools import CatUtils as Ct
+from geoist.catalog import Catalogue as Cat
+from geoist.catalog import Exploration as Exp
+from geoist.catalog import Selection as Sel
+from geoist.catalog import MapTools as Map
+from geoist.catalog import CatUtils as Ct
 
 pathname = dirname(__file__)
 print(pathname+"/data/isc-rev-africa-select.bin")

@@ -2,9 +2,9 @@
 EXAMPLE 5 - CATALOGUE MERGING
 """
 from os.path import dirname
-from geoist.cattools import Catalogue as Cat
-from geoist.cattools import Selection as Sel
-from geoist.cattools import MagRules as MR
+from geoist.catalog import Catalogue as Cat
+from geoist.catalog import Selection as Sel
+from geoist.catalog import MagRules as MR
 
 #-----------------------------------------------------------------------------------------
 # Import Catalogues

@@ -32,26 +32,34 @@ try:
 except ImportError:
     from urllib.request import urlopen, HTTPError
 
-import QCutils as qcu
-from decorators import retry, printstatus
+import geoist.catalog.QCutils as qcu
+from geoist.catalog.decorators import retry, printstatus
 
 
 ###############################################################################
-china_border_file='/home/zhangb/work/people/wangxiaoli/20180812/neic-catalog-qc-master/110m_admin_0_boundary_lines_land.shp'
-china_border_file=os.path.normpath(china_border_file).replace(os.path.sep,"/")
+import pathlib 
+
+china_border_file='//data//CutryL.shp'
+#p2 = Path.cwd()+china_border_file
+#china_border_file=os.path.normpath(china_border_file).replace(os.path.sep,"/")
+china_border_file = str(pathlib.Path(__file__).parent/'data'/'CutryL.shp')
+fault_file = str(pathlib.Path(__file__).parent/'data'/'gem_active_faults.shp')
 ##
 network='us'
-start_year='2012'
+start_year='2010'
 end_year='2012'
 time_window=2.0
 dist_window=15.0
-pathname='/home/zhangb/work/people/wangxiaoli/20180812/neic-catalog-qc-master/tmp'
-pathname=os.path.normpath(pathname).replace(os.path.sep,"/")
-catalog_file='nc.csv'
+min_mag = -5
+max_mag = 12
+#pathname='/home/zhangb/work/people/wangxiaoli/20180812/neic-catalog-qc-master/tmp'
+#pathname=os.path.normpath(pathname).replace(os.path.sep,"/")
+pathname = str(pathlib.Path(__file__).parent/'data')
+catalog_file='us2010-2012.csv'
 ##
 to_show={}
-to_show['mulujichuxinxi']="false"
-to_show['dizhenhuodong']="false"
+to_show['mulujichuxinxi']="true"
+to_show['dizhenhuodong']="ture"
 to_show['zhenyuanshendufenbu']="true"
 to_show['zhenjitongji']="true"
 to_show['dizhenpincitongji']="true"
@@ -94,9 +102,9 @@ def basic_cat_sum(catalog, prefix, dup1, dup2, timewindow, distwindow):
     lines.append('目录震级为空地震数据: %s\n\n'
                  % len(catalog[pd.isnull(catalog['mag'])]))
 
-    lines.append('可能重复地震事件数目 (%ss and %skm threshold): %d\n'
+    lines.append('可能重复地震事件数目 (%ss 和 %skm 阈值): %d\n'
                  % (timewindow, distwindow, dup1))
-    lines.append('可能重复地震事件数目 (16s and 100km threshold): %d'
+    lines.append('可能重复地震事件数目 (16s 和 100km 阈值): %d'
                  % dup2)
 
     with open('%s_catalogsummary.txt' % prefix, 'w') as sumfile:
@@ -194,16 +202,18 @@ def my_list_duplicates(catalog, prefix, newcsv="newcat.csv",timewindow=2, distwi
             dtime=(row['convtime']-tmpdup['convtime'].iloc[0]).total_seconds()
             dmag = row['mag'] - tmpdup['mag'].iloc[0]
             diffs = map('{:.2f}'.format, [dist, dtime, dmag])
+            #print(row)
+            #print(type(row.iloc[4]),type(row.iloc[2]),type(row.iloc[1]),type(row.iloc[0]))
             catstr= '{} {:.2f} {:.2f} {:.2f} {:.2f}'.format(row.iloc[0],
-                                                               row.iloc[1],
-                                                               row.iloc[2],
-                                                               row.iloc[3],
-                                                               row.iloc[4])
+                                                                row.iloc[1],
+                                                                row.iloc[2],
+                                                                row.iloc[3],
+                                                                row.iloc[4])
             dupline1 = catstr + ' ' + ' '.join(diffs) + '\n'
             duplines1.extend(dupline1)
     # generate duplines2
     mydup2=catalog[catalog['dup2']>0].sort_values(['dup2','time'])
-    print(mydup2)
+    #print(mydup2)
     for i in range(1,thresh2dupes+1):
         tmpdup=mydup2[mydup2['dup2']==i]
         duplines2.extend(sep)
@@ -212,7 +222,8 @@ def my_list_duplicates(catalog, prefix, newcsv="newcat.csv",timewindow=2, distwi
                     tmpdup['latitude'].iloc[0], tmpdup['longitude'].iloc[0])[0] / 1000.
             dtime=(row['convtime']-tmpdup['convtime'].iloc[0]).total_seconds()
             dmag = row['mag'] - tmpdup['mag'].iloc[0]
-            diffs = map('{:.2f}'.format, [dist, dtime, dmag])
+            diffs = map('{:.2f}'.format, [dist, dtime, dmag])     
+            #print(row)
             catstr= '{} {:.2f} {:.2f} {:.2f} {:.2f}'.format(row.iloc[0],
                                                                row.iloc[1],
                                                                row.iloc[2],
@@ -351,7 +362,11 @@ def map_detecs(catalog, prefix, minmag=-5, mindep=-50, title=''):
     shape_feature = ShapelyFeature(Reader(china_border_file).geometries(),
                                    ccrs.PlateCarree(), edgecolor='black',
                                    facecolor='none')
+    shape_feature1 = ShapelyFeature(Reader(fault_file).geometries(),
+                                   ccrs.PlateCarree(), edgecolor='red',
+                                   facecolor='none')        
     mplmap.add_feature(shape_feature)
+    mplmap.add_feature(shape_feature1)
 
     plt.title(title, fontsize=20)
     plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)
@@ -399,7 +414,14 @@ def map_detec_nums(catalog, prefix, title='', numcolors=16, rmin=77, rmax=490,
     shape_feature = ShapelyFeature(Reader(china_border_file).geometries(),
                                    ccrs.PlateCarree(), edgecolor='black',
                                    facecolor='none')
+   
+    shape_feature1 = ShapelyFeature(Reader(fault_file).geometries(),
+                                   ccrs.PlateCarree(), edgecolor='red',
+                                   facecolor='none')    
+    
     mplmap.add_feature(shape_feature)
+    mplmap.add_feature(shape_feature1)
+    
     plt.title(title, fontsize=20)
     plt.subplots_adjust(left=0.01, right=0.9, top=0.95, bottom=0.05)
 
@@ -681,8 +703,8 @@ def med_mag(catalog, prefix):
         plt.title('Yearly Median Magnitude', fontsize=20)
         plt.xlim(min(years) - pd.Timedelta(days=183),
                  max(years) - pd.Timedelta(days=183))
-
-    plt.savefig('%s_medianmag' % prefix, dpi=300)
+    
+    plt.savefig('%s_medianmag.png' % prefix, dpi=300)
     plt.close()
 
 
@@ -930,6 +952,94 @@ def cat_dup_search(catalog, prefix):
     plt.savefig('%s_catdupsearch.png' % prefix, dpi=300)
     plt.close()
 
+def create_figures_new(to_plot=None, db = None, catalog_file = None):
+    #from shutil import copy2
+    #prefix = '.'.join(args.specifyfile.split('.')[:-1])
+
+    catalog = network
+    startyear, endyear = map(int, [start_year, end_year])
+    prefix = '%s%s-%s' % (catalog, start_year, end_year) if catalog else\
+              'preferred%s-%s' % (start_year, end_year)
+    #print(filename)
+    #print(start_year, end_year)
+    if db is None:          
+        filename = pathname + "\\" + catalog_file
+        datadf=qcu.get_local_data(filename, prefix, startyear=int(start_year),
+                    endyear=int(end_year), minmag=min_mag, maxmag=max_mag)
+    else:
+        datadf=qcu.get_db_data(db, prefix, startyear=int(start_year),
+                    endyear=int(end_year), minmag=min_mag, maxmag=max_mag)
+
+    #print(datadf)
+    if len(datadf) == 0:
+        sys.stdout.write(('Catalog has no data available for that time period.'
+                          ' Quitting...\n'))
+        sys.exit()
+
+    timewindow = time_window
+    distwindow = dist_window
+    
+    if db is None: 
+        datadf = datadf.sort_values(by='time').reset_index(drop=True)
+        datadf.loc[:, 'ms'] = datadf['time'].str[-4:-1].astype('float')
+        datadf.loc[:, 'convtime'] = [' '.join(x.split('T')).split('.')[0]
+                                      for x in datadf['time'].tolist()]
+        datadf.loc[:, 'convtime'] = datadf['convtime'].astype('datetime64[ns]')
+    else:
+        datadf = datadf.sort_values(by='time').reset_index(drop=True)
+        datadf.loc[:, 'ms'] = datadf['time'].str[-7:-1].astype('float')/1000
+        datadf.loc[:, 'convtime'] = [' '.join(x.split('T')).split('.')[0]
+                                      for x in datadf['time'].tolist()]
+        datadf.loc[:, 'convtime'] = datadf['convtime'].astype('datetime64[ns]')
+    
+    os.chdir(pathname)
+    dup1, dup2 = my_list_duplicates(datadf, prefix, timewindow=timewindow,
+                                 distwindow=distwindow)
+    basic_cat_sum(datadf, prefix, dup1, dup2, timewindow, distwindow)
+    largest_ten(datadf, prefix)
+
+    # generate figures
+    if (to_plot is None or to_plot['Detect Location']=='true'):
+        map_detecs(datadf, prefix, title='Detection locations')
+    if(to_plot is None or to_plot['Deeper than 50km']=='true'):
+        map_detecs(datadf, prefix, mindep=50, title='Detections deeper than 50km')
+    if(to_plot is None or to_plot['Detect Density']=='true'):
+        map_detec_nums(datadf, prefix, title='Detection density')
+    if(to_plot is None or to_plot['Mag Hist']=='true'):
+        make_hist(datadf, 'mag', 0.1, prefix, xlabel='Magnitude',
+                  title='Magnitude histogram')
+    if(to_plot is None or to_plot['Depth Hist']=='true'):
+        make_hist(datadf, 'depth', 1, prefix, xlabel='Depth (km)',
+                  title='Depth histogram')
+    if(to_plot is None or to_plot['Zoomed Depth Hist']=='true'):
+        make_hist(datadf, 'depth', 0.5, prefix, maxval=20, xlabel='Depth (km)',
+                  title='Zoomed depth histogram')
+#    make_hist(datadf, 'ms', 20, prefix, xlabel='Milliseconds',
+#              title='Histogram of milliseconds')
+    if(to_plot is None or to_plot['Events per Hour']=='true'):
+        make_time_hist(datadf, 'hour', prefix, title='Events per Hour of the Day')
+    if(to_plot is None or to_plot['Events per Day']=='true'):
+        make_time_hist(datadf, 'day', prefix, title='Events per Day')
+    if(to_plot is None or to_plot['Time Seperation']=='true'):
+        graph_time_sep(datadf, prefix)
+    if(to_plot is None or to_plot['Mag Completeness']=='true'):
+        cat_mag_comp(datadf, prefix)
+    if(to_plot is None or to_plot['Mag Time']=='true'):
+        graph_mag_time(datadf, prefix)
+    if(to_plot is None or to_plot['Cumu Moment Release']=='true'):
+        cumul_moment_release(datadf, prefix)
+    if(to_plot is None or to_plot['Event Types']=='true'):
+        graph_event_types(datadf, prefix)
+    if(to_plot is None or to_plot['Num of Duplicates']=='true'):
+        cat_dup_search(datadf, prefix)
+    if(to_plot is None or to_plot['Med Mag']=='true'):
+        med_mag(datadf, prefix)
+    if(to_plot is None or to_plot['Mag Count']=='true'):
+        graph_mag_count(datadf, prefix)
+
+    return pathname,prefix
+
+
 def create_figures(to_plot=None):
     """Generate and save all relevant figures and text files."""
     parser = argparse.ArgumentParser()
@@ -971,6 +1081,7 @@ def create_figures(to_plot=None):
     minmag, maxmag = args.magrange
 
     if args.specifyfile is None:
+        #print('Nonew')
 
         if not args.catalog:
             sys.stdout.write('No catalog specified. Exiting...\n')
@@ -1028,6 +1139,7 @@ def create_figures(to_plot=None):
     else:
         from shutil import copy2
         #prefix = '.'.join(args.specifyfile.split('.')[:-1])
+        #print(args.specifyfile)
 
         catalog = args.catalog.lower()
         startyear, endyear = map(int, [args.startyear, args.endyear])
@@ -1040,6 +1152,7 @@ def create_figures(to_plot=None):
 #                raise
 
         #datadf = pd.read_csv(args.specifyfile)
+        print(args.specifyfile)
         datadf=qcu.get_local_data(args.specifyfile, prefix, startyear=startyear,
                         endyear=endyear, minmag=minmag, maxmag=maxmag)
         #copy2(args.specifyfile, prefix)
@@ -1057,7 +1170,7 @@ def create_figures(to_plot=None):
     datadf.loc[:, 'convtime'] = [' '.join(x.split('T')).split('.')[0]
                                   for x in datadf['time'].tolist()]
     datadf.loc[:, 'convtime'] = datadf['convtime'].astype('datetime64[ns]')
-
+    print(pathname)
     os.chdir(pathname)
     dup1, dup2 = my_list_duplicates(datadf, prefix, timewindow=timewindow,
                                  distwindow=distwindow)
@@ -1121,27 +1234,28 @@ def generate_html(pathname,prefix,to_show=None):
     with open('{0}_duplicates.txt'.format(prefix)) as dupfile:
         duplist = '\t\t' + '\t\t'.join(dupfile.readlines())
 
-    toc = ('# Report for {1} catalog from {2} to {3}\n'
-           '## Contents\n').format(prefix, catalog, startyear, endyear)
+    #toc = ('# Report for {1} catalog from {2} to {3}\n'
+    toc = ('## 地震目录 {1} 质量报告 {2} — {3}\n'       
+           '### 内容\n').format(prefix, catalog, startyear, endyear)
     contents={}
-    contents['mulujichuxinxi']=('- [Basic Catalog Summary](#catsum)\n'
-           '    - [Largest Events](#bigevs)\n')
-    contents['dizhenhuodong']=('- [Seismicity Map](#seismap)\n'
-           '- [Seismicity Density Map](#densmap)\n')
-    contents['zhenyuanshendufenbu']='- [Depth Distribution](#dephist)\n'
-    contents['dizhenpincitongji']=('- [Event Frequency](#evfreq)\n'
-           '- [Hourly Event Frequency](#hrevfreq)\n'
-           '- [Inter-Event Temporal Spacing](#tmsep)\n')
-    contents['zhenjitongji']=('- [Magnitude Distribution](#magdist)\n'
-           '    - [All Magnitudes](#allmag)\n'
-           '    - [All Magnitudes Histogram](#allmaghist)\n'
-           '    - [Magnitude & Event Count](#magevcount)\n'
-           '    - [Median Magnitudes](#medmag)\n'
-           '    - [Overall Completeness](#magcomp)\n')
-    contents['leijidizhenjushifang']='- [Cumulative Moment Release](#cumulrel)\n'
-    contents['dizhenleixingtongji']='- [Event Type Frequency](#evtypes)\n'
-    contents['shaixuanmulu']=('- [Searching for Duplicate Events](#dupgraph)\n'
-           '- [Possible Duplicate Events](#duplist)\n---\n')
+    contents['mulujichuxinxi']=('- [目录基本信息](#catsum)\n'
+           '    - [最大事件](#bigevs)\n')
+    contents['dizhenhuodong']=('- [地震活动图](#seismap)\n'
+           '- [地震密度图](#densmap)\n')
+    contents['zhenyuanshendufenbu']='- [震源深部分布图](#dephist)\n'
+    contents['dizhenpincitongji']=('- [事件频率](#evfreq)\n'
+           '- [每小时的事件频率](#hrevfreq)\n'
+           '- [事件之间的事件间隔](#tmsep)\n')
+    contents['zhenjitongji']=('- [震级分布图](#magdist)\n'
+           '    - [全部震级](#allmag)\n'
+           '    - [震级直方图](#allmaghist)\n'
+           '    - [分级直方图](#magevcount)\n'
+           '    - [中等震级](#medmag)\n'
+           '    - [目录完整性](#magcomp)\n')
+    contents['leijidizhenjushifang']='- [累积地震矩释放](#cumulrel)\n'
+    contents['dizhenleixingtongji']='- [事件类型-频率](#evtypes)\n'
+    contents['shaixuanmulu']=('- [重复事件扫描](#dupgraph)\n'
+           '- [可能的重复事件](#duplist)\n---\n')
     for key in contents:
         if(to_show is None or to_show[key]=="true"):
            toc=toc+contents[key]
@@ -1210,14 +1324,34 @@ def generate_html(pathname,prefix,to_show=None):
     with open('{0}_report.html'.format(prefix), 'w') as htmlfile:
         htmlfile.write(html)
 
+def qcinit():
+    to_plot={}
+    to_plot['Detect Location']=to_show['mulujichuxinxi']
+    to_plot['Deeper than 50km']=to_show['zhenyuanshendufenbu']
+    to_plot['Detect Density']=to_show['dizhenpincitongji']
+    to_plot['Mag Hist']=to_show['zhenjitongji']
+    to_plot['Depth Hist']=to_show['zhenyuanshendufenbu']
+    to_plot['Zoomed Depth Hist']=to_show['zhenyuanshendufenbu']
+    to_plot['Events per Hour']=to_show['dizhenpincitongji']
+    to_plot['Events per Day']=to_show['dizhenpincitongji']
+    to_plot['Time Seperation']=to_show['dizhenpincitongji']
+    to_plot['Mag Completeness']=to_show['zhenjitongji']
+    to_plot['Cumu Moment Release']=to_show['leijidizhenjushifang']
+    to_plot['Num of Duplicates']=to_show['chongfushijian']
+    to_plot['Med Mag']=to_show['zhenjitongji']
+    to_plot['Mag Count']=to_show['zhenjitongji']
+    to_plot['Mag Time']=to_show['zhenjitongji']
+    to_plot['Event Types']=to_show['dizhenleixingtongji']  
+    
+    return to_plot
 
 if __name__ == '__main__':
 ## picture generation will be guided selected output ##
     to_plot={}
     to_plot['Detect Location']=to_show['mulujichuxinxi']
     to_plot['Deeper than 50km']=to_show['zhenyuanshendufenbu']
-    to_plot['Detect Density']=False
-    #to_plot['Detect Density']=to_show['dizhenpincitongji']
+    #to_plot['Detect Density']=False
+    to_plot['Detect Density']=to_show['dizhenpincitongji']
     to_plot['Mag Hist']=to_show['zhenjitongji']
     to_plot['Depth Hist']=to_show['zhenyuanshendufenbu']
     to_plot['Zoomed Depth Hist']=to_show['zhenyuanshendufenbu']
@@ -1233,8 +1367,8 @@ if __name__ == '__main__':
     to_plot['Event Types']=to_show['dizhenleixingtongji']
 ##
     try:
-        pathname,prefix = create_figures(to_plot)
-        generate_html(pathname,prefix,to_show)
+        pathname,prefix = create_figures(to_plot) #画图
+        generate_html(pathname,prefix,to_show) #生成html
     except (KeyboardInterrupt, SystemError):
         sys.stdout.write('\nProgram canceled. Exiting...\n')
         sys.exit()

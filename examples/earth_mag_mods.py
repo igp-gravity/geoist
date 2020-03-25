@@ -19,7 +19,7 @@ from magmod.magnetic_model.loader_mio import (
 )
 
 from magmod.data import (
-    EMM_2010_STATIC, EMM_2010_SECVAR, WMM_2015,
+    EMM_2010_STATIC, EMM_2010_SECVAR, WMM_2015, WMM_2020, IGRF13, 
     CHAOS6_CORE_LATEST, CHAOS6_STATIC,
     IGRF11, IGRF12, SIFM,
 )
@@ -41,8 +41,15 @@ loc = (30.0, 40.0, 1000.0)
 wmm2015 = load_model_wmm(WMM_2015)  #load wmm2015 model
 igrf11 = load_model_igrf(IGRF11)    #load igrf11 model
 igrf12 = load_model_shc(IGRF12, interpolate_in_decimal_years=True)    #load igrf12 model
+
+igrf13 = load_model_igrf(IGRF13)
+wmm2020 = load_model_wmm(WMM_2020)
+
 emm = load_model_emm(EMM_2010_STATIC, EMM_2010_SECVAR)  #load emm model
 options = {"scale": [1, 1, -1]}   #-1 is Z direction
+
+wmm2020.eval(decimal_year_to_mjd2000(d11), loc, 0, 0, **options) 
+igrf13.eval(decimal_year_to_mjd2000(d11), loc, 0, 0, **options)
 
 wmm2015.eval(decimal_year_to_mjd2000(d11), loc, 0, 0, **options) # 0,0 mean input,output using GEODETIC_ABOVE_WGS84
 igrf11.eval(decimal_year_to_mjd2000(d11), loc, 0, 0, **options)

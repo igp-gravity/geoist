@@ -4,14 +4,14 @@
 from os.path import dirname
 import numpy as np
 #local import
-from geoist.cattools import Catalogue as Cat
-from geoist.cattools import Exploration as Exp
-from geoist.cattools import MapTools as Map
-from geoist.cattools import Selection as Sel
-from geoist.cattools import Seismicity as Sem
-from geoist.cattools import Declusterer as Declus
-from geoist.cattools import Smoothing as Sm
-from geoist.cattools import CatUtils as Ct
+from geoist.catalog import Catalogue as Cat
+from geoist.catalog import Exploration as Exp
+from geoist.catalog import MapTools as Map
+from geoist.catalog import Selection as Sel
+from geoist.catalog import Seismicity as Sem
+from geoist.catalog import Declusterer as Declus
+from geoist.catalog import Smoothing as Sm
+from geoist.catalog import CatUtils as Ct
 #-----------------------------------------------------------------------------------------
 pathname = dirname(__file__)
 H = ['Id','','Year','Month','Day','Hour','Minute','Second',

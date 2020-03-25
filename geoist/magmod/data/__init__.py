@@ -32,6 +32,7 @@ _DIRNAME = dirname(__file__)
 
 # magnetic models
 WMM_2015 = join(_DIRNAME, 'WMM2015v2.COF')
+WMM_2020 = join(_DIRNAME, 'WMM2020.COF')
 EMM_2010_STATIC = join(_DIRNAME, 'EMM-720_V3p0_static.cof')
 EMM_2010_SECVAR = join(_DIRNAME, 'EMM-720_V3p0_secvar.cof')
 CHAOS6_CORE_X8 = join(_DIRNAME, 'CHAOS-6-x8_core.shc')
@@ -39,6 +40,7 @@ CHAOS6_CORE_LATEST = CHAOS6_CORE_X8
 CHAOS6_STATIC = join(_DIRNAME, 'CHAOS-6_static.shc')
 IGRF11 = join(_DIRNAME, 'igrf11coeffs.txt')
 IGRF12 = join(_DIRNAME, 'IGRF12.shc')
+IGRF13 = join(_DIRNAME, 'igrf13.COF')
 SIFM = join(_DIRNAME, 'SIFM.shc')
 LCS1 = join(_DIRNAME, 'LCS-1.shc')
 MF7 = join(_DIRNAME, 'MF7.shc')

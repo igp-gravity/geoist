@@ -2,8 +2,8 @@
 EXAMPLE 8 - Sort catalogue
 """
 from os.path import dirname
-from geoist.cattools import Catalogue as Cat
-from geoist.cattools import Exploration as Exp
+from geoist.catalog import Catalogue as Cat
+from geoist.catalog import Exploration as Exp
 
 #-----------------------------------------------------------------------------------------
 # Import catalogue

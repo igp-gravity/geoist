@@ -2,7 +2,7 @@
 MANUAL CREATION OF AN EARTHQUAKE DATABASE
 """
 
-from geoist.cattools import Catalogue as Cat
+from geoist.catalog import Catalogue as Cat
 Db = Cat.Database('First Test','NOTE: Just a test')
 
 L = [{'Year': 1960},

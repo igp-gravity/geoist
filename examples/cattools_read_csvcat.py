@@ -3,13 +3,13 @@ EXAMPLE 4 - READING CSV CATALOGUE
 """
 from os.path import dirname
 import numpy as np
-from geoist.cattools import Catalogue as Cat
-from geoist.cattools import Exploration as Exp
-from geoist.cattools import MapTools as Map
-from geoist.cattools import Selection as Sel
-from geoist.cattools import Seismicity as Sem
-from geoist.cattools import Declusterer as Declus
-from geoist.cattools import Smoothing as Sm
+from geoist.catalog import Catalogue as Cat
+from geoist.catalog import Exploration as Exp
+from geoist.catalog import MapTools as Map
+from geoist.catalog import Selection as Sel
+from geoist.catalog import Seismicity as Sem
+from geoist.catalog import Declusterer as Declus
+from geoist.catalog import Smoothing as Sm
 #-----------------------------------------------------------------------------------------
 # 1) STANDARD FORMAT
 pathname = dirname(__file__)
@@ -63,7 +63,7 @@ Dbm.Info()
 x1,y1,z1 = Exp.GetHypocenter(Db)
 x2,y2,z2 = Exp.GetHypocenter(Dbm)
 
-from geoist.cattools import CatUtils as Ct
+from geoist.catalog import CatUtils as Ct
 import numpy as np
 
 p = pathname+"/data/area.wkt"

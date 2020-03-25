@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import radians, degrees, sin, cos, sqrt, atan2
 
 import numpy as np
@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from obspy.geodetics.base import gps2dist_azimuth
 
-from .decorators import retry
+from geoist.catalog.decorators import retry
 
 # Python 2
 try:
@@ -316,3 +316,47 @@ def get_data(catalog, dirname, startyear=2000, endyear=2000, minmag=-5,
 
     return alldatadf
 
+def get_local_data(catafile, dirname, startyear=2000, endyear=2000, minmag=-5,
+             maxmag=12, dhrs = 0):
+    """Download catalog data from earthquake.usgs.gov"""
+    year = startyear
+    alldata = []
+    fname = catafile
+
+    alldatadf = pd.read_csv(catafile,delimiter=',')
+    alldatadf['newind']=pd.to_datetime(alldatadf['time']) + timedelta(hours = dhrs)
+    alldatadf.set_index('newind',inplace=True)
+    alldatadf.sort_index(inplace=True)
+    stime=pd.datetime(startyear,1,1)
+    etime=pd.datetime(endyear+1,1,1)
+    selected=alldatadf.loc[stime:etime]
+    selected=selected[(selected['mag']>minmag) & (selected['mag']<maxmag)]
+#    selected.to_csv('{}/{}'.format(dirname,fname),index=False)
+    return selected
+
+def get_db_data(db2, dirname, startyear=2000, endyear=2000, minmag=-5,
+             maxmag=12, dhrs = 0):
+    """Get catalog data from Database"""
+
+    df = pd.DataFrame(columns=['newind','time', 'latitude','longitude', 'depth' ,'mag', 'magType', 'id', 'type'])
+    dt = pd.DataFrame({'year': db2.Extract('Year'), 'month': db2.Extract('Month'),
+                  'day': db2.Extract('Day'),'hour': db2.Extract('Hour'),'minute': db2.Extract('Minute'),
+                  'second': db2.Extract('Second')} )
+    df['newind'] = pd.to_datetime(dt) + timedelta(hours = dhrs)
+    df['time'] = [x.strftime("%Y-%m-%dT%H:%M:%S.%fZ") for x in df['newind'].tolist()]
+    df['latitude'] = db2.Extract('Latitude') 
+    df['longitude'] = db2.Extract('Longitude')
+    df['depth'] = db2.Extract('Depth')
+    df['mag'] = db2.Extract('MagSize')
+    df['magType'] = db2.Extract('MagType')
+    df['id'] = db2.Extract('Id') 
+    df['type'] = db2.Extract('Log')     
+    df.set_index('newind',inplace=True)
+    df.sort_index(inplace=True)    
+    stime=pd.datetime(startyear,1,1)
+    etime=pd.datetime(endyear+1,1,1)
+    
+    selected=df.loc[stime:etime]
+    selected=selected[(selected['mag']>minmag) & (selected['mag']<maxmag)]
+#    selected.to_csv('{}/{}'.format(dirname,fname),index=False)
+    return selected

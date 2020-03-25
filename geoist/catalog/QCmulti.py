@@ -41,30 +41,30 @@ def basic_cat_sum(catalog, catname, dirname):
     """Gather basic catalog summary statistics."""
     lines = []
 
-    lines.append('Catalog name: %s\n\n' % catname.upper())
+    lines.append('目录名称: %s\n\n' % catname.upper())
 
-    lines.append('First date in catalog: %s\n' % catalog['time'].min())
-    lines.append('Last date in catalog: %s\n\n' % catalog['time'].max())
+    lines.append('起始日期: %s\n' % catalog['time'].min())
+    lines.append('截止日期: %s\n\n' % catalog['time'].max())
 
-    lines.append('Total number of events: %s\n\n' % len(catalog))
+    lines.append('事件总数: %s\n\n' % len(catalog))
 
-    lines.append('Minimum latitude: %s\n' % catalog['latitude'].min())
-    lines.append('Maximum latitude: %s\n' % catalog['latitude'].max())
-    lines.append('Minimum longitude: %s\n' % catalog['longitude'].min())
-    lines.append('Maximum longitude: %s\n\n' % catalog['longitude'].max())
+    lines.append('最小经度: %s\n' % catalog['latitude'].min())
+    lines.append('最大经度: %s\n' % catalog['latitude'].max())
+    lines.append('最小纬度: %s\n' % catalog['longitude'].min())
+    lines.append('最大纬度: %s\n\n' % catalog['longitude'].max())
 
-    lines.append('Minimum depth: %s\n' % catalog['depth'].min())
-    lines.append('Maximum depth: %s\n' % catalog['depth'].max())
-    lines.append('Number of 0 km depth events: %s\n'
+    lines.append('最小深度: %s\n' % catalog['depth'].min())
+    lines.append('最大深度: %s\n' % catalog['depth'].max())
+    lines.append('0 km深度事件数: %s\n'
                  % len(catalog[catalog['depth'] == 0]))
-    lines.append('Number of NaN depth events: %s\n\n'
+    lines.append('NaN 深度事件数: %s\n\n'
                  % len(catalog[pd.isnull(catalog['depth'])]))
 
-    lines.append('Minimum magnitude: %s\n' % catalog['mag'].min())
-    lines.append('Maximum magnitude: %s\n' % catalog['mag'].max())
-    lines.append('Number of 0 magnitude events: %s\n'
+    lines.append('最小震级: %s\n' % catalog['mag'].min())
+    lines.append('最大震级: %s\n' % catalog['mag'].max())
+    lines.append('0 震级事件数: %s\n'
                  % len(catalog[catalog['mag'] == 0]))
-    lines.append('Number of NaN magnitude events: %s'
+    lines.append('NaN 震级事件数: %s'
                  % len(catalog[pd.isnull(catalog['mag'])]))
 
     with open('%s_summary.txt' % catname, 'w') as sumfile:
@@ -91,48 +91,48 @@ def comp_criteria(cat1, cat1name, cat1mids, cat2, cat2name, cat2mids, dirname,
         maxtime = max(newcat1['time'].max(), newcat2['time'].max())
         maxtime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(maxtime))
 
-        lines.append('Overlapping time period: %s to %s\n\n'
+        lines.append('重叠时间段: %s to %s\n\n'
                      % (mintime, maxtime))
 
-        lines.append('-- Matching Criteria --\n')
-        lines.append('Time window: %s s\n' % otwindow)
-        lines.append('Distance window: %s km\n\n' % distwindow)
+        lines.append('-- 匹配准则 --\n')
+        lines.append('时间窗口: %s s\n' % otwindow)
+        lines.append('距离窗口: %s km\n\n' % distwindow)
 
-        lines.append('-- Matching Results --\n')
-        lines.append('Number of associated events: %s\n' % nummatches)
-        lines.append('Number of unassociated %s events: %s\n'
+        lines.append('-- 匹配结果 --\n')
+        lines.append('关联事件数: %s\n' % nummatches)
+        lines.append(' %s 未关联事件数: %s\n'
                      % (cat1name, unq1))
-        lines.append('Number of unassociated %s events: %s\n\n'
+        lines.append(' %s 未关联事件数: %s\n\n'
                      % (cat2name, unq2))
 
-        lines.append('Minimum matched latitude: %s\n' %
+        lines.append('最小匹配经度: %s\n' %
                      min(newcat1['latitude'].min(), newcat2['latitude'].min()))
-        lines.append('Maximum matched latitude: %s\n' %
+        lines.append('最大匹配经度: %s\n' %
                      max(newcat1['latitude'].max(), newcat2['latitude'].max()))
-        lines.append('Minimum matched longitude: %s\n' %
+        lines.append('最小匹配纬度: %s\n' %
                      min(newcat1['longitude'].min(),
                          newcat2['longitude'].max()))
-        lines.append('Maximum matched longitude: %s\n\n' %
+        lines.append('最大匹配纬度: %s\n\n' %
                      max(newcat1['longitude'].max(),
                          newcat2['longitude'].max()))
 
-        lines.append('Minimum matched depth: %s\n' %
+        lines.append('最小匹配深度: %s\n' %
                      min(newcat1['depth'].min(), newcat2['depth'].min()))
-        lines.append('Maximum matched depth: %s\n\n' %
+        lines.append('最大匹配深度: %s\n\n' %
                      max(newcat1['depth'].max(), newcat2['depth'].max()))
 
-        lines.append('Minimum matched magnitude: %s\n' %
+        lines.append('最小匹配震级: %s\n' %
                      min(newcat1['mag'].min(), newcat2['mag'].min()))
-        lines.append('Maximum matched magnitude: %s' %
+        lines.append('最大匹配震级: %s' %
                      max(newcat1['mag'].max(), newcat2['mag'].max()))
 
     else:
-        lines.append('-- Matching Criteria --\n')
-        lines.append('Time window: %s s\n' % otwindow)
-        lines.append('Distance window: %s km\n\n' % distwindow)
+        lines.append('-- 匹配准则 --\n')
+        lines.append('事件窗口: %s s\n' % otwindow)
+        lines.append('距离窗口: %s km\n\n' % distwindow)
 
-        lines.append('-- Matching Results --\n')
-        lines.append('NO MATCHING EVENTS FOUND')
+        lines.append('-- 匹配结果 --\n')
+        lines.append('没有匹配事件发现')
 
     with open('%s_comparisoncriteria.txt' % dirname, 'w') as compfile:
         for line in lines:
@@ -143,8 +143,8 @@ def comp_criteria(cat1, cat1name, cat1mids, cat2, cat2name, cat2mids, dirname,
 def match_events(cat1, cat2, dirname, otwindow=16, distwindow=100):
     """Match events within two catalogs."""
     cat1ids, cat2ids = [], []
-    matchlines = [('Matching events using %ss time threshold and %skm '
-                   'distance threshold\n') % (otwindow, distwindow),
+    matchlines = [('使用 %ss 时间阈值和 %skm 距离阈值'
+                   '匹配的事件\n') % (otwindow, distwindow),
                   '***********************\n']
     pcolumns = ['convtime', 'id', 'latitude', 'longitude', 'depth', 'mag']
     sep = '-----------------------\n'
@@ -294,8 +294,8 @@ def map_unique_events(cat, catname, mids):
         'admin_1_states_provinces_lines', '50m', facecolor='none',
         edgecolor='k', zorder=9))
     mplmap.add_feature(cfeature.BORDERS)
-    plt.title('%s unassociated events' % catname, fontsize=20, y=1.08)
-
+    plt.title('%s unassociated events' % catname, fontsize=20, y=1.08)    
+    #print(catname)
     plt.savefig('%s_uniquedetecs.png' % catname, dpi=300)
     plt.close()
 
@@ -434,9 +434,83 @@ def make_diff_hist(cat1, cat2, cat1mids, cat2mids, param, binsize, dirname,
 
 
 ###############################################################################
-###############################################################################
-###############################################################################
 
+def create_figures_new(db = None, catalog_file = None, 
+                       startyear = 2010 , endyear = 2012,
+                       minmag = -5 , maxmag = 12, pathname = None, dhrs = 0):
+    """Generate and save all relevant figures and text files."""
+  
+    if db is None:          
+        cat1 = catalog_file[0].lower()
+        cat2 = catalog_file[1].lower()   
+        dirname = '%s-%s%s-%s' % (cat1, cat2, startyear, endyear)         
+        datadf1 = qcu.get_local_data(cat1, dirname, startyear=startyear,
+            endyear=endyear, minmag=minmag, maxmag=maxmag)
+        datadf2 = qcu.get_local_data(cat2, dirname, startyear=startyear,
+            endyear=endyear, minmag=minmag, maxmag=maxmag,  dhrs = dhrs)
+        cat1, cat2 = cat1.upper(), cat2.upper()
+    else:
+        db1 = db[0]
+        db2 = db[1]       
+        dirname = '%s-%s%s-%s' % (db1.Header['Name'].lower(), db2.Header['Name'].lower(), startyear, endyear)
+        print(dirname)
+        datadf1 = qcu.get_db_data(db1, dirname, startyear=startyear,
+            endyear=endyear, minmag=minmag, maxmag=maxmag)
+        datadf2 = qcu.get_db_data(db2, dirname, startyear=startyear,
+            endyear=endyear, minmag=minmag, maxmag=maxmag, dhrs = dhrs)
+        cat1, cat2 = db1.Header['Name'].upper(), db2.Header['Name'].upper()
+
+    
+    os.chdir(pathname)
+    #os.chdir(dirname)
+    basic_cat_sum(datadf1, cat1, dirname)
+    basic_cat_sum(datadf2, cat2, dirname)
+
+   
+    datadf1.loc[:, 'convtime'] = [' '.join(x.split('T')) for x in
+                               datadf1['time'].tolist()]
+    datadf1.loc[:, 'convtime'] = datadf1['convtime'].astype('datetime64[ns]')
+    datadf1.loc[:, 'time'] = [qcu.to_epoch(x) for x in datadf1['time']]
+    datadf2.loc[:, 'convtime'] = [' '.join(x.split('T')) for x in
+                               datadf2['time'].tolist()]
+    datadf2.loc[:, 'convtime'] = datadf2['convtime'].astype('datetime64[ns]')
+    datadf2.loc[:, 'time'] = [qcu.to_epoch(x) for x in datadf2['time']]
+    datadf1, datadf2 = qcu.trim_times(datadf1, datadf2)
+
+    cat1ids, cat2ids, newcat1, newcat2 = match_events(datadf1, datadf2,
+        dirname, otwindow = 60, distwindow=100)
+
+    if len(cat1ids) == 0:
+        sys.stdout.write('*** No matching events found ***\n')
+
+    comp_criteria(datadf1, cat1, cat1ids, datadf2, cat2, cat2ids, dirname,
+                  otwindow = 60, distwindow = 100)
+    #find_closest(datadf1, cat1, cat1ids, datadf2, dirname)
+
+    map_events(newcat1, cat1, newcat2, cat2, cat1ids, cat2ids, dirname)
+    print(cat1)
+    map_unique_events(datadf1, cat1, cat1ids)
+    print(cat2)
+    map_unique_events(datadf2, cat2, cat2ids)
+    make_az_dist(newcat1, cat1, newcat2, cat2, cat1ids, cat2ids, dirname)
+    compare_params(newcat1, cat1, newcat2, cat2, cat1ids, cat2ids, 'mag',
+                   dirname)
+    compare_params(newcat1, cat1, newcat2, cat2, cat1ids, cat2ids, 'depth',
+                   dirname)
+    make_diff_hist(newcat1, newcat2, cat1ids, cat2ids, 'time', 0.5, dirname,
+                   xlabel='%s-%s time differences (sec)' % (cat1.upper(),
+                   cat2.upper()))
+    make_diff_hist(newcat1, newcat2, cat1ids, cat2ids, 'mag', 0.1, dirname,
+                   xlabel='%s-%s magnitude differences' % (cat1.upper(),
+                   cat2.upper()))
+    make_diff_hist(newcat1, newcat2, cat1ids, cat2ids, 'depth', 2, dirname,
+                   xlabel='%s-%s depth differences (km)' % (cat1.upper(),
+                   cat2.upper()))
+    make_diff_hist(newcat1, newcat2, cat1ids, cat2ids, 'distance', 2, dirname,
+                   xlabel='%s-%s distances (km)' % (cat1.upper(),
+                   cat2.upper()))
+
+    return dirname
 
 def create_figures():
     """Generate and save all relevant figures and text files."""
@@ -628,6 +702,7 @@ def generate_html(dirname, matchbool):
     catalog2 = dirname.split('-')[1][:-4].upper()
     startyear = dirname.split('-')[1][-4:]
     endyear = dirname.split('-')[-1]
+    #print(catalog1, catalog2)
 
     with open('{0}_summary.txt'.format(catalog1)) as sum1file:
         cat1sum = '\t\t' + '\t\t'.join(sum1file.readlines())
@@ -639,24 +714,24 @@ def generate_html(dirname, matchbool):
         matches = '\t\t' + '\t\t'.join(matchfile.readlines())
 
     if matchbool:
-        tocm = '- [Summary of Matching Events](#matches)\n'
+        tocm = '- [匹配事件汇总信息](#matches)\n'
         strm = ('### Summary of Matching Events <a name="matches"></a>\n---\n'
                 '{0}\n').format(matches)
     else:
         tocm, strm = '', ''
 
-    toc = ('## Contents\n'
-           '- [Basic Catalog Statistics](#catstats)\n'
-           '    - [Catalog 1](#cat1stats)\n'
-           '    - [Catalog 2](#cat2stats)\n'
-           '- [Comparison Criteria](#compcrit)\n'
-           '- [Matching Event Hypocenters](#matchh)\n'
-           '- [Matching Event Magnitudes](#matchm)\n'
-           '- [Unassociated Events](#missevs)\n'
-           '{0}---\n').format(tocm)
+    toc = ('## 地震目录 {1} 和 {2} 从 {3} 至 {4} 对比报告\n'
+           '### 内容\n'
+           '- [目录统计信息](#catstats)\n'
+           '    - [目录 1](#cat1stats)\n'
+           '    - [目录 2](#cat2stats)\n'
+           '- [对比方法](#compcrit)\n'
+           '- [匹配事件震中](#matchh)\n'
+           '- [匹配事件震级](#matchm)\n'
+           '- [未匹配事件](#missevs)\n'
+           '{0}---\n').format(tocm, catalog1, catalog2, startyear, endyear)
 
-    mdstring = ('# Report for {1} and {2} from {3} to {4}\n'
-                '## Basic Catalog Statistics <a name="catstats"></a>\n'
+    mdstring = ('## Basic Catalog Statistics <a name="catstats"></a>\n'
                 '### Catalog 1 <a name="cat1stats"></a>\n---\n'
                 '{5}\n'
                 '### Catalog 2 <a name="cat2stats"></a>\n---\n'

@@ -207,7 +207,7 @@ def LocCodeSelect(Db, LocList, Best=False, Owrite=False):
 def TimeSelect(Db, Date0, Date1, Owrite=False):
 
   Def0 = [1900,1,1,0,0,0]
-  Def1 = [2000,12,31,23,59,59]
+  Def1 = [2020,12,31,23,59,59]
 
   if type(Date0) != list:
     Date0 = [Date0]

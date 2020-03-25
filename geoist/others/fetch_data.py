@@ -32,6 +32,7 @@ Drepo1 = datarepo.create(
 
 Gitee_repo_url = 'https://gitee.com/cea2020/geodataset/raw/master/demodata/'
 Coding_repo_url = 'https://cea2020.coding.net/p/geodataset/d/geodataset/git/raw/master/'
+ispec_catalog_url = 'http://10.2.14.222/catalog/'
 
 def delete_downloads():
     """Delete all downloaded examples to free space or update the files."""
@@ -81,7 +82,6 @@ def _retrieve_file(url, filename):
 def _download_file(filename, prjname = 'geodataset'):
     url = _get_gitee_file_url(prjname, filename)
     return _retrieve_file(url, filename)
-
 
 
 ###############################################################

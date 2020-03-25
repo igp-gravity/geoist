@@ -2,10 +2,10 @@
 EXAMPLE 7 - Prime analysis
 """
 from os.path import dirname
-from geoist.cattools import Parsers as Par
-from geoist.cattools import Exploration as Exp
-from geoist.cattools import MapTools as Map
-from geoist.cattools import Selection as Sel
+from geoist.catalog import Parsers as Par
+from geoist.catalog import Exploration as Exp
+from geoist.catalog import MapTools as Map
+from geoist.catalog import Selection as Sel
 #-----------------------------------------------------------------------------------------
 # Import catalogue
 pathname = dirname(__file__)

@@ -242,7 +242,7 @@ class GeoMap:
     clb = plt.gcf().colorbar(h, orientation = 'vertical')
     clb.outline.set_linewidth(1)
     clb.ax.tick_params(labelsize=14)
-    clb.set_label('Spectral Acceleration ($g$)', size=12)
+    #clb.set_label('Spectral Acceleration ($g$)', size=12)
 
   #---------------------------------------------------------------------------------------
 

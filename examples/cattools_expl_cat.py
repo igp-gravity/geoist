@@ -2,7 +2,7 @@
 EXAMPLE 3 - ISF CATALOGUE EXPLORATION
 """
 from os.path import dirname
-from geoist.cattools import Parsers as Par
+from geoist.catalog import Parsers as Par
 
 #-----------------------------------------------------------------------------------------
 # Isf parsing

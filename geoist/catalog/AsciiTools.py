@@ -169,28 +169,43 @@ class AsciiTable():
 
          # Skip comments, if any
         if line[0] != comment:
-          value = line.strip().split(delimiter)
+          #value = line.strip().split(delimiter)
+          #print(line)
+          import re  #忽略双引号内的逗号
+          if delimiter==',':
+              value = re.split(r',\s*(?![^"]*\"\,)', line)
+              #value = line.strip().split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)",-1)
+          elif delimiter == ' ': #空格分隔一个算多个
+              value = list(filter(None,line.strip().split(delimiter)))
+              #print(value, len(value), len(header))
+          else:
+              value = re.split('['+delimiter+']',line) #line.strip().split(delimiter)
+          #print(value, delimiter)
+              
+          #print(line.strip().split(delimiter))
 
           # Loop over data values
-          data = []
-          for i, h in enumerate(header):
-
-            # Skip empty header fields
-            if h != '':
-
-              # Data type(s) switch
-              if type(dtype) == list:
-                dtp = dtype[i]
-              else:
-                dtp = dtype
-
-              # Check for empty elements
-              if not value[i]:
-                value[i] = empty
-
-              data.append(_CastValue(value[i],dtp))
-
-          self.AddElement(data)
+          if len(value) == len(header):    
+              data = []
+              
+              for i, h in enumerate(header):
+    
+                # Skip empty header fields
+                if h != '':
+    
+                  # Data type(s) switch
+                  if type(dtype) == list:
+                    dtp = dtype[i]
+                  else:
+                    dtp = dtype
+    
+                  # Check for empty elements
+                  if not value[i]:
+                    value[i] = empty
+    
+                  data.append(_CastValue(value[i],dtp))
+    
+              self.AddElement(data)
 
       f.close()
       return

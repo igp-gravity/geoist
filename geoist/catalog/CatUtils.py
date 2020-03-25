@@ -27,7 +27,6 @@ def LocationInit():
        'DepError': None,
        'LocCode': None,
        'Prime': False}
-
   return L
 
 #-----------------------------------------------------------------------------------------
@@ -65,8 +64,10 @@ def CastValue(key, value):
        'MagSize': 'f',
        'MagError': 'f',
        'MagType': 's',
-       'MagCode': 's'}
-
+       'MagCode': 's',
+       'Place': 's',
+       'Type': 's'}
+  
   if not IsEmpty(value):
     if C[key] == 'i':
       value = int(value)
@@ -82,6 +83,18 @@ def CastValue(key, value):
   return value
 
 #-----------------------------------------------------------------------------------------
+def capital_to_lower(dict_info):
+    new_dict = {}
+    for i, j in dict_info.items():
+        new_dict[i.lower()] = j
+    return new_dict
+
+def lower_to_capital(dict_info):
+    new_dict = {}
+    for i, j in dict_info.items():
+        new_dict[i.capitalize()] = j
+    return new_dict
+
 
 def KeyGroup(key):
 
