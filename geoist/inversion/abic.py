@@ -14,8 +14,8 @@ import h5py
 from geoist import gridder
 from geoist.pfm import prism
 from geoist.inversion.mesh import PrismMesh
-from geoist.inversion import walsh
-from geoist.inversion import toeplitz as tptz
+from geoist.others import walsh
+from geoist.others import toeplitz as tptz
 from geoist.others import utils
 
 print_level = -1 # control indentation of prints.
@@ -25,7 +25,7 @@ use_gpu = 0
 # if use_gpu > 0:
 #     import cupy as cp
 def check_gpu():
-    print(use_gpu)    
+    print(use_gpu)
 # A helper decorator print time consumption of f.
 def timeit(f):
     @wraps(f)
@@ -84,34 +84,46 @@ class SmoothOperator:
                            append=append)
         return v
 
+    def shapes(self,component='dx',model_size=None):
+        '''shape information
+        Returns:
+            shapes(list): shapes[0] is the correct shape of a vector for rderivation operating on.
+                          shapes[1] is the shape of derivation matrix.
+        '''
+        testv = np.zeros(model_size)
+        resv = self.derivation(testv,component=component)
+        return [resv.shape,(len(resv.ravel()),len(testv.ravel()))]
+
+
 class AbicLSQOperator(tptz.LSQOperator):
     '''An operator doing matrix vector multiplication. The matrix is:
-        $\alpha_g G^TG + \sum \alpha_i W^TB_i^TB_iW$. Where $\alpha$'s are
-        weights, $G$ is kernel matrix, $W$ is depth constraint, $B_i$'s are
+        :math:`\alpha_g G^TG + \sum \alpha_i W^TB_i^TB_iW`. Where :math:`\alpha`'s are
+        weights, :math:`G` is kernel matrix, :math:`W` is depth constraint, :math:`B_i`'s are
         other constrains.
     '''
     def __init__(self,
                  toep,
                  depth_constraint=None,
                  smooth_components=set(),
-                 refer_constraint=None,
+                 refer_constraints=None,
                  weights=None):
         super().__init__(toep)
         self.weights = weights
         self.depth_constraint = depth_constraint
-        self.refer_constraint = refer_constraint
+        self.refer_constraints = refer_constraints
         self.smooth_components = smooth_components
         self.smop = SmoothOperator()
         if self.weights is None:
-            self.weights = {'bound':1,'obs':1,'depth':1,'refer':1,'dx':1,'dy':1,'dz':1}
+            self.weights = {'bound':1,'obs':1,'depth':1,'refers':[1],'dx':1,'dy':1,'dz':1}
 
     def matvec(self,v):
         tmp = self.gtoep.matvec(v)
         tmp = self.weights['obs']*self.gtoep.rmatvec(tmp)
         if 'depth' in self.weights.keys():
             v = self.depth_constraint*v
-        if 'refer' in self.weights.keys():
-            tmp += self.weights['refer']*self.weights['depth']*self.depth_constraint*self.refer_constraint**2*v
+        if 'refers' in self.weights.keys():
+            for refer_weight in self.weights['refers']:
+                tmp += refer_weight*self.depth_constraint*v
         for key in self.smooth_components:
             tmp2 = v.reshape(-1,self.nz,self.ny,self.nx)
             tmp2 = self.smop.derivation(tmp2,component=key)
@@ -132,51 +144,56 @@ class AbicLSQOperator2:
         return np.vstack([tmp.reshape(-1,1),np.array(tmp2).reshape(-1,1)])
 
 class GravInvAbicModel:
-    def __init__(self,
-                 nzyx=[4,4,4],
-                 smooth_components=None,
-                 depth_constraint=None,
-                 model_density=None,
-                 refer_density=None,
-                 weights=None,
-                 source_volume=None,
-                 smooth_on='m',
-                 subtract_mean=True,
-                 data_dir='/data/gravity_inversion'):
-        self.gpu_id = 2
-        self.subtract_mean = subtract_mean
-        self._nz,self._ny,self._nx = nzyx
-        self.smooth_on = smooth_on
-        self.data_dir = data_dir
+    def __init__(self,conf_file=None,**kwargs):
+        self.confs = {'nzyx':[4,4,4],
+                      'gpu_id':2,
+                      'smooth_components':None,
+                      'depth_constraint':None,
+                      'model_density':None,
+                      'refer_densities':None,
+                      'weights':None,
+                      'source_volume':None,
+                      'smooth_on':'m',
+                      'subtract_mean':False,
+                      'optimize_keys':None,
+                      'mode':'walsh',
+                      'data_dir':'/data/gravity_inversion'}
+        confs = dict()
+        if not conf_file is None:
+            with open(conf_file) as f:
+                confs = json.load(f)
+        self.confs = {**self.confs,**confs,**kwargs}
+        self._nz,self._ny,self._nx = self.confs['nzyx']
+        self.nobsx = self._nx
+        self.nobsy = self._ny
         self.gen_model_name()
-        self.nobsx = nzyx[2]
-        self.nobsy = nzyx[1]
-        self.source_volume = source_volume
-        if model_density is None:
+        self.source_volume = self.confs['source_volume']
+        if self.confs['model_density'] is None:
             self._model_density = None
         else:
-            self._model_density = model_density.ravel()
-        self._smooth_components = smooth_components
-        if smooth_components is None:
-            self._smooth_components = (set(weights.keys()) - set(['depth',
+            self._model_density = self.confs['model_density'].ravel()
+        self._smooth_components = self.confs['smooth_components']
+        if self.confs['smooth_components'] is None:
+            self._smooth_components = (set(self.confs['weights'].keys()) - set(['depth',
                                                                   'obs',
                                                                   'bound',
-                                                                  'refer']))
+                                                                  'refers']))
         self.constraints = dict()
         self.constraints_val = dict()
-        if depth_constraint is None:
-            self.constraints['depth'] = np.ones(np.prod(nzyx))
+        if self.confs['depth_constraint'] is None:
+            self.constraints['depth'] = np.ones(np.prod(self.nzyx))
             self.constraints_val['depth'] = None
         else:
-            self.constraints['depth'] = (depth_constraint.reshape(-1,1)*np.ones((1,self._nx*self._ny))).ravel()
+            self.constraints['depth'] = (self.confs['depth_constraint'].reshape(-1,1)*np.ones((1,self._nx*self._ny))).ravel()
             self.constraints_val['depth'] = 0
-        if refer_density is None:
-            self.constraints['refer'] = None
-            self.constraints_val['refer'] = None
+        if self.confs['refer_densities'] is None:
+            self.constraints['refers'] = None
+            self.constraints_val['refers'] = None
         else:
-            self.constraints['refer'] = np.ones(self._nx*self._ny*self._nz)
-            self.constraints_val['refer'] = refer_density.ravel()
-        self._weights = weights
+            self.constraints['refers'] = np.ones(self._nx*self._ny*self._nz)
+            self.refer_densities = self.confs['refer_densities']
+            self.n_refer = len(self.confs['refer_densities'])
+        self._weights = self.confs['weights']
         if not 'depth' in self._weights.keys():
             self._weights['depth'] = 1.0
         self.smop = SmoothOperator()
@@ -188,45 +205,139 @@ class GravInvAbicModel:
         self.min_u_val = 0
         self.min_density = -1.0e4
         self.max_density = 1.0e4
-
-    @property
-    def source_volume(self):
-        return self._source_volume
-    @source_volume.setter
-    def source_volume(self,value):
-        self._source_volume = value
-        self.gen_mesh()
+        self.optimize_log = {'parameters':[],'abic_vals':[]}
 
     def gen_model_name(self):
+        '''generate a file name to save data of current model. The model will be
+        saved in ``self.data_dir`` directory.
+        '''
         self.model_name = '{}x{}x{}'.format(self._nx,self._ny,self._nz)
         self.fname = pathlib.Path(self.data_dir)/pathlib.Path(self.model_name+'.h5')
 
     @property
+    def gpuid(self):
+        ''' Which gpu card will be used. Ignored if set ``use_gpu=0``.
+        '''
+        return self.confs['gpuid']
+    @gpuid.setter
+    def gpuid(self,values):
+        self.confs['gpuid'] = values
+
+    @property
+    def smooth_on(self):
+        '''Which variable should be smoothed. Only ``'m'``
+        is supported right now, which means smooth on density.
+        '''
+        return self.confs['smooth_on']
+    @smooth_on.setter
+    def smooth_on(self,values):
+        self.confs['smooth_on'] = values
+
+    @property
+    def mode(self):
+        '''How to calculate determinants. Could be 'naive' or 'walsh'. '''
+        return self.confs['mode']
+    @mode.setter
+    def mode(self,values):
+        self.confs['mode'] = values
+
+    @property
+    def data_dir(self):
+        '''Specify a path to save model data.
+        '''
+        return self.confs['data_dir']
+    @data_dir.setter
+    def data_dir(self,values):
+        self.confs['data_dir'] = values
+
+    @property
+    def source_volume(self):
+        ''' The extent of source volume, in the form of ``[xmin,xmax,ymin,ymax,zmin,zmax]``.
+        '''
+        return self.confs['source_volume']
+    @source_volume.setter
+    def source_volume(self,value):
+        self._source_volume = value
+        self.confs['source_volume'] = value
+        self.gen_mesh()
+
+    @property
+    def subtract_mean(self):
+        return self.confs['subtract_mean']
+    @subtract_mean.setter
+    def subtract_mean(self,values):
+        self.confs['subtract_mean'] = values
+
+    @property
     def weights(self):
+        ''' inverse variance of each distributions.
+        '''
         return self._weights
     @weights.setter
     def weights(self,values):
         self._weights = values
+        self.confs['weights'] = values
         if not self.kernel_op is None:
             self.kernel_op.weights = self._weights
 
     @property
+    def optimize_keys(self):
+        ''' inverse variance of each distributions.
+        '''
+        return self.confs['optimize_keys']
+    @optimize_keys.setter
+    def optimize_keys(self,values):
+        self.confs['optimize_keys'] = values
+
+    @property
     def smooth_components(self):
+        ''' partial derivatives used as smooth components.
+        Example: ``'dxx'`` means :math:`\frac{\partial^2 m}{\partial x^2}`
+        '''
         return self._smooth_components
     @smooth_components.setter
     def smooth_components(self,values):
         self._smooth_components = values
+        self.confs['smooth_components'] = _smooth_components
 
 
     @property
-    def refer_density(self):
-        return self.constraints_val['refer'].reshape(self._nz,self._ny,self._nx)
-    @refer_density.setter
-    def refer_density(self,value):
-        self.constraints_val['refer'] = value.ravel()
+    def refer_densities(self):
+        '''reference density. The length of this vector should match the length
+        of model density.
+        '''
+        tmp = []
+        for density in self.constraints_val['refers']:
+            tmp.append(density.reshape(self._nz,self._ny,self._nx))
+        return tmp
+    @refer_densities.setter
+    def refer_densities(self,value):
+        tmp = []
+        for density in value:
+            tmp.append(density.ravel())
+        self.constraints_val['refers'] = tmp
+
+    @property
+    def nzyx(self):
+        '''model dimension, with the form of ``[nz,ny,nx]``
+        '''
+        return self.confs['nzyx']
+    @nzyx.setter
+    def nzyx(self,values):
+        self.confs['nzyx'] = values
+        self._nz,self._ny,self._nx = values
+        self.nobsx = values[2]
+        self.nobsy = values[1]
+        self.gen_model_name()
+        if not self.constraints['depth'] is None:
+            self.constraints['depth'] = self.constraints['depth'].reshape(self._nz,-1)[:,0]*np.ones((1,self._nx*self._ny))
+            self.constraints['depth'] = self.constraints['depth'].ravel()
+        self.constraints['refers'] = np.ones(self._nx*self._ny*self._nz)
 
     @property
     def nx(self):
+        ''' Number of cells along x-axis.
+        '''
         return self._nx
     @nx.setter
     def nx(self,value):
@@ -236,10 +347,12 @@ class GravInvAbicModel:
         if not self.constraints['depth'] is None:
             self.constraints['depth'] = self.constraints['depth'].reshape(self._nz,-1)[:,0]*np.ones((1,self._nx*self._ny))
             self.constraints['depth'] = self.constraints['depth'].ravel()
-        self.constraints['refer'] = np.ones(self._nx*self._ny*self._nz)
+        self.constraints['refers'] = np.ones(self._nx*self._ny*self._nz)
 
     @property
     def ny(self):
+        ''' Number of cells along y-axis.
+        '''
         return self._ny
     @ny.setter
     def ny(self,value):
@@ -249,26 +362,35 @@ class GravInvAbicModel:
         if not self.constraints['depth'] is None:
             self.constraints['depth'] = self.constraints['depth'].reshape(self._nz,-1)[:,0]*np.ones((1,self._nx*self._ny))
             self.constraints['depth'] = self.constraints['depth'].ravel()
-        self.constraints['refer'] = np.ones(self._nx*self._ny*self._nz)
+        self.constraints['refers'] = np.ones(self._nx*self._ny*self._nz)
 
     @property
     def nz(self):
+        ''' Number of cells along z-axis.
+        '''
         return self._nz
     @nz.setter
     def nz(self,value):
         self._nz = value
         self.gen_model_name()
-        self.constraints['refer'] = np.ones(self._nx*self._ny*self._nz)
+        self.constraints['refers'] = np.ones(self._nx*self._ny*self._nz)
         print("Warning: nz changed. \nDon't forget setting depth constraints.")
 
     @property
     def model_density(self):
+        ''' This vector is used for calculating gravity field, i.e. forward calculating.
+        '''
         return(self._model_density.reshape(self.nz,self.ny,self.nx))
     @model_density.setter
     def model_density(self,value):
         self._model_density = value.ravel()
+        self.confs['model_density'] = self._model_density
 
     def gen_mesh(self,height = -1):
+        ''' Generate mesh of the model.
+        Args:
+            height (float): height of the observations.
+        '''
         shape = (self._nz, self._ny, self._nx)
         self.mesh = PrismMesh(self._source_volume, shape)
         density = np.ones(shape)*1.0e3
@@ -284,6 +406,8 @@ class GravInvAbicModel:
         self.xp, self.yp, self.zp = gridder.regular(self.obs_area, obs_shape, z=height)
 
     def _gen_walsh_matrix(self):
+        '''generate walsh matrix in the order of sequence2.
+        '''
         print('generating walsh_matrix')
         if os.path.exists(self.fname):
             with h5py.File(self.fname,mode='r') as f:
@@ -299,7 +423,7 @@ class GravInvAbicModel:
                                           normalized=True,
                                           ordering='sequence2',
                                           nxyz=(self._nx,self._ny,self._nz))
-        walsh_matrix = walsh_matrix.astype(np.float32)
+        walsh_matrix = walsh_matrix.astype(np.float64)
         step = self._nx*self._ny*self._nz//4
         components = ['0','1','2','3']
         with h5py.File(self.fname,mode='a') as f:
@@ -308,6 +432,13 @@ class GravInvAbicModel:
                 fgroup.create_dataset(components[i],data=walsh_matrix[i*step:(i+1)*step,:])
 
     def gen_kernel(self, process = 1):
+        '''generate kernel matrix. Because it is multilevel toeplitz matrix, only
+        the first row are needed (i.e. all source cell contribution to the first
+        observation position).
+        .. note:: The coordinate system of the input parameters is to be
+            x -> North, y -> East and z -> **DOWN**.
+        .. note:: All input values in **SI** units(!) and output in **mGal**!
+        '''
         def calc_kernel(i):
             return prism.gz(self.xp[0:1],self.yp[0:1],self.zp[0:1],[self.mesh[i]])
         if process > 1: #Winodws MP running has possiblely errors.
@@ -321,7 +452,23 @@ class GravInvAbicModel:
         self.kernel_op = AbicLSQOperator(self.kernel0,
                                          depth_constraint=self.constraints['depth'],
                                          smooth_components=self._smooth_components,
-                                         refer_constraint=self.constraints['refer'],
+                                         refer_constraints=self.constraints['refers'],
+                                         weights=self._weights)
+
+    def load_kernel(self,fname):
+        '''load kernel matrix from file. Only the first row are needed.
+        File format follows numpy's savetxt.
+        '''
+        try:
+            self.kernel0 = np.loadtxt(fname)
+        except OSError:
+            fname = pathlib.Path(self.data_dir)/pathlib.Path(fname)
+            self.kernel0 = np.loadtxt(fname)
+        self.kernel0 = np.array(self.kernel0).reshape(self.nz,self.ny,self.nx)
+        self.kernel_op = AbicLSQOperator(self.kernel0,
+                                         depth_constraint=self.constraints['depth'],
+                                         smooth_components=self._smooth_components,
+                                         refer_constraints=self.constraints['refers'],
                                          weights=self._weights)
 
     def _diagvec(self,vec=None,diag=None):
@@ -332,14 +479,16 @@ class GravInvAbicModel:
 
     @timeit
     def walsh_transform(self,keys=None):
+        '''walsh transform of kernel matrix and constraint matrices.
+        '''
         if keys is None:
             keys = ['kernel'] + list(self.constraints.keys()) + list(self._smooth_components)
         else:
             keys = keys
-        
+
         if use_gpu > 0:
             import cupy as cp
-            
+
         is_stored = dict()
         for key in keys:
             is_stored[key] = False
@@ -370,7 +519,7 @@ class GravInvAbicModel:
                  }
         for key in self._smooth_components:
             matvec_op[key] = lambda x: self.smop.derivation(x.reshape(-1,self.nz,self.ny,self.nx),component=key).reshape(x.shape[0],-1)
-        is_stored['refer'] = True
+        is_stored['refers'] = True
         for key in keys:
             if is_stored[key]:
                 print('walsh transformation of {} already exists.'.format(key))
@@ -392,7 +541,7 @@ class GravInvAbicModel:
                     if key == 'depth':
                         part_walsh = walsh_group[blocks[i]][:self._nz]
                     part_walsh = matvec_op[key](part_walsh)
-                    
+
                     if use_gpu > 0:
                         with cp.cuda.Device(self.gpu_id):
                             res = cp.zeros((step,step))
@@ -417,8 +566,8 @@ class GravInvAbicModel:
                             res += tmp_block_gpu @ tmp_block_gpu.T
                             j += 1
                         if key in self._smooth_components:
-                            res[np.abs(res)<1.0e-1*norm_walsh] = 0.     
-                            
+                            res[np.abs(res)<1.0e-1*norm_walsh] = 0.
+
                     dxyz_group.create_dataset(blocks[i],data=res)
         if ('depth' in keys) and (not is_stored['depth']):
             with h5py.File(self.fname,mode='a') as f:
@@ -439,6 +588,9 @@ class GravInvAbicModel:
 
     @property
     def depth_constraint(self):
+        '''Diagonal of the depth constraint matrix.
+        One real number for each layer. Stored in an vector.
+        '''
         return(self.constraints['depth'].reshape(self._nz,-1)[:,0])
     @depth_constraint.setter
     def depth_constraint(self,value):
@@ -446,6 +598,11 @@ class GravInvAbicModel:
 
     @timeit
     def forward(self,model_density=None):
+        ''' Calculate gravity field from model_density.
+        Args:
+            model_density (np.Array): densities of each model cell. Reshaped from
+            (nz,ny,nx) to (nz*ny*nx)
+        '''
         if model_density is None:
             model_density = self._model_density
         else:
@@ -453,14 +610,17 @@ class GravInvAbicModel:
         self.obs_data = self.kernel_op.gtoep.matvec(model_density)
 
     def _gen_rhs(self):
+        '''generate right hand side of the least square equation of min_u.
+        '''
         self.rhs = self._weights['obs']*self.kernel_op.gtoep.rmatvec(self.obs_data)
-        if 'depth' in self._weights.keys():
-            v = self.constraints['depth']*self.constraints_val['refer']
-        if 'refer' in self._weights.keys():
-            self.rhs += (self._weights['refer']
-                         *self._weights['depth']
-                         *self.constraints['depth']
-                         *v)
+        if 'refers' in self._weights.keys():
+            for i,refer_weight in enumerate(self._weights['refers']):
+                v = self.constraints_val['refers'][i].ravel()
+                if 'depth' in self._weights.keys():
+                    v = self.constraints['depth']*v
+                self.rhs += (refer_weight
+                             *self.constraints['depth']
+                             *v)
         if self.smooth_on == 'm-m0':
             for key in self._smooth_components:
                 tmp2 = v.reshape(-1,self._nz,self._ny,self._nx)
@@ -472,10 +632,18 @@ class GravInvAbicModel:
                     self.rhs += self._weights[key]*self._weights['depth']*self.constraints['depth']*tmp2.reshape(v.shape[0],-1)
 
     @timeit
-    def do_linear_solve(self):
-        self.do_linear_solve_quiet()
+    def do_linear_solve(self,tol=1.0e-5):
+        ''' solve the least square equation of min_u.
+        Args:
+            tol (float): tol of CG algorithm.
+        '''
+        self.do_linear_solve_quiet(tol=tol)
 
-    def do_linear_solve_quiet(self):
+    def do_linear_solve_quiet(self,tol=1.0e-5):
+        ''' solve the least square equation of min_u with minimum of message printed.
+        Args:
+            tol (float): tol of CG algorithm.
+        '''
         self._gen_rhs()
         if self.subtract_mean:
             sum_obs = np.sum(self.obs_data)
@@ -483,51 +651,70 @@ class GravInvAbicModel:
             tmp_b[:-1] = self.rhs
             tmp_b[-1] = sum_obs
             tmp_op = AbicLSQOperator2(self.kernel_op)
-            self.solution = spsparse.linalg.cg(tmp_op,tmp_b,tol=1.0e-5)[0]
+            self.solution = spsparse.linalg.cg(tmp_op,tmp_b,tol=tol)[0]
         else:
-            self.solution = spsparse.linalg.cg(self.kernel_op,self.rhs,tol=1.0e-5)[0]
+            self.solution = spsparse.linalg.cg(self.kernel_op,self.rhs,tol=tol)[0]
 
     @timeit
     def calc_u(self,solved=False,x=None):
+        '''calc min_u value.
+        Args:
+            solved (bool): whether or not the least square equation solved already.
+            x (array): use this x to calculate value of U instead of doing optimization.
+        '''
         return self.calc_u_quiet(solved,x)
 
     @timeit
     def calc_min_u(self,solved=False,x=None):
+        '''Another name of calc_u. We keep this function for backward compatability.
+        '''
         return self.calc_u_quiet(solved,x)
 
     def calc_u_quiet(self,solved=False,x=None):
+        '''calc min_u value with minimum message printed out.
+        Args:
+            solved (bool): whether or not the least square equation solved already.
+            x (array): use this x to calculate value of U instead of doing optimization.
+        '''
         if x is None:
             if not solved:
                 self.do_linear_solve_quiet()
             x = self.solution
         self.min_u_val = self._weights['obs']*np.linalg.norm(self.kernel_op.gtoep.matvec(x) - self.obs_data)**2
-        if ('refer' in self._weights.keys()) and (self.smooth_on == 'm-m0'):
+        if ('refers' in self._weights.keys()) and (self.smooth_on == 'm-m0'):
             v = x - self.constraints_val['refer']
         else:
             v = x
         if 'depth' in self._weights.keys():
-            v = np.sqrt(self._weights['depth'])*self.constraints['depth']*v
+            v = self.constraints['depth']*v
         for key in self._smooth_components:
             tmp2 = self.smop.derivation(v.reshape(self._nz,self._ny,self._nx),
                                         component=key)
             self.min_u_val += self._weights[key]*np.linalg.norm(tmp2.ravel())**2
-        if 'refer' in self._weights.keys():
-            v = x - self.constraints_val['refer']
-            if 'depth' in self._weights.keys():
-                v = np.sqrt(self._weights['depth'])*self.constraints['depth']*v
-            self.min_u_val += self._weights['refer'] *np.linalg.norm(v)**2
+        if 'refers' in self._weights.keys():
+            for i,refer_density in enumerate(self.constraints_val['refers']):
+                v = x - refer_density
+                if 'depth' in self._weights.keys():
+                    v = self.constraints['depth']*v
+                self.min_u_val += self._weights['refers'][i] *np.linalg.norm(v)**2
         return self.min_u_val
 
     def jac_u(self,x=None):
+        ''' jacobian of the function U.
+        '''
         res = self.kernel_op.matvec(x) - self.rhs
         return 2.*res
 
     def hessp_u(self,x,v):
+        '''Hessian of the function U.
+        '''
         res = self.kernel_op.matvec(v)
         return 2.*res
 
     @timeit
     def bound_optimize(self,x0=None):
+        '''optimize function U using boundary constraint.
+        '''
         density_bounds = Bounds(self.min_density,self.max_density)
         if x0 is None:
             x0 = np.zeros(self._nx*self._ny*self._nz)+(self.max_density - self.min_density)/2.
@@ -541,6 +728,9 @@ class GravInvAbicModel:
                                        )
 
     def lasso_target(self,x):
+        '''Minimize the 1-norm instead 2-norm of the model equation. This function
+           is used to the target function.
+        '''
 #        self.min_u_val = self._weights['obs']*np.linalg.norm(self.kernel_op.gtoep.matvec(x) - self.obs_data)**2
         self.min_u_val = self._weights['obs']*np.linalg.norm(self.kernel_op.gtoep.matvec(x) - self.obs_data)
         if ('refer' in self._weights.keys()) and (self.smooth_on == 'm-m0'):
@@ -561,6 +751,8 @@ class GravInvAbicModel:
         return self.min_u_val
 
     def lasso_jac(self,x):
+        '''jacobian of the lasso target function.
+        '''
 #        jac = self.kernel_op.gtoep.rmatvec(self.kernel_op.gtoep.matvec(x)) - self.kernel_op.gtoep.rmatvec(self.obs_data)
 #        jac = 2.0*self._weights['obs']*jac
         jac = self.kernel_op.gtoep.rmatvec(self.kernel_op.gtoep.matvec(x)) - self.kernel_op.gtoep.rmatvec(self.obs_data)
@@ -586,6 +778,8 @@ class GravInvAbicModel:
         return jac
 
     def lasso_hessp(self,x,v):
+        '''hessian of the lasso target function.
+        '''
 #        res = self.kernel_op.gtoep.rmatvec(self.kernel_op.gtoep.matvec(v))
 #        res = 2.0*self._weights['obs']*res
         norm_res = np.linalg.norm(self.obs_data - self.kernel_op.gtoep.matvec(x))
@@ -624,6 +818,8 @@ class GravInvAbicModel:
 
     @timeit
     def lasso_optimize(self,x0=None):
+        '''optimize the lasso function.
+        '''
         density_bounds = Bounds(self.min_density,self.max_density)
         if x0 is None:
             x0 = (np.random.rand(self._nx*self._ny*self._nz)
@@ -638,22 +834,61 @@ class GravInvAbicModel:
                                        )
 
     def calc_res(self):
+        '''calculate the residual information including residuals and stds.
+        The result of this function are stored in ``self.residuals`` and ``self.stds``.
+        '''
         self.residuals = dict()
         self.stds = dict()
         self.residuals['obs'] = np.linalg.norm(self.kernel_op.gtoep.matvec(self.solution)-self.obs_data)**2
         self.stds['obs'] = np.std(self.kernel_op.gtoep.matvec(self.solution)-self.obs_data)
         for key in self._smooth_components:
             tmp2 = self.solution.reshape(self._nz,self._ny,self._nx)
-            if ('refer' in self.constraints_val.keys()) and (self.smooth_on == 'm-m0'):
+            if ('refers' in self.constraints_val.keys()) and (self.smooth_on == 'm-m0'):
                 tmp2 -= self.constraints_val['refer'].reshape(self._nz,self._ny,self._nx)
             tmp2 = self.smop.derivation(tmp2,component=key)
             self.residuals[key] = np.linalg.norm(tmp2.ravel())**2
             self.stds[key] = np.std(tmp2.ravel())
-        if 'refer' in self.constraints_val.keys():
-            self.residuals['refer'] = np.linalg.norm(self.solution.ravel()-self.constraints_val['refer'].ravel())**2
-            self.stds['refer'] = np.std(self.solution.ravel()-self.constraints_val['refer'].ravel())
+        if 'refers' in self.constraints_val.keys():
+            self.residuals['refers'] = []
+            self.stds['refers'] = []
+            for i,refer_density in self.constraints_val['refers']:
+                self.residuals['refers'].append(np.linalg.norm(self.solution.ravel()-refer_density.ravel())**2)
+                self.stds['refers'].append(np.std(self.solution.ravel()-refer_density.ravel()))
 
-    def calc_log_prior_total_det_quiet(self):
+    def calc_log_prior_total_det_naive(self):
+        '''calculate the determinant of prior distribution and joint distribution
+        with minimum message printed out.
+        '''
+        self.log_prior_det_val = 0
+        self.log_total_det_val = 0
+        prior_eigs = np.zeros(self._nx*self._ny*self._nz)
+        total_eigs = np.zeros(self._nx*self._ny*self._nz)
+        tmp_mat = np.zeros((self._nz*self._ny*self._nx,self._nz*self._ny*self._nx))
+        for dxyz_name in self._smooth_components:
+            tmp_mat += self._weights[dxyz_name]*self.matrices[dxyz_name]
+        if 'depth' in self._weights.keys():
+            tmp_mat = self.constraints['depth'].reshape(-1,1)*self.constraints['depth'].reshape(1,-1)*tmp_mat
+        prior_eigs = np.linalg.svd(tmp_mat,compute_uv=False)
+        eps = prior_eigs.max() * len(prior_eigs) * np.finfo(np.float64).eps
+        eigs = prior_eigs[prior_eigs>eps]
+        self.log_prior_det_val = np.sum(np.log(eigs))
+
+        tmp_mat += self._weights['obs']*self.matrices['obs']
+        if 'refers' in self._weights.keys():
+            tmp_mat += sum(self._weights['refers'])*np.diag(self.constraints['depth'])**2
+        uu,total_eigs,vv = np.linalg.svd(tmp_mat,compute_uv=True)
+        self.log_total_det_val = np.sum(np.log(total_eigs))
+        self._gen_rhs()
+        self.solution = np.zeros(np.prod(self.nzyx))
+        self.solution = (vv.T @ ((1./total_eigs).ravel() * (uu.T @ self.rhs)))
+
+        self.eigs = {'prior':prior_eigs,'total':total_eigs}
+        return self.log_prior_det_val,self.log_total_det_val
+
+    def calc_log_prior_total_det_walsh(self):
+        '''calculate the determinant of prior distribution and joint distribution
+        with minimum message printed out.
+        '''
         self.log_prior_det_val = 0
         self.log_total_det_val = 0
         blocks = ['0','1','2','3']
@@ -667,8 +902,12 @@ class GravInvAbicModel:
         with h5py.File(self.fname,mode='r') as f:
             if 'depth' in self._weights.keys():
                 depth_walsh = f['depth']['0'][:]
+            self._gen_rhs()
+            self.solution = np.zeros(np.prod(self.nzyx))
             for i_b,block in enumerate(blocks):
                 tmp_block = np.zeros((step,step))
+                walsh_group = f['walsh_matrix']
+                part_walsh = walsh_group[blocks[i_b]][:]
                 for dxyz_name in self._smooth_components:
                     try:
                         dxyz_walsh = f[dxyz_name][block][:].reshape(step//self._nz,
@@ -688,112 +927,192 @@ class GravInvAbicModel:
                         tmp_block += depth_weight*self._weights[dxyz_name]*tmp_multi.reshape(step,step)
                     except KeyError:
                         pass
-                if 'refer' in self._weights.keys():
-                    tmp_multi_small = depth_walsh.T@depth_walsh
-                    for i in range(step//self._nz):
-                        tmp_block[i*self._nz:(i+1)*self._nz,
-                                  i*self._nz:(i+1)*self._nz] += depth_weight*self._weights['refer']*tmp_multi_small
+
                 if use_gpu > 0:
                     import cupy as cp
                     with cp.cuda.Device(self.gpu_id):
-                        tmp_block_gpu = cp.asarray(tmp_block,dtype=np.float32)
-                        eigs = cp.linalg.eigvalsh(tmp_block_gpu)
+                        tmp_block_gpu = cp.asarray(tmp_block,dtype=np.float64)
+                        eigs = cp.linalg.svd(tmp_block_gpu,compute_uv=False)
                         prior_eigs[i_b*step:(i_b+1)*step] = cp.asnumpy(eigs)
+                        eps = eigs.max() * len(eigs) * np.finfo(np.float64).eps
+                        eigs = eigs[eigs>eps]
                         self.log_prior_det_val += cp.asnumpy(cp.sum(cp.log(eigs)))
                         tmp_block_gpu = None
                         eigs = None
                         free_gpu()
                     tmp_block += self._weights['obs']*f['kernel'][block][:]
+                    if 'refers' in self._weights.keys():
+                        tmp_multi_small = depth_walsh.T@depth_walsh
+                        for i in range(step//self._nz):
+                            tmp_block[i*self._nz:(i+1)*self._nz,
+                                      i*self._nz:(i+1)*self._nz] += sum(self._weights['refers'])*tmp_multi_small
                     with cp.cuda.Device(self.gpu_id):
-                        tmp_block_gpu = cp.asarray(tmp_block,dtype=np.float32)
-                        eigs = cp.linalg.eigvalsh(tmp_block_gpu)
+                        tmp_block_gpu = cp.asarray(tmp_block,dtype=np.float64)
+                        eigs = cp.linalg.svd(tmp_block_gpu,compute_uv=False)
                         total_eigs[i_b*step:(i_b+1)*step] = cp.asnumpy(eigs)
+                        #eigs = eigs[eigs>1.0e-12]
                         self.log_total_det_val += cp.asnumpy(cp.sum(cp.log(eigs)))
                         tmp_block_gpu = None
                         eigs = None
                         free_gpu()
                 else:
-                    tmp_block_gpu = np.asarray(tmp_block,dtype=np.float32)
-                    eigs = np.linalg.eigvalsh(tmp_block_gpu)
+                    tmp_block_gpu = np.asarray(tmp_block,dtype=np.float64)
+                    eigs = np.linalg.svd(tmp_block_gpu,compute_uv=False)
                     prior_eigs[i_b*step:(i_b+1)*step] = eigs
+                    eps = eigs.max() * len(eigs) * np.finfo(np.float64).eps
+                    eigs = eigs[eigs>eps]
                     self.log_prior_det_val += np.sum(np.log(eigs))
                     tmp_block_gpu = None
                     eigs = None
                     tmp_block += self._weights['obs']*f['kernel'][block][:]
-                    tmp_block_gpu = np.asarray(tmp_block,dtype=np.float32)
-                    eigs = np.linalg.eigvalsh(tmp_block_gpu)
+                    if 'refers' in self._weights.keys():
+                        tmp_multi_small = depth_walsh.T@depth_walsh
+                        #tmp_multi_small = np.eye(tmp_multi_small.shape[0])
+                        for i in range(step//self._nz):
+                            tmp_block[i*self._nz:(i+1)*self._nz,
+                                      i*self._nz:(i+1)*self._nz] += sum(self._weights['refers'])*tmp_multi_small
+                    tmp_block_gpu = np.asarray(tmp_block,dtype=np.float64)
+                    uu,eigs,vv = np.linalg.svd(tmp_block_gpu,compute_uv=True)
                     total_eigs[i_b*step:(i_b+1)*step] = eigs
+                    #eigs = eigs[eigs>1.0e-12]
                     self.log_total_det_val += np.sum(np.log(eigs))
                     tmp_block_gpu = None
-                    eigs = None                    
+                    self.solution += part_walsh.T @ (vv.T @ ((1./eigs).ravel() * (uu.T @ (part_walsh @ self.rhs))))
+                    eigs = None
 
-                       
-        if use_gpu > 0:            
+
+        if use_gpu > 0:
             self.log_prior_det_val = cp.asnumpy(self.log_prior_det_val)
             self.log_total_det_val = cp.asnumpy(self.log_total_det_val)
         else:
             self.log_prior_det_val = self.log_prior_det_val
             self.log_total_det_val = self.log_total_det_val
-            
+
         self.eigs = {'prior':prior_eigs,'total':total_eigs}
         return self.log_prior_det_val,self.log_total_det_val
 
+    def calc_log_prior_total_det_quiet(self,mode=None):
+        '''calculate the determinant of prior distribution and joint distribution
+        with minimum message printed out.
+        '''
+        if mode is None:
+            mode = self.mode
+        if mode == 'walsh':
+            self.calc_log_prior_total_det_walsh()
+        elif mode == 'naive':
+            self.calc_log_prior_total_det_naive()
+        else:
+            raise ValueError('mode={} is not implemented!!'.format(mode))
+
+    def prepare_det(self,mode=None):
+        if mode is None:
+            mode = self.mode
+        if mode == 'walsh':
+            self.walsh_transform()
+        elif mode == 'naive':
+            self.matrices = dict()
+            n_cell = self._nx*self._ny*self._nz
+            self.matrices['G']  = self.kernel_op.gtoep.matvec(np.eye(self._nx*self._ny*self._nz)).T
+            self.matrices['obs'] = self.kernel_op.gtoep.rmatvec(self.kernel_op.gtoep.matvec(np.eye(n_cell)))
+            for key in self._smooth_components:
+                self.matrices[key] = self.smop.rderivation(self.smop.derivation(np.eye(n_cell).reshape(-1,self._nz,self._ny,self._nx),key),key).reshape(n_cell,n_cell)
+        else:
+            raise ValueError('mode={} is not implemented!!'.format(mode))
+
     @timeit
-    def calc_log_prior_total_det(self):
-        return self.calc_log_prior_total_det_quiet()
+    def calc_log_prior_total_det(self,mode=None):
+        '''calculate the determinant of prior distribution and joint distribution.
+        '''
+        return self.calc_log_prior_total_det_quiet(mode=mode)
 
     def calc_log_obs_det_quiet(self):
-        self.log_obs_det_val = np.log(self._weights['obs'])*len(self.obs_data)
+        '''calculate the determinant of observation's distribution with minimum
+        message printed out.
+        '''
+        self.log_obs_det_val = (4*sum(np.log(self.constraints['depth']))
+                                +np.prod(self.nzyx)*(np.log(self.weights['refers'][0])
+                                                +np.log(self.weights['refers'][1]))
+                                 +np.log(self._weights['obs'])*len(self.obs_data))
         return self.log_obs_det_val
 
     @timeit
     def calc_log_obs_det(self):
+        '''calculate the determinant of observation's distribution message printed out.
+        '''
         return self.calc_log_obs_det_quiet()
 
     @timeit
-    def calc_abic(self):
-        '''-log_prior_det_value+log_total_det-log_obs_det+min_u'''
-        self.calc_log_prior_total_det()
-        self.calc_u()
+    def calc_abic(self,mode=None):
+        '''calculate abic value: -log_prior_det_value+log_total_det-log_obs_det+min_u'''
         self.calc_log_obs_det()
+        self.calc_log_prior_total_det(mode=mode)
+        self.calc_u(solved=True)
         self.abic_val = (self.log_total_det_val
                          + self.min_u_val
                          - self.log_prior_det_val
                          - self.log_obs_det_val)
         return self.abic_val
 
-    def calc_abic_quiet(self):
-        '''-log_prior_det_value+log_total_det-log_obs_det+min_u'''
-        self.calc_log_prior_total_det_quiet()
-        self.calc_u_quiet()
+    def calc_abic_quiet(self,mode=None):
+        '''calculate abic value: -log_prior_det_value+log_total_det-log_obs_det+min_u'''
         self.calc_log_obs_det_quiet()
+        self.calc_log_prior_total_det_quiet(mode=mode)
+        self.calc_u_quiet(solved=True)
         self.abic_val = (self.log_total_det_val
                          + self.min_u_val
                          - self.log_prior_det_val
                          - self.log_obs_det_val)
+        self.optimize_log['parameters'].append(self.weights)
+        self.optimize_log['abic_vals'].append(self.abic_val)
         return self.abic_val
 
-    def _abic_optimize_exp(self):
+    def _abic_optimize_exp(self,mode=None,**opt_args):
+        '''optimize the abic value. Use the log and exp trick to constrain weights
+        to be positive.
+        '''
         #optimize_keys = list(set(self._weights.keys())-set(['depth']))
-        optimize_keys = list(self._weights.keys())
+        if self.confs['optimize_keys'] is None:
+            optimize_keys = list(self._weights.keys())
+        else:
+            optimize_keys = self.confs['optimize_keys']
+        optimize_keys_1 = list(set(optimize_keys)-set(['refers']))
         def abic_target(x):
-            for i,key in enumerate(optimize_keys):
-                self._weights[key] = np.exp(x[i])
-            return self.calc_abic_quiet()
-        x0 = np.zeros(len(self._weights))
-        for i,key in enumerate(optimize_keys):
+            tmp_weights = dict()
+            for i,key in enumerate(optimize_keys_1):
+                tmp_weights[key] = np.exp(x[i])
+            if 'refers' in optimize_keys:
+                tmp_weights['refers'] = list(np.exp(x[-len(self.weights['refers']):]))
+            self.weights = {**self.weights,**tmp_weights}
+            self.calc_abic_quiet(mode=mode)
+            return self.abic_val
+        n_weights = len(optimize_keys)
+        if 'refers' in optimize_keys:
+            n_weights += len(self.weights['refers']) - 1
+        x0 = np.zeros(n_weights)
+        for i,key in enumerate(optimize_keys_1):
             x0[i] = np.log(self._weights[key])
+        if 'refers' in optimize_keys:
+            for i,refer_weight in enumerate(self._weights['refers']):
+                x0[len(optimize_keys_1)+i] = np.log(refer_weight)
         self.abic_optimize_summary = minimize(abic_target,
                                               x0,
-                                              method='Nelder-Mead')
+                                              **opt_args)
 
     def _abic_optimize_bound(self):
-        optimize_keys = list(self._weights.keys())
+        '''optimize the abic value. Use scipy's COBYLA algorithm to constrain weights
+        to be positive.
+        '''
+        if self.confs['optimize_keys'] is None:
+            optimize_keys = list(self._weights.keys())
+        else:
+            optimize_keys = self.confs['optimize_keys']
         def abic_target(x):
+            tmp_weights = dict()
             for i,key in enumerate(optimize_keys):
-                self._weights[key] = x[i]
+                tmp_weights[key] = np.exp(x[i])
+            self.weights = {**self.weights,**tmp_weights}
             return self.calc_abic_quiet()
-        x0 = np.zeros(len(self._weights))
+        x0 = np.zeros(len(optimize_keys))
         for i,key in enumerate(optimize_keys):
             x0[i] = self._weights[key]
         weight_constraint = LinearConstraint(np.eye(len(optimize_keys)),0.,np.inf)
@@ -803,8 +1122,10 @@ class GravInvAbicModel:
                                               constraints=weight_constraint)
 
     @timeit
-    def abic_optimize(self):
-        self._abic_optimize_bound()
+    def abic_optimize(self,mode=None,**opt_args):
+        '''optimize the abic value. This is the interface for users.
+        '''
+        self._abic_optimize_exp(mode=mode,**opt_args)
 
     @timeit
     def para_grad(self,x):
