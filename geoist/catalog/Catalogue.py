@@ -175,6 +175,8 @@ class Database(object):
           
       if 'Log' in D.keys():
         O = D['Log']
+      elif 'Type' in D.keys():
+        O = D['Type']  
       else:
         O = '' #D['Type']
         
@@ -189,6 +191,7 @@ class Database(object):
           L['Second'] = dd.second + dd.microsecond/1E6
       if 'Mag' in D.keys():
           M['MagSize'] = D['Mag']
+      if 'Magtype' in D.keys():
           M['MagType'] = D['Magtype']
            
            

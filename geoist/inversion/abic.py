@@ -14,8 +14,8 @@ import h5py
 from geoist import gridder
 from geoist.pfm import prism
 from geoist.inversion.mesh import PrismMesh
-from geoist.others import walsh
-from geoist.others import toeplitz as tptz
+from geoist.inversion import walsh
+from geoist.inversion import toeplitz as tptz
 from geoist.others import utils
 
 print_level = -1 # control indentation of prints.

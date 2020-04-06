@@ -10,7 +10,7 @@ import numpy as np
 import geoist as gi
 import geoist.others.fetch_data as data
 from geoist.others.fetch_data import _retrieve_file as downloadurl
-
+from geoist.others.fetch_data import usgs_catalog
 from geoist.catalog import QCreport as qc
 from geoist.catalog import QCmulti as cp
 from geoist.catalog import Catalogue as cat
@@ -22,15 +22,25 @@ from geoist.catalog import Declusterer as declus
 from geoist.catalog import Smoothing as sm
 from geoist.catalog import CatUtils as ct
 
-## 下载地震目录
+
+## 下载CENC地震目录 
 # pathname = dirname(__file__)
 # print(pathname)
 url = data.ispec_catalog_url
 print(url)
 filename = '2020-03-25CENC-M4.7.dat'
-
 localpath = downloadurl(url+filename, filename)
 print(localpath) #文件路径
+
+## 下载USGS地震目录 
+## 参考：https://earthquake.usgs.gov/fdsnws/event/1/
+usgsfile = 'usgscat2.csv'
+localpath2 = usgs_catalog(usgsfile, '2014-01-01', '2014-01-02') #, '-90','90','-180','180',minmag = '5')
+print(localpath2) 
+dbusgs = cat.Database(usgsfile)
+dbusgs.Import0(localpath2)
+dbusgs.Info()
+
 
 ## 建立地震目录数据库
 catname = 'CENCM4.7'
@@ -142,7 +152,7 @@ db2.Header['Name'] = 'CENC4.7'
 
 ## 建立地震目录数据库
 catname = 'cnmw'
-localpath = nwcat
+localpath = qc.pathname+'\\mwcat1900utc.csv'
 db6 = cat.Database(catname)
 header = ['Year', 'Month','Day','Hour','Minute','Second','Latitude','Longitude','MagSize','Depth','Log']
 db6.Import0(localpath, Header = header, Delimiter= ',', flag = False)
@@ -150,7 +160,7 @@ db6.Import0(localpath, Header = header, Delimiter= ',', flag = False)
 db6.SetField('MagType', 'Mw')
 db6.Info()
 outputname = cp.create_figures_new(db = [db2, db6], pathname = gi.TEMP_PATH, 
-                                   startyear = 1970 , endyear = 2015, dhrs = 8)
+                                    startyear = 1970 , endyear = 2015, dhrs = 8)
 
 ## 生成HTML报告
 no_output_matches = True

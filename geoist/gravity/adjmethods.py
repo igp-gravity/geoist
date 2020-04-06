@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
+# Created on Tue Sep 10 09:08:26 2019
+
+# @Author:  Shi CHEN   @ IGP-CEA
+#          Bei ZHANGE @ IGP-CEA
+
+# Co-Author: Jiancang ZHUANG @ ISM-Tokyo
+
+# ####################################################
+#             MIT license
+#         Copyright @ pyBACGS 2019 
+#          All right reserved 
+# ####################################################
+      
+# CLASS list:
+#     Adjmethod 
 """
-Created on Tue Sep 10 09:08:26 2019
-
-@Author:  Shi CHEN   @ IGP-CEA
-         Bei ZHANGE @ IGP-CEA
-
-Co-Author: Jiancang ZHUANG @ ISM-Tokyo
-
-####################################################
-            MIT license
-        Copyright @ pyBACGS 2019 
-         All right reserved 
-####################################################
-
-Module which contains the main classes of the pyBACGS
-            
-CLASS list:
-    Adjmethod 
-
-"""
+  Module which contains the main classes of the pyBACGS
+  
+"""   
 import numpy as np
 import h5py, json
 import scipy.optimize as opt
