@@ -39,6 +39,8 @@ def get_affine(src):
         aff = Affine.from_gdal(*aff)
     return aff
 
+class SRFGrid(Grid2D):
+    pass
 class GDALGrid(Grid2D):
     def __init__(self,data,geodict):
         """Construct a GMTGrid object.
@@ -136,6 +138,7 @@ class GDALGrid(Grid2D):
                 fmt = 'Could not find .transform attribute from GDAL dataset.'
                 raise AttributeError(fmt)
             
+            print(src.driver)
             geodict['dx'] = aff.a
             geodict['dy'] = -1*aff.e
             geodict['xmin'] = aff.xoff + geodict['dx']/2.0

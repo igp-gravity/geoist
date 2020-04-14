@@ -25,7 +25,7 @@ from osgeo import osr
 class GeoDict(object):
     EPS = 1e-12
     DEFAULT_PROJ4 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-    DIST_THRESH = .01/(111.191*1000)  # 1 centimeter in decimal degrees
+    DIST_THRESH = .01 / (111.191 * 1000)  # 1 centimeter in decimal degrees
     REQ_KEYS = ['xmin', 'xmax', 'ymin', 'ymax', 'dx', 'dy', 'ny', 'nx']
 
     def __init__(self, geodict, adjust='bounds'):
@@ -99,13 +99,13 @@ class GeoDict(object):
         else:
             txmax = xmax
         if inside:
-            nx = np.floor(((txmax-xmin+GeoDict.EPS)/dx)+1)
-            ny = np.floor(((ymax-ymin+GeoDict.EPS)/dy)+1)
+            nx = np.floor(((txmax - xmin + GeoDict.EPS) / dx) + 1)
+            ny = np.floor(((ymax - ymin + GeoDict.EPS) / dy) + 1)
         else:
-            nx = np.ceil(((txmax-xmin-GeoDict.EPS)/dx)+1)
-            ny = np.ceil(((ymax-ymin-GeoDict.EPS)/dy)+1)
-        xmax2 = xmin + (nx-1)*dx
-        ymin2 = ymax - (ny-1)*dy
+            nx = np.ceil(((txmax - xmin - GeoDict.EPS) / dx) + 1)
+            ny = np.ceil(((ymax - ymin - GeoDict.EPS) / dy) + 1)
+        xmax2 = xmin + (nx - 1) * dx
+        ymin2 = ymax - (ny - 1) * dy
         return cls({'xmin': xmin, 'xmax': xmax2,
                     'ymin': ymin2, 'ymax': ymax,
                     'dx': dx, 'dy': dy,
@@ -124,10 +124,10 @@ class GeoDict(object):
         :returns:
           GeoDict object.
         """
-        xmin = cx - xspan/2.0
-        xmax = cx + xspan/2.0
-        ymin = cy - yspan/2.0
-        ymax = cy + yspan/2.0
+        xmin = cx - xspan / 2.0
+        xmax = cx + xspan / 2.0
+        ymin = cy - yspan / 2.0
+        ymax = cy + yspan / 2.0
         return cls.createDictFromBox(xmin, xmax, ymin, ymax, dx, dy)
 
     def setProjection(self, projection):
@@ -159,18 +159,18 @@ class GeoDict(object):
         dy = self.dy
         # how many columns are there between the host and input geodict left edges?
         if inside:
-            falsenx = np.ceil((geodict.xmin - self.xmin)/dx)
+            falsenx = np.ceil((geodict.xmin - self.xmin) / dx)
         else:
-            falsenx = np.floor((geodict.xmin - self.xmin)/dx)
+            falsenx = np.floor((geodict.xmin - self.xmin) / dx)
         # use that number of rows to calculate what aligned xmin should be
-        newxmin = self.xmin + falsenx*dx
+        newxmin = self.xmin + falsenx * dx
         # how many columns are there between the host and input geodict right edges?
         if inside:
-            falsenx = np.floor((geodict.xmax - self.xmax)/dx)
+            falsenx = np.floor((geodict.xmax - self.xmax) / dx)
         else:
-            falsenx = np.ceil((geodict.xmax - self.xmax)/dx)
+            falsenx = np.ceil((geodict.xmax - self.xmax) / dx)
         # use that number of rows to calculate what aligned xmax should be
-        newxmax = self.xmax + falsenx*dx
+        newxmax = self.xmax + falsenx * dx
 
         # if we wound up going past 180, correct x values to be within -180->180.
         if newxmin > 180:
@@ -180,21 +180,21 @@ class GeoDict(object):
 
         # how many columns are there between the host and input geodict bottom edges?
         if inside:
-            falseny = np.ceil((geodict.ymin - self.ymin)/dy)
+            falseny = np.ceil((geodict.ymin - self.ymin) / dy)
         else:
-            falseny = np.floor((geodict.ymin - self.ymin)/dy)
+            falseny = np.floor((geodict.ymin - self.ymin) / dy)
         # use that number of rows to calculate what aligned ymin should be
-        newymin = self.ymin + falseny*dy
+        newymin = self.ymin + falseny * dy
         # how many columns are there between the host and input geodict top edges?
         if inside:
-            falseny = np.floor((geodict.ymax - self.ymax)/dy)
+            falseny = np.floor((geodict.ymax - self.ymax) / dy)
         else:
-            falseny = np.ceil((geodict.ymax - self.ymax)/dy)
+            falseny = np.ceil((geodict.ymax - self.ymax) / dy)
         # use that number of rows to calculate what aligned ymax should be
-        newymax = self.ymax + falseny*dy
+        newymax = self.ymax + falseny * dy
 
-        nx = int(np.round((newxmax-newxmin)/dx + 1))
-        ny = int(np.round((newymax-newymin)/dy + 1))
+        nx = int(np.round((newxmax - newxmin) / dx + 1))
+        ny = int(np.round((newymax - newymin) / dy + 1))
 
         gd = GeoDict({'xmin': newxmin, 'xmax': newxmax,
                       'ymin': newymin, 'ymax': newymax,
@@ -244,8 +244,8 @@ class GeoDict(object):
         fbottomrow = int(np.round(trow))
         newymin, newxmax = geodict.getLatLon(fbottomrow, frightcol)
 
-        nx = int(np.round((newxmax-newxmin)/dx + 1))
-        ny = int(np.round((newymax-newymin)/dy + 1))
+        nx = int(np.round((newxmax - newxmin) / dx + 1))
+        ny = int(np.round((newymax - newymin) / dy + 1))
 
         if newxmax > 180:
             newxmax = newxmax - 360
@@ -287,20 +287,20 @@ class GeoDict(object):
         fnx = self.nx
 
         # how many columns from the host xmin is the sample xmin?
-        xmincol = np.ceil((xmin-fxmin)/fdx)
+        xmincol = np.ceil((xmin - fxmin) / fdx)
         # how many columns from the host xmin is the sample xmax?
         if xmax < fxmin and xmax < 0:
-            xmaxcol = np.floor(((xmax+360)-fxmin)/fdx)
+            xmaxcol = np.floor(((xmax + 360) - fxmin) / fdx)
         else:
-            xmaxcol = np.floor((xmax-fxmin)/fdx)
+            xmaxcol = np.floor((xmax - fxmin) / fdx)
 
-        newxmin = fxmin + xmincol*fdx
-        newxmax = fxmin + xmaxcol*fdx
-        yminrow = np.floor((fymax-ymin)/fdy)
-        ymaxrow = np.ceil((fymax-ymax)/fdy)
+        newxmin = fxmin + xmincol * fdx
+        newxmax = fxmin + xmaxcol * fdx
+        yminrow = np.floor((fymax - ymin) / fdy)
+        ymaxrow = np.ceil((fymax - ymax) / fdy)
 
-        newymin = fymax - yminrow*fdy
-        newymax = fymax - ymaxrow*fdy
+        newymin = fymax - yminrow * fdy
+        newymax = fymax - ymaxrow * fdy
 
         # if our original geodict crossed the 180 meridian, then
         # let's set our xmin/xmax back to the xmin > xmax scenario.
@@ -312,31 +312,31 @@ class GeoDict(object):
         # fixed
         while newxmin <= xmin:
             xmincol = xmincol + 1
-            newxmin = fxmin + xmincol*fdx
+            newxmin = fxmin + xmincol * fdx
 
         while newxmax >= xmax:
             xmaxcol = xmaxcol - 1
-            newxmax = fxmin + xmaxcol*fdx
+            newxmax = fxmin + xmaxcol * fdx
 
         while newymin <= ymin:
             yminrow = yminrow - 1
-            newymin = fymax - yminrow*fdy
+            newymin = fymax - yminrow * fdy
 
         while newymax >= ymax:
             ymaxrow = ymaxrow + 1
-            newymax = fymax - ymaxrow*fdy
+            newymax = fymax - ymaxrow * fdy
 
-        ny = int((yminrow-ymaxrow)+1)
+        ny = int((yminrow - ymaxrow) + 1)
         # if the input geodict crosses the 180 meridian, deal with this...
         if xmin > xmax:
-            nx = ((fnx-xmincol)) + (xmaxcol + 1)
+            nx = ((fnx - xmincol)) + (xmaxcol + 1)
         else:
             nx = int((xmaxcol - xmincol) + 1)
 
         # because validate() calculates ymin and xmax differently,
         # let's re-calculate those that way and see if we get the same results
-        tmp_new_ymin = newymax - fdy*(ny-1)
-        tmp_new_xmax = newxmin + fdx*(nx-1)
+        tmp_new_ymin = newymax - fdy * (ny - 1)
+        tmp_new_xmax = newxmin + fdx * (nx - 1)
         tmp_nx = nx
         tmp_ny = ny
         tmp_xmax = xmax
@@ -346,10 +346,10 @@ class GeoDict(object):
         # if we don't get the same results, adjust nx/ny until we do.
         while tmp_new_ymin < ymin:
             tmp_ny = tmp_ny - 1
-            tmp_new_ymin = newymax - fdy*(tmp_ny-1)
+            tmp_new_ymin = newymax - fdy * (tmp_ny - 1)
         while tmp_new_xmax > tmp_xmax:
             tmp_nx = tmp_nx - 1
-            tmp_new_xmax = newxmin + fdx*(tmp_nx-1)
+            tmp_new_xmax = newxmin + fdx * (tmp_nx - 1)
 
         if tmp_new_ymin != newymin:
             newymin = tmp_new_ymin
@@ -398,10 +398,10 @@ class GeoDict(object):
         xmin2 = geodict.xmin
         ymin1 = self._ymin
         ymin2 = geodict.ymin
-        t1 = (xmin2-xmin1) / dx1
+        t1 = (xmin2 - xmin1) / dx1
         t2 = np.round(t1)
         x_close = np.isclose(t1, t2)
-        t1 = (ymin2-ymin1) / dy1
+        t1 = (ymin2 - ymin1) / dy1
         t2 = np.round(t1)
         y_close = np.isclose(t1, t2)
         # x_rem = ((xmin2-xmin1) / dx1) < self.EPS
@@ -442,14 +442,20 @@ class GeoDict(object):
           False if not.
         """
         if self.xmin > self.xmax:
-            c, d = (self.xmax+360, self.ymin)
+            c, d = (self.xmax + 360, self.ymin)
         else:
             c, d = (self.xmax, self.ymin)
 
         a, b = (self.xmin, self.ymax)
         e, f = (geodict.xmin, geodict.ymax)
 
+        if geodict.xmin == 180 and geodict.xmax < 0:
+            e, f = (-geodict.xmin, geodict.ymax)
+        else:
+            e, f = (geodict.xmin, geodict.ymax)
+
         g, h = (geodict.xmax, geodict.ymin)
+
         inside_x = (e >= a and e < c) or (a >= e and a < c)
         inside_y = (h >= d and h < b) or (d >= h and d < f)
         # inside_x = geodict.xmin >= self._xmin and geodict.xmax <= self._xmax
@@ -468,7 +474,7 @@ class GeoDict(object):
           False if not.
         """
         inside_x = False
-        if np.abs((self.xmax+self.dx) - (self.xmin + 360)) < self.dx*0.01:
+        if np.abs((self.xmax + self.dx) - (self.xmin + 360)) < self.dx * 0.01:
             inside_x = True
         if not inside_x:
             newxmin = geodict.xmin
@@ -478,7 +484,7 @@ class GeoDict(object):
                 if self.xmax > self.xmin:
                     inside_x = geodict.xmin >= self._xmin and geodict.xmax <= self._xmax
                 else:
-                    inside_x = geodict.xmin >= self._xmin and geodict.xmax <= self._xmax+360
+                    inside_x = geodict.xmin >= self._xmin and geodict.xmax <= self._xmax + 360
         inside_y = geodict.ymin >= self._ymin and geodict.ymax <= self._ymax
         if inside_x and inside_y:
             return True
@@ -536,21 +542,21 @@ class GeoDict(object):
         :returns:
           True when all GeoDict parameters are no more different than 1e-12, False otherwise.
         """
-        if np.abs(self._xmin-other._xmin) > self.EPS:
+        if np.abs(self._xmin - other._xmin) > self.EPS:
             return False
-        if np.abs(self._ymin-other.ymin) > self.EPS:
+        if np.abs(self._ymin - other.ymin) > self.EPS:
             return False
-        if np.abs(self._xmax-other.xmax) > self.EPS:
+        if np.abs(self._xmax - other.xmax) > self.EPS:
             return False
-        if np.abs(self._ymax-other.ymax) > self.EPS:
+        if np.abs(self._ymax - other.ymax) > self.EPS:
             return False
-        if np.abs(self._dx-other.dx) > self.EPS:
+        if np.abs(self._dx - other.dx) > self.EPS:
             return False
-        if np.abs(self._dy-other.dy) > self.EPS:
+        if np.abs(self._dy - other.dy) > self.EPS:
             return False
-        if np.abs(self._ny-other.ny) > self.EPS:
+        if np.abs(self._ny - other.ny) > self.EPS:
             return False
-        if np.abs(self._nx-other.nx) > self.EPS:
+        if np.abs(self._nx - other.nx) > self.EPS:
             return False
         return True
 
@@ -581,8 +587,8 @@ class GeoDict(object):
         uly = self._ymax
         dx = self._dx
         dy = self._dy
-        lon = ulx + col*dx
-        lat = uly - row*dy
+        lon = ulx + col * dx
+        lat = uly - row * dy
         return (lat, lon)
 
     def getRowCol(self, lat, lon, returnFloat=False, intMethod='round'):
@@ -622,10 +628,13 @@ class GeoDict(object):
         dx = self._dx
         dy = self._dy
         # check to see if we're in a scenario where the grid crosses the meridian
-        if self._xmax < ulx and lon < ulx:
-            lon += 360
-        col = (lon-ulx)/dx
-        row = (uly-lat)/dy
+        if self._xmax < ulx and np.any(lon < 0):
+            if not isinstance(lat, scalar_types):
+                lon[lon < 0] += 360
+            else:
+                lon += 360
+        col = (lon - ulx) / dx
+        row = (uly - lat) / dy
         if returnFloat:
             return (row, col)
         if intMethod == 'round':
@@ -819,28 +828,28 @@ class GeoDict(object):
         else:
             txmax = self._xmax
         # try calculating xmax from xmin, dx, and nx
-        xmax = self._xmin + self._dx*(self._nx-1)
+        xmax = self._xmin + self._dx * (self._nx - 1)
         #dxmax = np.abs(xmax - txmax)
-        dxmax = np.abs(float(xmax)/txmax - 1.0)
+        dxmax = np.abs(float(xmax) / txmax - 1.0)
 
         # try calculating dx from bounds and nx
-        dx = np.abs((txmax - self._xmin)/(self._nx-1))
+        dx = np.abs((txmax - self._xmin) / (self._nx - 1))
         #ddx = np.abs((dx - self._dx))
-        ddx = np.abs(float(dx)/self._dx - 1.0)
+        ddx = np.abs(float(dx) / self._dx - 1.0)
 
         # try calculating ymax from ymin, dy, and ny
-        ymax = self._ymin + self._dy*(self._ny-1)
+        ymax = self._ymin + self._dy * (self._ny - 1)
         #dymax = np.abs(ymax - self._ymax)
-        dymax = np.abs(float(ymax)/self._ymax - 1.0)
+        dymax = np.abs(float(ymax) / self._ymax - 1.0)
 
         # try calculating dx from bounds and nx
-        dy = np.abs((self._ymax - self._ymin)/(self._ny-1))
+        dy = np.abs((self._ymax - self._ymin) / (self._ny - 1))
         #ddy = np.abs(dy - self._dy)
-        ddy = np.abs(float(dy)/self._dy - 1.0)
+        ddy = np.abs(float(dy) / self._dy - 1.0)
 
         return (dxmax, ddx, dymax, ddy)
 
-    def validate(self, adjust):
+    def validate(self, adjust = 'res'):
         #dxmax,ddx,dymax,ddy = self.getDeltas()
 
         if adjust == 'bounds':
@@ -848,17 +857,22 @@ class GeoDict(object):
                 txmax = self._xmax + 360
             else:
                 txmax = self._xmax
-            self._xmax = self._xmin + self._dx*(self._nx-1)
-            self._ymin = self._ymax - self._dy*(self._ny-1)
+            self._xmax = self._xmin + self._dx * (self._nx - 1)
+            self._ymin = self._ymax - self._dy * (self._ny - 1)
         elif adjust == 'res':
-            self._dx = ((self._xmax - self._xmin)/(self._nx-1))
+            self._dx = ((self._xmax - self._xmin) / (self._nx - 1))
             if self._dx < 0:
                 if self._xmin > self._xmax:
-                    self._dx = ((self._xmax+360) - self._xmin)/(self._nx-1)
-            self._dy = ((self._ymax - self._ymin)/(self._ny-1))
+                    self._dx = ((self._xmax + 360) -
+                                self._xmin) / (self._nx - 1)
+            self._dy = ((self._ymax - self._ymin) / (self._ny - 1))
         else:
             raise DataSetException('Unsupported adjust option "%s"' % adjust)
-        if self._xmax > 180:
-            self._xmax -= 360
-        if self._xmin < -180:
-            self._xmin += 360
+        
+        # 非经纬度
+        #if self._xmax > 180:
+        #    self._xmax -= 360
+        #if self._xmin < -180:
+        #    self._xmin += 360
+        # if self._xmin == 180.0 and self._xmax < 0:
+        #     self._xmin = -180.0

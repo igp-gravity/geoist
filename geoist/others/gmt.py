@@ -442,10 +442,12 @@ class GMTGrid(Grid2D):
         ilrx1 = data_range['ilrx1']
         ilry1 = data_range['ilry1']
         cdf = netcdf.netcdf_file(filename)
+        for kk in cdf.variables.keys():
+            kk = kk
         if 'z' in cdf.variables:
             zvar = cdf.variables['z']
         else:
-            zvar = cdf.variables['elevation']
+            zvar = cdf.variables[kk] #['elevation']
         isScanLine = len(zvar.shape) == 1
         if isScanLine:
             data = indexArray(zvar,(gny,gnx),0,gny,0,gnx)
@@ -541,6 +543,9 @@ class GMTGrid(Grid2D):
         if 'x' in cdf.variables.keys():
             xvarname = 'x'
             yvarname = 'y'
+        elif 'X' in cdf.variables.keys():
+            xvarname = 'X'
+            yvarname = 'Y'
         elif 'lon' in cdf.variables.keys():
             xvarname = 'lon'
             yvarname = 'lat'

@@ -15,6 +15,8 @@ import numpy as np
 import scipy.interpolate as interp
 from matplotlib import pyplot as plt
 import warnings
+import properties
+from struct import unpack
 
 def _check_area(area):
     """
@@ -114,6 +116,48 @@ def spacing(area, shape):
     dy = (y2 - y1)/(ny - 1)
     return [dx, dy]
 
+class GridInfo(properties.HasProperties):
+    """Internal helper class to store Surfer grid properties and create
+    ``vtkImageData`` objects from them.
+    """
+    ny = properties.Integer('number of columns', min=2)
+    nx = properties.Integer('number of rows', min=2)
+    xll = properties.Float('x-value of lower-left corner')
+    yll = properties.Float('y-value of lower-left corner')
+    dx = properties.Float('x-axis spacing')
+    dy = properties.Float('y-axis spacing')
+    dmin = properties.Float('minimum data value', required=False)
+    dmax = properties.Float('maximum data value', required=False)
+    data = properties.Array('grid of data values', shape=('*',))
+
+    def mask(self):
+        """Mask the no data value"""
+        data = self.data
+        nans = data >= 1.701410009187828e+38
+        if np.any(nans):
+            data = np.ma.masked_where(nans, data)
+        err_msg = "{} of data ({}) doesn't match that set by file ({})."
+        if not np.allclose(self.dmin, np.nanmin(data)):
+            raise ValueError(err_msg.format('Min', np.nanmin(data), self.dmin))
+        if not np.allclose(self.dmax, np.nanmax(data)):
+            raise ValueError(err_msg.format('Max', np.nanmax(data), self.dmax))
+        self.data = data
+        return
+
+    # def to_vtk(self, output=None, z=0.0, dz=1.0, data_name='Data'):
+    #     """Convert to a ``vtkImageData`` object"""
+    #     self.mask()
+    #     self.validate()
+    #     if output is None:
+    #         output = vtk.vtkImageData()
+    #     # Build the data object
+    #     output.SetOrigin(self.xll, self.yll, z)
+    #     output.SetSpacing(self.dx, self.dy, dz)
+    #     output.SetDimensions(self.nx, self.ny, 1)
+    #     vtkarr = interface.convert_array(self.data, name=data_name)
+    #     output.GetPointData().AddArray(vtkarr)
+    #     return output
+    
 class grddata(object):
     """
     Grid Data Object
@@ -366,6 +410,185 @@ class grddata(object):
         #x, y = gridder.regular(area, shape)
         #data = dict(file=fname, shape=shape, area=area, data=field, x=x, y=y)
         #return data
+
+    @staticmethod
+    def _surfer7bin(filename):
+        """See class notes.
+        """
+        with open(filename, 'rb') as f:
+            if unpack('4s', f.read(4))[0] != b'DSRB':
+                raise ValueError(
+                    '''Invalid file identifier for Surfer 7 binary .grd
+                    file. First 4 characters must be DSRB.'''
+                )
+            f.read(8)  #Size & Version
+
+            section = unpack('4s', f.read(4))[0]
+            if section != b'GRID':
+                raise ValueError(
+                    '''Unsupported Surfer 7 file structure. GRID keyword
+                    must follow immediately after header but {}
+                    encountered.'''.format(section)
+                )
+            size = unpack('<i', f.read(4))[0]
+            if size != 72:
+                raise ValueError(
+                    '''Surfer 7 GRID section is unrecognized size. Expected
+                    72 but encountered {}'''.format(size)
+                )
+            nrow = unpack('<i', f.read(4))[0]
+            ncol = unpack('<i', f.read(4))[0]
+            x0 = unpack('<d', f.read(8))[0]
+            y0 = unpack('<d', f.read(8))[0]
+            deltax = unpack('<d', f.read(8))[0]
+            deltay = unpack('<d', f.read(8))[0]
+            zmin = unpack('<d', f.read(8))[0]
+            zmax = unpack('<d', f.read(8))[0]
+            rot = unpack('<d', f.read(8))[0]
+            if rot != 0:
+                warnings.warn('Unsupported feature: Rotation != 0')
+            blankval = unpack('<d', f.read(8))[0]
+
+            section = unpack('4s', f.read(4))[0]
+            if section != b'DATA':
+                raise ValueError(
+                    '''Unsupported Surfer 7 file structure. DATA keyword
+                    must follow immediately after GRID section but {}
+                    encountered.'''.format(section)
+                )
+            datalen = unpack('<i', f.read(4))[0]
+            if datalen != ncol*nrow*8:
+                raise ValueError(
+                    '''Surfer 7 DATA size does not match expected size from
+                    columns and rows. Expected {} but encountered
+                    {}'''.format(ncol*nrow*8, datalen)
+                )
+            data = np.zeros(ncol*nrow)
+            for i in range(ncol*nrow):
+                data[i] = unpack('<d', f.read(8))[0]
+            data = np.where(data >= blankval, np.nan, data)
+
+            try:
+                section = unpack('4s', f.read(4))[0]
+                if section == b'FLTI':
+                    warnings.warn('Unsupported feature: Fault Info')
+                else:
+                    warnings.warn('Unrecognized keyword: {}'.format(section))
+                warnings.warn('Remainder of file ignored')
+            except:
+                pass
+
+        grd = GridInfo(
+            nx=ncol,
+            ny=nrow,
+            xll=x0,
+            yll=y0,
+            dx=deltax,
+            dy=deltay,
+            dmin=zmin,
+            dmax=zmax,
+            data=data
+        )
+        return grd
+
+    @staticmethod
+    def _surfer6bin(filename):
+        """See class notes.
+        """
+        with open(filename, 'rb') as f:
+            if unpack('4s', f.read(4))[0] != b'DSBB':
+                raise ValueError(
+                    '''Invalid file identifier for Surfer 6 binary .grd
+                    file. First 4 characters must be DSBB.'''
+                )
+            nx = unpack('<h', f.read(2))[0]
+            ny = unpack('<h', f.read(2))[0]
+            xlo = unpack('<d', f.read(8))[0]
+            xhi = unpack('<d', f.read(8))[0]
+            ylo = unpack('<d', f.read(8))[0]
+            yhi = unpack('<d', f.read(8))[0]
+            dmin = unpack('<d', f.read(8))[0]
+            dmax = unpack('<d', f.read(8))[0]
+            data = np.ones(nx * ny)
+            for i in range(nx * ny):
+                zdata = unpack('<f', f.read(4))[0]
+                if zdata >= 1.701410009187828e+38:
+                    data[i] = np.nan
+                else:
+                    data[i] = zdata
+
+        grd = GridInfo(
+            nx=nx,
+            ny=ny,
+            xll=xlo,
+            yll=ylo,
+            dx=(xhi-xlo)/(nx-1),
+            dy=(yhi-ylo)/(ny-1),
+            dmin=dmin,
+            dmax=dmax,
+            data=data
+        )
+        return grd
+
+    @staticmethod
+    def _surfer6ascii(filename):
+        """See class notes.
+        """
+        with open(filename, 'r') as f:
+            if f.readline().strip() != 'DSAA':
+                raise ValueError('''Invalid file identifier for Surfer 6 ASCII .grd file. First line must be DSAA''')
+            [ncol, nrow] = [int(n) for n in f.readline().split()]
+            [xmin, xmax] = [float(n) for n in f.readline().split()]
+            [ymin, ymax] = [float(n) for n in f.readline().split()]
+            [dmin, dmax] = [float(n) for n in f.readline().split()]
+            # Read in the rest of the file as a 1D array
+            data = np.fromiter((np.float(s) for line in f for s in line.split()), dtype=float)
+
+        grd = GridInfo(
+            nx=ncol,
+            ny=nrow,
+            xll=xmin,
+            yll=ymin,
+            dx=(xmax-xmin)/(ncol-1),
+            dy=(ymax-ymin)/(nrow-1),
+            dmin=dmin,
+            dmax=dmax,
+            data=data
+        )
+        return grd
+
+
+    def _read_grids(self, idx=None):
+        """This parses the first file to determine grid file type then reads
+        all files set."""
+        if idx is not None:
+            filenames = [self.get_file_names(idx=idx)]
+        else:
+            filenames = self.get_file_names()
+        contents = []
+        f = open(filenames[0], 'rb')
+        key = unpack('4s', f.read(4))[0]
+        f.close()
+        if key == b'DSRB':
+            reader = self._surfer7bin
+        elif key == b'DSBB':
+            reader = self._surfer6bin
+        elif key == b'DSAA':
+            reader = self._surfer6ascii
+        else:
+            raise ValueError('''Invalid file identifier for Surfer .grd file.
+            First 4 characters must be DSRB, DSBB, or DSAA. This file contains: %s''' % key)
+
+        for f in filenames:
+            try:
+                contents.append(reader(f))
+            except (IOError, OSError) as fe:
+                raise IOError(str(fe))
+        if idx is not None:
+            return contents[0]
+        return contents
+
+
 
     def export_surfer(self, fname, flag = True ,file_format='binary'):
         """

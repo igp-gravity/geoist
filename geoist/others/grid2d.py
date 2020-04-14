@@ -1384,7 +1384,7 @@ class Grid2D(Grid):
         srs.ImportFromProj4(projection)
         if srs.ExportToProj4() == '':
             raise DataSetException('%s is not a valid proj4 string.' %
-                                   self._geodict['projection'])
+                                   self._geodict.projection)
 
         # check to see if the input resampling method is valid
         int_method = 1  # bi-linear
@@ -1483,3 +1483,4 @@ class Grid2D(Grid):
         # Make a new Grid2D object and return it
         newgrid = Grid2D(destination, geodict)
         return newgrid
+

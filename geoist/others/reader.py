@@ -18,7 +18,6 @@
 """
 
 # third party imports
-
 import numpy as np
 import rasterio
 import h5py
@@ -62,13 +61,13 @@ def _get_geodict_from_src(src):
     affine = src.transform
     geodict = {}
     geodict['dx'] = affine.a
-    geodict['dy'] = -1*affine.e
-    geodict['xmin'] = affine.xoff + geodict['dx']/2.0
-    geodict['ymax'] = affine.yoff - geodict['dy']/2.0
+    geodict['dy'] = -1 * affine.e
+    geodict['xmin'] = affine.xoff + geodict['dx'] / 2.0
+    geodict['ymax'] = affine.yoff - geodict['dy'] / 2.0
     geodict['ny'] = src.height
     geodict['nx'] = src.width
-    geodict['xmax'] = geodict['xmin'] + (geodict['nx']-1)*geodict['dx']
-    geodict['ymin'] = geodict['ymax'] - (geodict['ny']-1)*geodict['dy']
+    geodict['xmax'] = geodict['xmin'] + (geodict['nx'] - 1) * geodict['dx']
+    geodict['ymin'] = geodict['ymax'] - (geodict['ny'] - 1) * geodict['dy']
 
     gd = GeoDict(geodict)
     return gd
@@ -89,14 +88,14 @@ def _get_geodict_from_window(affine, window, data):
     xmin, ymax = affine * (window.col_off, window.row_off)
     geodict = {}
     geodict['dx'] = affine.a
-    geodict['dy'] = -1*affine.e
-    geodict['xmin'] = xmin + geodict['dx']/2.0
-    geodict['ymax'] = ymax - geodict['dy']/2.0
+    geodict['dy'] = -1 * affine.e
+    geodict['xmin'] = xmin + geodict['dx'] / 2.0
+    geodict['ymax'] = ymax - geodict['dy'] / 2.0
     nrows, ncols = data.shape
     geodict['ny'] = nrows
     geodict['nx'] = ncols
-    geodict['xmax'] = geodict['xmin'] + (geodict['nx']-1)*geodict['dx']
-    geodict['ymin'] = geodict['ymax'] - (geodict['ny']-1)*geodict['dy']
+    geodict['xmax'] = geodict['xmin'] + (geodict['nx'] - 1) * geodict['dx']
+    geodict['ymin'] = geodict['ymax'] - (geodict['ny'] - 1) * geodict['dy']
 
     gd = GeoDict(geodict)
     return gd
@@ -130,10 +129,10 @@ def _geodict_to_window(geodict, src, pad=False):
         ymax += dy
 
     # convert from pixel registered to gridline registered
-    west = xmin - dx/2.0
-    south = (ymin + dy/2.0) - dy
-    east = (xmax - dx/2.0) + dx
-    north = ymax + dy/2.0
+    west = xmin - dx / 2.0
+    south = (ymin + dy / 2.0) - dy
+    east = (xmax - dx / 2.0) + dx
+    north = ymax + dy / 2.0
 
     # handle meridian crossing by setting maximum to right edge of grid
     if east < west:
@@ -154,13 +153,23 @@ def _geodict_to_window(geodict, src, pad=False):
 
     window = src.window(west, south, east, north)
     row_range, col_range = window.toranges()
-    row_start = max(0, int(np.floor(row_range[0])))
-    row_end = min(src.height, int(np.ceil(row_range[1])))
-    row_range = (row_start, row_end)
 
-    col_start = max(0, int(np.floor(col_range[0])))
-    col_end = min(src.width, int(np.ceil(col_range[1])))
-    col_range = (col_start, col_end)
+    # due to floating point rounding errors,
+    # we may not get the integer row/col offsets we
+    # actually want, so we're rounding here because
+    # they're certain to be *very* close to the
+    # integer values we want.
+    row_start = int(np.round(row_range[0]))
+    row_end = int(np.round(row_range[1]))
+    col_start = int(np.round(col_range[0]))
+    col_end = int(np.round(col_range[1]))
+    bottom = max(0, row_start)
+    top = min(src.height, row_end)
+    row_range = (bottom, top)
+
+    left = max(0, col_start)
+    right = min(src.width, col_end)
+    col_range = (left, right)
 
     window = rasterio.windows.Window.from_slices(row_range, col_range)
     return window
@@ -227,7 +236,7 @@ def _read_data(src, samplegeodict, resample, method):
     """
     affine = src.transform
     dx = affine.a
-    dy = -1*affine.e
+    dy = -1 * affine.e
     is_edge = samplegeodict.xmax < samplegeodict.xmin
     # read an extra row/column in every direction when resampling
     pad = False
@@ -248,7 +257,7 @@ def _read_data(src, samplegeodict, resample, method):
         lxmin = samplegeodict.xmin
         # get right edge of grid, convert to pixel registration
         lxmax, _ = affine * (src.width, 0)
-        lxmax += dx/2.0
+        lxmax += dx / 2.0
         ymin = samplegeodict.ymin
         ymax = samplegeodict.ymax
         sample_left = GeoDict.createDictFromBox(lxmin, lxmax,
@@ -256,7 +265,7 @@ def _read_data(src, samplegeodict, resample, method):
         # get the left edge of the grid
         rxmin, _ = affine * (0, 0)
         # convert to pixel registered
-        rxmin += dx/2.0
+        rxmin += dx / 2.0
         rxmax = samplegeodict.xmax
         sample_right = GeoDict.createDictFromBox(rxmin, rxmax,
                                                  ymin, ymax, dx, dy)
@@ -368,18 +377,19 @@ def read(filename, samplegeodict=None, resample=False,
                    'edge of grid.')
             raise IndexError(msg)
 
+    grid._geodict.nodata = src.nodata
+    if apply_nan:
+        grid.applyNaN(force=force_cast)
+
     if doPadding:
         filedict = get_file_geodict(filename)
         # use the padDict method of Grid2D to create our padded grid
         # Pad one row/col on all sides.
         pd = grid.getPadding(filedict, samplegeodict, doPadding=True)
         data, gd = Grid2D.padGrid(grid._data, grid._geodict, pd)
-        data[np.isinf(data)] = padValue
+        if len(data[np.isinf(data)]):
+            data[np.isinf(data)] = padValue
         grid = Grid2D(data, gd)
-
-    grid._geodict.nodata = src.nodata
-    if apply_nan:
-        grid.applyNaN(force=force_cast)
 
     if resample:
         grid = grid.interpolateToGrid(samplegeodict, method=method)

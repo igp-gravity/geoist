@@ -9,6 +9,21 @@ from scipy.sparse import csr_matrix
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid1 import ImageGrid
+from mpl_toolkits.basemap import Basemap
+
+from typing import Tuple, Any
+import numpy as np
+import datetime
+
+import matplotlib.pyplot as plt
+from win32gui import GetWindowText, GetForegroundWindow
+from PIL import Image
+import win32clipboard
+import io
+
+from datetime import timedelta
+import xarray
+from matplotlib.dates import DateFormatter, MinuteLocator, SecondLocator
 
 def os_cache(project, platform=None):
     """
@@ -239,3 +254,248 @@ def plot_matrix(A,cbar_location='right',figsize=(18,18),cmap='coolwarm',fname=No
     else:
         plt.savefig(fname)
     return fig,axes
+
+def grid2Grid(x, y, data):
+    from geoist.others.geodict import GeoDict
+    from geoist.others.grid2d import Grid2D
+    xmin = np.min(x)
+    xmax = np.max(x)
+    ymin = np.min(y)
+    ymax = np.max(y)
+    nx = len(x)
+    ny = len(y)
+    dx = (xmax-xmin)/(nx-1)
+    dy = (ymax-ymin)/(ny-1)    
+    geodict = {'xmin':xmin,'xmax':xmax,'ymin':ymin,'ymax':ymax,'dx':dx,'dy':dy,'nx':nx,'ny':ny}
+    gd = GeoDict(geodict ,adjust = 'res')
+    grid = Grid2D(data[::-1], gd)
+    return grid
+    
+def Grid2Xyz(grid):
+    """
+    Transform grid data object to x,y,z of 1-D array
+    grid is a Grid2D object 
+    return:
+        x,y : The x and y coordinates of the grid points
+          z : The value at the grid points
+    """   
+    xmin,xmax,ymin,ymax = grid.getBounds()
+    pdata = grid.getData()[::-1]
+    nr,nc = pdata.shape
+    xrange = np.linspace(xmin,xmax,num=nc)
+    yrange = np.linspace(ymin,ymax,num=nr)
+    z = pdata.T
+    z = z.ravel()
+    x = np.zeros_like(z)
+    y = np.zeros_like(z)
+    k = 0
+    for j in range(len(xrange)):
+        for i in range(len(yrange)):
+            x[k] = xrange[j] 
+            y[k] = yrange[i]
+            k += 1
+    return x,y,z
+
+def xyz2Grid(x, y ,z):
+    """
+    Transform x, y,z to grid data object 
+        x,y : The x and y coordinates of the grid points
+          z : The value at the grid points     
+    return:
+          grid :grid is a Grid2D object
+    """       
+    from geoist.others.geodict import GeoDict
+    from geoist.others.grid2d import Grid2D
+    xmin = np.min(x)
+    xmax = np.max(x)
+    ymin = np.min(y)
+    ymax = np.max(y)
+    nx = len(set(x))
+    ny = len(set(y))
+    dx = (xmax-xmin)/(nx-1)
+    dy = (ymax-ymin)/(ny-1)      
+    geodict = {'xmin':xmin,'xmax':xmax,'ymin':ymin,'ymax':ymax,'dx':dx,'dy':dy,'nx':nx,'ny':ny}
+    gd = GeoDict(geodict, adjust = 'res')
+    data = z.reshape(nx,ny).T[::-1]
+    grid = Grid2D(data[::-1], gd)
+    return grid
+
+def grid2srf(grid, filename='outsrf.grd', fformat = 'asc'): # bin
+    """
+     grid is a Grid2D object
+    """
+    from geoist import DATA_PATH 
+    from geoist.pfm.grdio import grddata
+    g1out = grddata()
+    g1out.cols = grid.getGeoDict().nx
+    g1out.rows = grid.getGeoDict().ny
+    g1out.xmin = grid.getGeoDict().xmin
+    g1out.xmax = grid.getGeoDict().xmax
+    g1out.ymin = grid.getGeoDict().ymin
+    g1out.ymax = grid.getGeoDict().ymax
+    g1out.data0 = grid.getData()
+    if fformat == 'asc':
+        g1out.export_surfer(Path(DATA_PATH, filename), False, 'ascii')
+    else:
+        g1out.export_surfer(Path(DATA_PATH, filename), False, 'binary')
+    return g1out
+   
+def map2DGrid(ax, grid, tstr, xlen=1.0, ylen=1.0, isLeft=False):
+    """
+    grid is a Grid2D object 
+    """
+    xmin,xmax,ymin,ymax = grid.getBounds()
+    pdata = grid.getData()
+    nr,nc = pdata.shape
+    lonrange = np.linspace(xmin,xmax,num=nc)
+    latrange = np.linspace(ymin,ymax,num=nr)
+    lon,lat = np.meshgrid(lonrange,latrange)
+    latmean = np.mean([ymin,ymax])
+    lonmean = np.mean([xmin,xmax])
+    #"Lambert Conformal Conic",lcc 'merc': "Mercator",
+    m = Basemap(llcrnrlon=xmin,llcrnrlat=ymin,urcrnrlon=xmax,urcrnrlat=ymax,\
+            rsphere=(6378137.00,6356752.3142),\
+            resolution='c',area_thresh=1000.,projection='lcc',\
+            lat_1=latmean,lon_0=lonmean,ax=ax)
+    # draw coastlines and political boundaries.
+    m.drawcoastlines()
+    #m.drawcountries()
+    #m.drawstates()
+    lons = np.arange(xmin,xmax,xlen)
+    lats = np.arange(ymin,ymax,ylen)
+    if isLeft:
+        labels = labels=[1,0,0,0]
+    else:
+        labels = labels=[0,0,0,0]
+    m.drawparallels(lats,labels=labels,color='white',fmt='%.1f') # draw parallels
+    m.drawmeridians(lons,labels=[0,0,0,1],color='white',fmt='%.1f') # draw meridians
+    pmesh = m.pcolormesh(lon,lat,np.flipud(grid.getData()),latlon=True)
+    #plt.hold(True)
+    if ax is not None:
+        ax.set_title(tstr)
+    m.colorbar(pmesh)
+    
+def find_nearest(x, x0) -> Tuple[int, Any]:
+    """
+    This find_nearest function does NOT assume sorted input
+
+    inputs:
+    x: array (float, int, datetime, h5py.Dataset) within which to search for x0
+    x0: singleton or array of values to search for in x
+
+    outputs:
+    idx: index of flattened x nearest to x0  (i.e. works with higher than 1-D arrays also)
+    xidx: x[idx]
+
+    Observe how bisect.bisect() gives the incorrect result!
+
+    idea based on:
+    http://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
+
+    """
+    x = np.asanyarray(x)  # for indexing upon return
+    x0 = np.atleast_1d(x0)
+
+    if x.size == 0 or x0.size == 0:
+        raise ValueError('empty input(s)')
+
+    if x0.ndim not in (0, 1):
+        raise ValueError('2-D x0 not handled yet')
+
+    ind = np.empty_like(x0, dtype=int)
+
+    # NOTE: not trapping IndexError (all-nan) becaues returning None can surprise with slice indexing
+    for i, xi in enumerate(x0):
+        if xi is not None and (isinstance(xi, (datetime.datetime, datetime.date, np.datetime64)) or np.isfinite(xi)):
+            ind[i] = np.nanargmin(abs(x-xi))
+        else:
+            raise ValueError('x0 must NOT be None or NaN to avoid surprising None return value')
+
+    return ind.squeeze()[()], x[ind].squeeze()[()]   # [()] to pop scalar from 0d array while being OK with ndim>0
+
+def tickfix(t, fg, ax, tfmt: str='%H:%M:%S'):
+    majtick, mintick = timeticks(t[-1] - t[0])
+    if majtick:
+        ax.xaxis.set_major_locator(majtick)
+    if mintick:
+        ax.xaxis.set_minor_locator(mintick)
+    ax.xaxis.set_major_formatter(DateFormatter(tfmt))
+    fg.autofmt_xdate()
+
+    ax.autoscale(True, 'x', tight=True)
+
+    # ax.tick_params(axis='both',which='both')
+    # ax.grid(True,which='both')
+
+
+def timeticks(tdiff):
+    """
+    NOTE do NOT use "interval" or ticks are misaligned!  use "bysecond" only!
+    """
+    if isinstance(tdiff, xarray.DataArray):  # len==1
+        tdiff = timedelta(seconds=tdiff.values / np.timedelta64(1, 's'))
+
+    assert isinstance(tdiff, timedelta), 'expecting datetime.timedelta'
+
+    if tdiff > timedelta(hours=2):
+        return None, None
+
+    elif tdiff > timedelta(minutes=20):
+        return MinuteLocator(byminute=range(0, 60, 5)), MinuteLocator(byminute=range(0, 60, 2))
+
+    elif (timedelta(minutes=10) < tdiff) & (tdiff <= timedelta(minutes=20)):
+        return MinuteLocator(byminute=range(0, 60, 2)), MinuteLocator(byminute=range(0, 60, 1))
+
+    elif (timedelta(minutes=5) < tdiff) & (tdiff <= timedelta(minutes=10)):
+        return MinuteLocator(byminute=range(0, 60, 1)), SecondLocator(bysecond=range(0, 60, 30))
+
+    elif (timedelta(minutes=1) < tdiff) & (tdiff <= timedelta(minutes=5)):
+        return SecondLocator(bysecond=range(0, 60, 30)), SecondLocator(bysecond=range(0, 60, 10))
+
+    elif (timedelta(seconds=30) < tdiff) & (tdiff <= timedelta(minutes=1)):
+        return SecondLocator(bysecond=range(0, 60, 10)), SecondLocator(bysecond=range(0, 60, 2))
+
+    else:
+        return SecondLocator(bysecond=range(0, 60, 2)),  SecondLocator(bysecond=range(0, 60, 1))
+
+oldfig = plt.figure
+
+def copyfig(fig=None):
+    # store the image in a buffer using savefig(), this has the
+    # advantage of applying all the default savefig parameters
+    # such as background color; those would be ignored if you simply
+    # grab the canvas
+    if fig is None:
+        # find the figure window that has UI focus right now (not necessarily the same as plt.gcf())
+        fig_window_text = GetWindowText(GetForegroundWindow())
+        for i in plt.get_fignums():
+            if plt.figure(i).canvas.get_window_title() == fig_window_text:
+                fig = plt.figure(i)
+                break
+
+    with io.BytesIO() as buf:
+        fig.savefig(buf)
+        im = Image.open(buf)
+
+        with io.BytesIO() as output:
+            im.convert("RGB").save(output, "BMP")
+            data = output.getvalue()[14:]  # The file header off-set of BMP is 14 bytes
+
+    win32clipboard.OpenClipboard()
+    win32clipboard.EmptyClipboard()
+    win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)  # DIB = device independent bitmap
+    win32clipboard.CloseClipboard()
+
+
+def newfig(*args, **kwargs):
+    fig = oldfig(*args, **kwargs)
+
+    def clipboard_handler(event):
+        if event.key == 'ctrl+c':
+            copyfig()
+
+    fig.canvas.mpl_connect('key_press_event', clipboard_handler)
+    return fig
+
+
+plt.figure = newfig

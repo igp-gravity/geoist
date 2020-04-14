@@ -44,6 +44,8 @@ IGRF13 = join(_DIRNAME, 'igrf13.COF')
 SIFM = join(_DIRNAME, 'SIFM.shc')
 LCS1 = join(_DIRNAME, 'LCS-1.shc')
 MF7 = join(_DIRNAME, 'MF7.shc')
+DIFI3 = join(_DIRNAME, 'SW_OPER_MIO_SHAi2D_20131201T000000_20170129T235959_0301.txt')
+DIFI4 = join(_DIRNAME, 'SW_OPER_MIO_SHAi2D_20131201T000000_20171231T235959_0401.txt')
 
 # magnetic models used by the apex point calculation
 APEX_2015 = join(_DIRNAME, 'apexsh_1995-2015.txt')

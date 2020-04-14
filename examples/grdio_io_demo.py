@@ -41,3 +41,4 @@ grd3.load_grd('.\\data\\Demogrid_a.grd')
 grd4 = pfm.grdio.grddata()
 grd4.load_grd('.\\data\\GridFile1.grd')
 
+from PVGeo.grids import SurferGridReader
