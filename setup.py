@@ -55,7 +55,7 @@ exts = cythonize(extensions)
 
 install_requires = ["numpy","matplotlib","scipy","h5py","numba","pandas",
                     "pytest","future","Cython",'statsmodels>=0.9.0',"PyWavelets",
-                    "seaborn","patsy", "appdirs"]
+                    "seaborn","patsy", "appdirs", "properties"]
 setuptools.setup(
     name="geoist",
     version=versioneer.get_version(),
