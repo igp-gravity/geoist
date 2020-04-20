@@ -116,33 +116,33 @@ def spacing(area, shape):
     dy = (y2 - y1)/(ny - 1)
     return [dx, dy]
 
-class GridInfo(properties.HasProperties):
-    """Internal helper class to store Surfer grid properties and create
-    ``vtkImageData`` objects from them.
-    """
-    ny = properties.Integer('number of columns', min=2)
-    nx = properties.Integer('number of rows', min=2)
-    xll = properties.Float('x-value of lower-left corner')
-    yll = properties.Float('y-value of lower-left corner')
-    dx = properties.Float('x-axis spacing')
-    dy = properties.Float('y-axis spacing')
-    dmin = properties.Float('minimum data value', required=False)
-    dmax = properties.Float('maximum data value', required=False)
-    data = properties.Array('grid of data values', shape=('*',))
+# class GridInfo(properties.HasProperties):
+    # """Internal helper class to store Surfer grid properties and create
+    # ``vtkImageData`` objects from them.
+    # """
+    # ny = properties.Integer('number of columns', min=2)
+    # nx = properties.Integer('number of rows', min=2)
+    # xll = properties.Float('x-value of lower-left corner')
+    # yll = properties.Float('y-value of lower-left corner')
+    # dx = properties.Float('x-axis spacing')
+    # dy = properties.Float('y-axis spacing')
+    # dmin = properties.Float('minimum data value', required=False)
+    # dmax = properties.Float('maximum data value', required=False)
+    # data = properties.Array('grid of data values', shape=('*',))
 
-    def mask(self):
-        """Mask the no data value"""
-        data = self.data
-        nans = data >= 1.701410009187828e+38
-        if np.any(nans):
-            data = np.ma.masked_where(nans, data)
-        err_msg = "{} of data ({}) doesn't match that set by file ({})."
-        if not np.allclose(self.dmin, np.nanmin(data)):
-            raise ValueError(err_msg.format('Min', np.nanmin(data), self.dmin))
-        if not np.allclose(self.dmax, np.nanmax(data)):
-            raise ValueError(err_msg.format('Max', np.nanmax(data), self.dmax))
-        self.data = data
-        return
+    # def mask(self):
+        # """Mask the no data value"""
+        # data = self.data
+        # nans = data >= 1.701410009187828e+38
+        # if np.any(nans):
+            # data = np.ma.masked_where(nans, data)
+        # err_msg = "{} of data ({}) doesn't match that set by file ({})."
+        # if not np.allclose(self.dmin, np.nanmin(data)):
+            # raise ValueError(err_msg.format('Min', np.nanmin(data), self.dmin))
+        # if not np.allclose(self.dmax, np.nanmax(data)):
+            # raise ValueError(err_msg.format('Max', np.nanmax(data), self.dmax))
+        # self.data = data
+        # return
 
     # def to_vtk(self, output=None, z=0.0, dz=1.0, data_name='Data'):
     #     """Convert to a ``vtkImageData`` object"""
