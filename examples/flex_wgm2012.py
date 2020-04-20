@@ -14,12 +14,12 @@ import warnings
 warnings.simplefilter("ignore")
 
 filename1 = 'D:\\research-work\\Topex\\WGM2012\\WGM2012_ETOPO1_ponc_2min.grd'
-filename2 = 'D:\\research-work\\Topex\\WGM2012\\WGM2012_Freeair_ponc_2min.grd'
+#filename2 = 'D:\\research-work\\Topex\\WGM2012\\WGM2012_Freeair_ponc_2min.grd'
 filename3 = 'D:\\research-work\\Topex\\WGM2012\\WGM2012_Bouguer_ponc_2min.grd'
 
 # 通过GDAL库读取网格数据
 gd1, ff = GDALGrid.getFileGeoDict(filename1)
-gd2, ff = GDALGrid.getFileGeoDict(filename2)
+#gd2, ff = GDALGrid.getFileGeoDict(filename2)
 gd3, ff = GDALGrid.getFileGeoDict(filename3)
 
 print(gd1)
@@ -33,7 +33,7 @@ gd1.ny = 300
 
 # 读取指定区域
 topo = GDALGrid.load(filename1, samplegeodict = gd1, resample = True)
-fag = GDALGrid.load(filename2, samplegeodict = gd1, resample = True)
+#fag = GDALGrid.load(filename2, samplegeodict = gd1, resample = True)
 bug = GDALGrid.load(filename3, samplegeodict = gd1, resample = True)
 
 # 取数据
