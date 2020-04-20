@@ -89,4 +89,4 @@ from MCMC chains using :class:`pymc3`. Default values in parentheses.
 global samples, tunes
 draws = 500
 tunes = 500
-cores = 4
+cores = 1 #4

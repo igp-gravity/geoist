@@ -326,6 +326,7 @@ def grid2srf(grid, filename='outsrf.grd', fformat = 'asc'): # bin
     """
     from geoist import DATA_PATH 
     from geoist.pfm.grdio import grddata
+    import numpy.ma as ma
     g1out = grddata()
     g1out.cols = grid.getGeoDict().nx
     g1out.rows = grid.getGeoDict().ny
@@ -333,11 +334,14 @@ def grid2srf(grid, filename='outsrf.grd', fformat = 'asc'): # bin
     g1out.xmax = grid.getGeoDict().xmax
     g1out.ymin = grid.getGeoDict().ymin
     g1out.ymax = grid.getGeoDict().ymax
-    g1out.data0 = grid.getData()
+    mask  = np.isnan(grid.getData())
+    mx = ma.array(grid.getData(),mask=mask)
+    g1out.data = mx[::-1] #grid.getData()
+    #g1out.data0[np.isnan(grid.getData())] = 1.701410009187828e+38
     if fformat == 'asc':
-        g1out.export_surfer(Path(DATA_PATH, filename), False, 'ascii')
+        g1out.export_surfer(Path(DATA_PATH, filename), True, 'ascii')
     else:
-        g1out.export_surfer(Path(DATA_PATH, filename), False, 'binary')
+        g1out.export_surfer(Path(DATA_PATH, filename), True, 'binary')
     return g1out
    
 def map2DGrid(ax, grid, tstr, xlen=1.0, ylen=1.0, isLeft=False, 

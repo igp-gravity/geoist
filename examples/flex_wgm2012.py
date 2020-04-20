@@ -7,7 +7,7 @@ Created on Wed Apr  8 13:40:07 2020
 
 import matplotlib.pyplot as plt
 from geoist.others.gdal import GDALGrid
-from geoist.others.utils import map2DGrid
+from geoist.others.utils import map2DGrid, grid2srf
 from geoist.others.grid2d import Grid2D
 
 import warnings
@@ -65,12 +65,29 @@ project.wlet_admit_coh() #need time
 # project.__dict__.keys()
 project.plot_admit_coh(kindex=7, contours=contours, mask=mask)
 # Take random cell value within grid and set as attribute
-project.cell = (250, 100)
+
+cell = (250, 100)
+
+project.cell = cell
 # Plot admittance and coherence functions
+project.estimate_cell(cell, atype='admit')
+print(project.summary)
 project.plot_functions()
-# # EET
-#project.inverse = 'L2'
+
+
+# Switch again to `bayes`
 project.inverse = 'bayes'
+# Perform estimation, print summary and plot
+project.estimate_cell(cell, atype='admit')
+print(project.summary)
+project.plot_functions(est='MAP')
+from geoist.flex import plotting
+plotting.plot_bayes_stats(project.trace, project.summary, project.map_estimate)
+#project.plot_bayes_stats()
+
+# # EET
+project.inverse = 'L2'
+#project.inverse = 'bayes'
 print(project.inverse)
 project.mask = mask
 project.estimate_grid(30, atype='joint')
@@ -84,6 +101,9 @@ eetdict.nx = eetnx
 eetdict.ny = eetny
 eetgrid = Grid2D(project.mean_Te_grid[::-1],eetdict)
 eet_jw = eetgrid.project(p_jw)
+
+# save grid2d data to file in the DATA_PATH
+grid2srf(eet_jw, filename = 'chinaeet.grd')
 # transform to jw 
 topo_jw = topo_m.project(p_jw)
 

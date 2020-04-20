@@ -122,7 +122,7 @@ def plot_bayes_stats(trace, summary, map_estimate, title=None, save=None):
 
     """
 
-    from plateflex import estimate
+    from geoist.flex import estimate
 
     # Extract results from summary and map_estimate
     results = estimate.get_bayes_estimates(summary, map_estimate)
@@ -276,7 +276,7 @@ def plot_functions(k, adm, eadm, coh, ecoh, padm=None, pcoh=None, title=None, sa
 
     """
 
-    from plateflex import estimate
+    from geoist.flex import estimate
 
     # Plot as 2 subplots
     f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
