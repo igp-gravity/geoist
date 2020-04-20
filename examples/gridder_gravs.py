@@ -30,6 +30,7 @@ gd1.ymax = 45.0
 gd1.nx = 800
 gd1.ny = 600
 
+
 # 读取指定区域
 topo = GDALGrid.load(filename1, samplegeodict = gd1, resample = True)
 fag = GDALGrid.load(filename2, samplegeodict = gd1, resample = True)

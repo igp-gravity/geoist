@@ -60,12 +60,12 @@ which itself is a container of :class:`~plateflex.classes.Grid` objects
 # -*- coding: utf-8 -*-
 import numpy as np
 import time
-import plateflex
-from plateflex.cpwt import cpwt
-from plateflex.cpwt import conf_cpwt as cf_w
-from plateflex.flex import conf_flex as cf_f
-from plateflex import plotting
-from plateflex import estimate
+import geoist.flex as gflex
+from geoist.flex.cpwt import cpwt
+from geoist.flex.cpwt import conf_cpwt as cf_w
+from geoist.flex.flex import conf_flex as cf_f
+from geoist.flex import plotting
+from geoist.flex import estimate
 import seaborn as sns
 sns.set()
 
@@ -494,8 +494,8 @@ class TopoGrid(Grid):
 
         if np.std(self.data) < 20.:
             self.data *= 1.e3
-
-        water_depth = grid
+                   
+        water_depth = grid.copy()
         water_depth[grid>0.] = 0.
 
         self.water_depth = -1.*water_depth
@@ -806,6 +806,7 @@ class Project(object):
         >>> project.init()
 
         """
+        
 
         # Methods will fail if there is no ``TopoGrid`` object in list
         if not any(isinstance(g, TopoGrid) for g in self.grids):
@@ -1129,7 +1130,8 @@ class Project(object):
                 for j in range(0, self.ny-nn, nn):
                     
                     # # For reference - index values
-                    # print(i,j)
+                    #print(i,j)
+                    #print(self.mask[i,j])
 
                     # tuple of cell indices
                     cell = (i,j)
@@ -1174,10 +1176,12 @@ class Project(object):
                             std_a_grid[int(i/nn),int(j/nn)] = std_a
 
                     elif self.inverse=='L2':
+                        #print('l2')
 
                         # Carry out calculations by calling the ``estimate_cell`` method
                         summary = self.estimate_cell(cell=cell, \
                             alph=alph, atype=atype, returned=True)
+                        print(summary)
 
                         # Extract estimates from summary and map_estimate
                         res = estimate.get_L2_estimates(summary)

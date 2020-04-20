@@ -1373,7 +1373,7 @@ class Grid2D(Grid):
             tdict['xmin'] = 0 - txrange/2.0
             tdict['xmax'] = 0 + txrange/2.0
             geodict = GeoDict(tdict)
-
+            #print(tdict['xmax']+360, tdict['xmin'])
             # make a new projection string centered on lon 0
             projection = _center_projection(projection)
         else:
@@ -1418,6 +1418,7 @@ class Grid2D(Grid):
         else:
             txmax = geodict.xmax + 360
             right = txmax - (geodict.dx/2.0)
+            #print('360', geodict.xmin, geodict.xmax)
         left = geodict.xmin - (geodict.dx/2.0)
         top = geodict.ymax + (geodict.dy/2.0)
         bottom = geodict.ymin + (geodict.dy/2.0)

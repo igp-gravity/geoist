@@ -56,8 +56,8 @@ zderiv = pftrans.derivz(x, y, data, shape)
 # Run the Euler deconvolution on moving windows to produce a set of solutions
 # by running the solver on 10 x 10 windows of size 1000 x 1000 m
 solver = euler.EulerDeconvMW(x, y, z, data, xderiv, yderiv, zderiv,
-                             structural_index=3, windows=(10, 10),
-                             size=(1000, 1000))
+                             structural_index=3, windows=(10, 20),
+                             size=(1000, 500))
 # Use the fit() method to obtain the estimates
 solver.fit()
 

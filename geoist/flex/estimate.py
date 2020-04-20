@@ -48,7 +48,7 @@ functions.
 # -*- coding: utf-8 -*-
 import numpy as np
 import pymc3 as pm
-from geoist.flex import flex
+from geoist.flex.flex import flex
 from geoist.flex import conf as cf
 from theano.compile.ops import as_op
 import theano.tensor as tt
