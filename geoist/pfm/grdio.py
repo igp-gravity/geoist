@@ -15,7 +15,7 @@ import numpy as np
 import scipy.interpolate as interp
 from matplotlib import pyplot as plt
 import warnings
-import properties
+#import properties
 from struct import unpack
 
 def _check_area(area):
