@@ -24,7 +24,7 @@ Fracture Zone, J. Geophys. Res., 64(1), 49-59, doi:10.1029/JZ064i001p00049.
 import numpy
 from numpy import arctan2, pi, sin, cos, log, tan
 
-from giconstants import G, SI2MGAL
+from geoist.pfm.giconstants import G, SI2MGAL
 
 
 def gz(xp, zp, polygons, dens=None):

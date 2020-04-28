@@ -30,8 +30,14 @@ from geoist.inversion import pfmodel_ts
 from geoist.inversion import pfmodel
 from geoist.inversion import walsh
 from geoist.inversion import toeplitz as tptz
+from geoist.inversion.misfit import Misfit
 from geoist.others import utils
-
+from geoist.inversion import geometry
+from geoist.pfm import prism, giutils
+from .giutils import safe_dot
+import scipy.sparse
+from scipy.optimize import minimize
+from scipy.optimize import Bounds
 
 Dimension = namedtuple('Dimension', ['nx', 'ny', 'nz'])
 Dimension2 = namedtuple('Dimension', ['nx', 'ny'])
@@ -368,6 +374,160 @@ class IrregulerMesh(Mesh):
         print('the mesh length is {}'.format(len(self.values)))
     def load_mesh_from_txt(self):
         pass
+
+class Density3D(Misfit):
+    """
+    3D density structure inversion by gravity anomlay.
+
+    Parameters:
+
+    * anomlay : array
+        Array with the observed anomlay with noise.
+    * srcs : list of lists
+        List of the [x, y] positions of the sources.
+    * obs : list of lists
+        List of the [x, y] positions of the observed stations.
+    * mesh : :class:`~geoist.mesher.SquareMesh` or compatible
+        The mesh where the inversion will take place.
+
+
+    """
+
+    def __init__(self, anomlay, srcs, mesh, movemean = False):
+        if movemean:
+            print('remove the mean value of anomaly...')
+            anomlay = anomlay - np.mean(anomlay)
+        super().__init__(data=anomlay, nparams=mesh.size, islinear=True)
+        self.srcs = srcs
+        self.mesh = mesh
+        self.movemean = movemean
+
+    def jacobian(self, p):
+        """
+        Build the Jacobian (sensitivity) matrix.
+
+        The matrix will contain the length of the path takes by the ray inside
+        each cell of the mesh.
+
+        Parameters:
+
+        * p : 1d-array
+            An estimate of the parameter vector or ``None``.
+
+        Returns:
+
+        * jac : 2d-array (sparse CSR matrix from ``scipy.sparse``)
+            The Jacobian
+
+        """
+        srcs = self.srcs
+        xp, yp, zp= srcs
+        kernel=[] 
+        for i, layer in enumerate(self.mesh.layers()):
+            for j, p in enumerate(layer):
+                x1 = self.mesh.get_layer(i)[j].x1
+                x2 = self.mesh.get_layer(i)[j].x2
+                y1 = self.mesh.get_layer(i)[j].y1
+                y2 = self.mesh.get_layer(i)[j].y2
+                z1 = self.mesh.get_layer(i)[j].z1
+                z2 = self.mesh.get_layer(i)[j].z2
+                #den = self.mesh.get_layer(i)[j].props
+                model=[geometry.Prism(x1, x2, y1, y2, z1, z2, {'density': 1000})]
+                field = prism.gz(xp, yp, zp, model)
+                kernel.append(field)  
+        #print(self.ndata, self.nparams)  
+        print(np.array(kernel).shape)
+        return np.transpose(np.array(kernel))
+        # i, j, v = [], [], []
+        # for k, c in enumerate(self.mesh):
+        #     #column = gz_kernel([c], '', srcs, recs, density=1.)
+        #     column = prism.gz_kernel(xp, yp, zp, prisms)
+        #     nonzero = np.flatnonzero(column)
+        #     i.extend(nonzero)
+        #     j.extend(k*np.ones_like(nonzero))
+        #     v.extend(column[nonzero])
+        # shape = (self.ndata, self.nparams)
+        # return scipy.sparse.coo_matrix((v, (i, j)), shape).tocsr()
+    
+    def value(self, p):
+        r"""
+        Calculate the value of the misfit for a given parameter vector.
+
+        The value is given by:
+
+        .. math::
+
+            \phi(\bar{p}) = \bar{r}^T\bar{\bar{W}}\bar{r}
+
+
+        where :math:`\bar{r}` is the residual vector and :math:`bar{\bar{W}}`
+        are optional data weights.
+
+        Parameters:
+
+        * p : 1d-array or None
+            The parameter vector.
+
+        Returns:
+
+        * value : float
+            The value of the misfit function.
+
+        """        
+        if self.movemean:   #remove the mean of anomaly
+            residuals = self.data - self.predicted(p)
+            meanval = residuals.mean()
+            print('The mean {} has been removed.'.format(meanval))
+            residuals = residuals - meanval
+        else:
+            residuals = self.data - self.predicted(p)
+        if self.weights is None:
+            val = np.linalg.norm(residuals)**2
+        else:
+            val = np.sum(self.weights*(residuals**2))
+            
+        #print('inv3d',val, self.regul_param, self.weights)
+        return val*self.regul_param
+    
+    def predicted(self, p):
+        """
+        Calculate the travel time data predicted by a parameter vector.
+
+        Parameters:
+
+        * p : 1d-array
+            An estimate of the parameter vector
+
+        Returns:
+
+        * pred : 1d-array
+            The predicted travel time data.
+
+        """
+        pred = safe_dot(self.jacobian(p), p)
+        return pred
+
+    def fmt_estimate(self, p):
+        """
+        Convert the density unit from kg/m3 to g/cm3.
+        """
+        return p
+    
+    def bound_optimize(self, min_density, max_density, x0 = None):
+        self.min_density = min_density
+        self.max_density = max_density
+        density_bounds = Bounds(min_density, max_density)
+        if x0 is None:
+            x0 = np.zeros(self._nx*self._ny*self._nz)+(self.max_density - self.min_density)/2.
+
+        self.bound_solution = minimize(lambda x:self.calc_u_quiet(solved=True,x=x),
+                                       x0,
+                                       method='trust-constr',
+                                       jac=self.jac_u, 
+                                       hessp=self.hessp_u,
+                                       bounds=density_bounds,
+                                       )
+        return self.bound_solution
 
 if __name__ == '__main__':
     mb = ModelBuilder()    

@@ -186,16 +186,18 @@ class OptimizerMixin(with_metaclass(ABCMeta)):
 
         """
         kwargs = copy.deepcopy(kwargs)
-        assert method in ['linear', 'newton', 'levmarq', 'steepest', 'acor'], \
+        assert method in ['linear', 'newton', 'levmarq', 'steepest', 'acor', 'tcbound'], \
             "Invalid optimization method '{}'".format(method)
         if method in ['newton', 'levmarq', 'steepest']:
             assert 'initial' in kwargs, \
                 "Missing required *initial* argument for '{}'".format(method)
-        if method == 'acor':
+        if method in ['acor','tcbound']: # == 'acor':
             assert 'bounds' in kwargs, \
                 "Missing required *bounds* argument for '{}'".format(method)
         if method == 'acor' and 'nparams' not in kwargs:
             kwargs['nparams'] = self.nparams
+        if method == 'tcbound' and 'nparams' not in kwargs:
+            kwargs['nparams'] = self.nparams            
         self.fit_method = method
         self.fit_args = kwargs
         return self
@@ -232,6 +234,8 @@ class OptimizerMixin(with_metaclass(ABCMeta)):
             solver = optimizer(self.gradient, self.value, **self.fit_args)
         elif self.fit_method == 'acor':
             solver = optimizer(self.value, **self.fit_args)
+        elif self.fit_method == 'tcbound':
+            solver = optimizer(self.hessian, self.gradient, self.value, **self.fit_args)            
         # Run the optimizer to the end
         for i, p, stats in solver:
             continue
@@ -469,6 +473,8 @@ class MultiObjective(OptimizerMixin, OperatorMixin):
             The sum of the values of the components.
 
         """
+        #print('base',self.regul_param)
+        #return sum(obj.value(p) for obj in self)
         return self.regul_param*sum(obj.value(p) for obj in self)
 
     def gradient(self, p):

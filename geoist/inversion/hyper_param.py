@@ -21,7 +21,7 @@ import multiprocessing
 import numpy
 
 #from ..vis import giplt
-import matplotlib as mpl
+import matplotlib.pyplot as mpl
 from .base import OptimizerMixin
 
 
@@ -289,6 +289,7 @@ class LCurve(OptimizerMixin):
             self.datamisfit.jacobian('null')
         solvers = [
             self.datamisfit + mu * self.regul for mu in self.regul_params]
+        
         if self.fit_method is not None:
             for solver in solvers:
                 solver.config(self.fit_method, **self.fit_args)
@@ -299,6 +300,10 @@ class LCurve(OptimizerMixin):
             pool.join()
         else:
             results = [s.fit() for s in solvers]
+            
+            # for solver in solvers:
+            #     print(self.regul.regul_param, solver[1].regul_param, solver[1].value(results[0].p_))
+            #     print(solver[1].regul_param, self.regul.value(results[0].p_), solver[1].value(results[0].p_))
         self.objectives = results
         self.dnorm = numpy.array(
             [self.datamisfit.value(s.p_) for s in results])
@@ -410,8 +415,8 @@ class LCurve(OptimizerMixin):
             vmin, vmax = ax.get_xbound()
             mpl.hlines(y[self.corner_], vmin, vmax)
         mpl.plot(x[self.corner_], y[self.corner_], '^b', markersize=10)
-        mpl.xlabel('Data misfit')
-        mpl.ylabel('Regularization')
+        mpl.xlabel('Data misfit(data norm)')
+        mpl.ylabel('Regularization(model norm)')
 
 
 def _fit_solver(solver):

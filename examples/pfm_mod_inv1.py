@@ -16,7 +16,7 @@ from geoist.vis import giplt
 meshfile = r"d:\msh.txt"
 densfile = r"d:\den.txt"
 #生成场源网格 10km*20km*5km, 500个单元，z方向5层
-area = (-20000, 20000, -40000, 40000, 4000, 32000) #ny nx nz
+area = (-20000, 20000, -40000, 40000, 2000, 32000) #ny nx nz
 shape = (10, 20, 5) #nz nx ny
 mesh = PrismMesh(area, shape)
 density=np.zeros(shape)
@@ -60,8 +60,8 @@ from geoist.inversion.hyper_param import LCurve
 from geoist.pfm import inv3d
 datamisfit = inv3d.Density3D(np.array(field.T).ravel(), [xp, yp, zp], mesh)
 regul = Damping(datamisfit.nparams)
-regul_params = [10**i for i in range(-10, 5, 1)]
-density3d = LCurve(datamisfit, regul, regul_params)
+regul_params = [10**i for i in range(-10, 1, 1)]
+density3d = LCurve(datamisfit, regul, regul_params, loglog=False)
 _ = density3d.fit()
 print(density3d.regul_param_)
 density3d.plot_lcurve()
@@ -99,10 +99,10 @@ giplt.contour(yp * 0.001, xp * 0.001, residuals, nshape,
 
 print('res mean={:.4f}; std={:.4f}'.format(residuals.mean(), residuals.std()))
 
-densinv = r"d:\deninv.txt"
-values = np.fromiter(density3d.estimate_, dtype=np.float)
+densinv = r"d:\deninv1.txt"
+values = np.fromiter(density3d.p_, dtype=np.float)
 reordered = np.ravel(np.reshape(values, mesh.shape), order='F')
-np.savetxt(densinv, 1000.*reordered, fmt='%.8f')    
+np.savetxt(densinv, reordered, fmt='%.8f')    
 
 normfile = r"d:\norms.txt"
 with open(normfile, 'w') as f:

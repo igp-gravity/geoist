@@ -43,6 +43,8 @@ import copy
 import warnings
 import numpy
 import scipy.sparse
+from scipy.optimize import minimize
+from scipy.optimize import Bounds
 
 from ..pfm.giutils import safe_solve, safe_diagonal, safe_dot
 
@@ -183,7 +185,25 @@ def newton(hessian, gradient, value, initial, maxit=30, tol=10 ** -5,
             'Might not have achieved convergence. ' +
             'Try inscreasing the maximum number of iterations allowed.',
             RuntimeWarning)
-
+        
+def tcbound(hessian, gradient, value, bounds, nparams, x0 = None):
+    r"""
+    Minimize with bounds
+    """
+    # min_density, max_density = bounds[0],bounds[1]
+    # print(min_density, max_density)
+    # density_bounds = Bounds(min_density, max_density)
+    
+    if x0 is None:
+        x0 = numpy.zeros(nparams) #+(max_density - min_density)/2.
+    else:
+        print('inital misfit = {}'.format(value(x0)))
+    res = minimize(lambda x:value(x),x0,method='trust-constr',
+                 jac=gradient,hess=hessian,bounds=bounds)
+    #res = minimize(lambda x:value(x),x0,method='SLSQP',bounds=bounds)
+    p = res.x
+    print('final misfit = {}'.format(value(p)))
+    yield 0, p, dict(method="bound solver by trust-constr method")                                   
 
 def levmarq(hessian, gradient, value, initial, maxit=30, maxsteps=20, lamb=10,
             dlamb=2, tol=10**-5, precondition=True):
@@ -247,6 +267,7 @@ def levmarq(hessian, gradient, value, initial, maxit=30, maxsteps=20, lamb=10,
                  step_size=[])
     p = numpy.array(initial, dtype=numpy.float)
     misfit = value(p)
+    print(misfit)
     stats['objective'].append(misfit)
     stats['step_attempts'].append(0)
     stats['step_size'].append(lamb)
@@ -294,6 +315,8 @@ def levmarq(hessian, gradient, value, initial, maxit=30, maxsteps=20, lamb=10,
             yield iteration, p, copy.deepcopy(stats)
         if stop:
             break
+        print('step = {}, misfit = {}'.format(iteration, newmisfit))
+        
     if iteration == maxit - 1:
         warnings.warn(
             'Exited because maximum iterations reached. ' +
@@ -447,7 +470,7 @@ def steepest(gradient, value, initial, maxit=1000, linesearch=True,
             RuntimeWarning)
 
 
-def acor(value, bounds, nparams, nants=None, archive_size=None, maxit=1000,
+def acor(value, bounds, nparams, nants=None, archive_size=None, maxit=100,
          diverse=0.5, evap=0.85, seed=None):
     """
     Minimize the objective function using ACO-R.
@@ -536,6 +559,7 @@ def acor(value, bounds, nparams, nants=None, archive_size=None, maxit=1000,
     weights = amp * numpy.exp(-numpy.arange(archive_size) ** 2 / variance)
     weights /= numpy.sum(weights)
     for iteration in range(maxit):
+        print('iteration = {} of {}'.format(iteration,maxit))
         for k in range(nants):
             # Sample the propabilities to produce new estimates
             ant = numpy.empty(nparams, dtype=numpy.float)

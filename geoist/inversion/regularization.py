@@ -320,6 +320,7 @@ class Smoothness(Regularization):
 
         """
         # Need to divide by 2 because the hessian is 2*R.T*R
+        #print('smm',self.regul_param,safe_dot(p.T, safe_dot(self.hessian(p), p))/2)
         return self.regul_param*safe_dot(p.T, safe_dot(self.hessian(p), p))/2
 
 
