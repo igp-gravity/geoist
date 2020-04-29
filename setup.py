@@ -21,6 +21,14 @@ extensions = [
               ["geoist/pfm/_prism.pyx"],
               include_dirs=[numpy.get_include()]
     ),
+    Extension("geoist.inversion._ttime2d",
+              ["geoist/inversion/_ttime2d.pyx"],
+              include_dirs=[numpy.get_include()]
+    ),
+    Extension("geoist.inversion._wavefd",
+              ["geoist/inversion/_wavefd.pyx"],
+              include_dirs=[numpy.get_include()]
+    ),	
     Extension(
             'geoist.magmod._pymm',
             sources=[
