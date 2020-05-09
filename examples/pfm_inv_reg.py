@@ -48,9 +48,9 @@ for i, layer in enumerate(mesh.layers()):
         depthz.append((z1+z2)/2.0)
 kk=np.array(kernel)        
 kk=np.transpose(kernel)  #kernel matrix for inversion, 500 cells * 400 points
-field0=np.mat(kk)*np.transpose(np.mat(density.ravel()))
+field0= np.mat(kk)*np.transpose(np.mat(density.ravel()))
 
-field = giutils.contaminate(np.array(field0).ravel(), 0.05, percent = True)
+field = field0 #giutils.contaminate(np.array(field0).ravel(), 0.05, percent = True)
 
 #零均值
 print(field.mean())
@@ -86,26 +86,43 @@ sy = smop.derivation(p, component = 'dy').reshape(nz*ny*nx,-1)
 sz = smop.derivation(p, component = 'dz').reshape(nz*ny*nx,-1)
 
 am = 1000.0
-ax = 100.0
-ay = 100.0
-az = 100.0
+ax = 300.0
+ay = 300.0
+az = 300.0
 z0 = 10000 
 beta = 1.0 #1.0
 
+regul0 = Damping(nz*ny*nx)
+
 wdepth = np.diag(1./(np.array(depthz)+z0)**beta)
+sm0 = am*np.eye(nz*ny*nx)*wdepth
+regul1 = Smoothness(sm0)
+
 sm = np.vstack((am*np.eye(nz*ny*nx)*wdepth,
                 az*np.dot(sz.T,wdepth),
                 ay*np.dot(sy.T,wdepth),
                 ax*np.dot(sx.T,wdepth)))
+regul2 = Smoothness(sm) #np.eye(nz*ny*nx)
 
-#sm = np.vstack((np.eye(nz*ny*nx),sz.T,sy.T,sx.T))
-#regul = Smoothness(sm) #np.eye(nz*ny*nx)
-regul = TotalVariation(100, sm)
+sm1 = np.vstack((az*np.dot(sz.T,wdepth),
+                ay*np.dot(sy.T,wdepth),
+                ax*np.dot(sx.T,wdepth)))
+regul3 = Smoothness(sm1)
+
+# L1 norm non-linear
+regul4 = TotalVariation(0.0001, sm1)
+
 #regul = Damping(nz*ny*nx)
 datamisfit = inv3d.Density3D(np.array(field.T).ravel(), [xp, yp, zp], mesh
                              , movemean = False)
-regul_params = [10**i for i in range(-8, 5, 1)]
-density3d = LCurve(datamisfit, regul, regul_params, loglog=True)
+
+# 观测数据权
+#weights = np.ones(datamisfit.nparams)
+#datamisfit.set_weights(weights)
+
+regul_params = [10**i for i in range(-5, 2, 1)]
+# 目标函数
+density3d = LCurve(datamisfit, regul4, regul_params, loglog=False)
 
 initial = np.zeros(nz*ny*nx) #np.ones(datamisfit.nparams)
 minval = initial 
@@ -114,9 +131,8 @@ bounds = list(zip(minval, maxval))
 x0 = initial + 1.0
 #_ = density3d.config('tcbound', bounds = bounds, nparams = datamisfit.nparams, x0  = x0).fit()
 #_ = density3d.fit()
-initial = np.ones(datamisfit.nparams)
 #solver.config('levmarq', initial=initial).fit()
-_ = density3d.config('newton', maxit=100, initial=initial).fit()
+_ = density3d.config('levmarq', initial=np.ones(datamisfit.nparams), maxit=100, maxsteps=100, tol=10**-4).fit()
 print('Hyperparameter Lambda value is {}'.format(density3d.regul_param_))
 density3d.plot_lcurve()
 
@@ -164,7 +180,7 @@ giplt.contour(yp * 0.001, xp * 0.001, residuals, nshape,
 
 print('res mean={:.4f}; std={:.4f}'.format(residuals.mean(), residuals.std()))
 
-densinv = r"d:\deninvtv100.txt"
+densinv = r"d:\deninv_reg4.txt"
 #values = np.fromiter(density3d.objectives[8].p_, dtype=np.float)
 values = np.fromiter(density3d.p_, dtype=np.float)
 reordered = np.ravel(np.reshape(values, mesh.shape), order='F')

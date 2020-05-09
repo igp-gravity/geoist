@@ -37,7 +37,7 @@ def create(
     a user switches environments would trigger a re-download of the data. The version
     string will be appended to the local storage path (for example,
     ``~/.myDrepo/cache/v0.1``) and inserted into the base URL (for example,
-    ``https://github.com/fatiando/Drepo/raw/v0.1/data``). If the version string contains
+    ``https://github.com/geoist/Drepo/raw/v0.1/data``). If the version string contains
     ``+XX.XXXXX``, it will be interpreted as a development version.
 
     Parameters

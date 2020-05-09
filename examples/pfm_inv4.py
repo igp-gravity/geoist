@@ -12,7 +12,7 @@ from geoist.pfm import prism
 from geoist.pfm import giutils
 from geoist.inversion.mesh import PrismMesh
 from geoist.vis import giplt
-from geoist.inversion.regularization import Smoothness,Damping,TotalVariation
+from geoist.inversion.regularization import Smoothness,Damping
 from geoist.inversion.pfmodel import SmoothOperator
 from geoist.inversion.hyper_param import LCurve
 from geoist.pfm import inv3d
@@ -98,51 +98,18 @@ sm = np.vstack((am*np.eye(nz*ny*nx)*wdepth,
                 ay*np.dot(sy.T,wdepth),
                 ax*np.dot(sx.T,wdepth)))
 
-#sm = np.vstack((np.eye(nz*ny*nx),sz.T,sy.T,sx.T))
-#regul = Smoothness(sm) #np.eye(nz*ny*nx)
-regul = TotalVariation(100, sm)
-#regul = Damping(nz*ny*nx)
+regul = Smoothness(sm) 
 datamisfit = inv3d.Density3D(np.array(field.T).ravel(), [xp, yp, zp], mesh
                              , movemean = False)
-regul_params = [10**i for i in range(-8, 5, 1)]
+regul_params = [10**i for i in range(-8, 10, 1)]
 density3d = LCurve(datamisfit, regul, regul_params, loglog=True)
+_ = density3d.fit()
 
-initial = np.zeros(nz*ny*nx) #np.ones(datamisfit.nparams)
-minval = initial 
-maxval = initial + 1.0
-bounds = list(zip(minval, maxval))
-x0 = initial + 1.0
-#_ = density3d.config('tcbound', bounds = bounds, nparams = datamisfit.nparams, x0  = x0).fit()
-#_ = density3d.fit()
-initial = np.ones(datamisfit.nparams)
-#solver.config('levmarq', initial=initial).fit()
-_ = density3d.config('newton', maxit=100, initial=initial).fit()
 print('Hyperparameter Lambda value is {}'.format(density3d.regul_param_))
 density3d.plot_lcurve()
 
 predicted = density3d[0].predicted()
 residuals = density3d[0].residuals()
-
-# print('bounds searching')
-# solver = datamisfit + density3d.regul_param_*regul
-# initial = np.zeros_like(density3d.p_) #np.ones(datamisfit.nparams)
-# minval = initial 
-# maxval = initial + 1.0
-# bounds = np.zeros(2*len(initial))
-# bounds[::2]=minval #奇数位置
-# bounds[1::2]=maxval #偶数位置
-#bounds = list(zip(minval, maxval))
-
-#solver.config('acor', bounds = bounds, seed=0).fit()
-#solver.config('acor', bounds = [0.5, 1.5], seed=0).fit()
-#x0 = initial + 1.0
-#solver.config('tcbound', bounds = bounds, x0  = x0).fit()
-#solver.config('levmarq', initial=x0).fit()
-
-# densinv = r"d:\deninv_solver.txt"
-# values = np.fromiter(solver.estimate_, dtype=np.float)
-# reordered = np.ravel(np.reshape(values, mesh.shape), order='F')
-# np.savetxt(densinv, reordered, fmt='%.8f')    
 
 
 plt.figure(figsize=(16, 8))
@@ -164,7 +131,7 @@ giplt.contour(yp * 0.001, xp * 0.001, residuals, nshape,
 
 print('res mean={:.4f}; std={:.4f}'.format(residuals.mean(), residuals.std()))
 
-densinv = r"d:\deninvtv100.txt"
+densinv = r"d:\deninvmean.txt"
 #values = np.fromiter(density3d.objectives[8].p_, dtype=np.float)
 values = np.fromiter(density3d.p_, dtype=np.float)
 reordered = np.ravel(np.reshape(values, mesh.shape), order='F')

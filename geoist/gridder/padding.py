@@ -179,11 +179,11 @@ def unpad_array(a, nps):
     Remove padding from an array.
 
     This function takes a padded array and removes the padding from both sides.
-    Designed to use the output of :func:`~fatiando.gridder.pad_array`.
+    Designed to use the output of :func:`~geoist.gridder.pad_array`.
 
     .. note::
 
-        Unlike :func:`~fatiando.gridder.pad_array`, this function **returns a
+        Unlike :func:`~geoist.gridder.pad_array`, this function **returns a
         slice** of the input array. Therefore, any changes to the padded array
         will be reflected in the unpadded array!
 
@@ -193,7 +193,7 @@ def unpad_array(a, nps):
         Array to be un-padded.  Can be of arbitrary dimension.
     * nps : list
         List of tuples giving the min and max indices for the cutoff.
-        Use the value returned by :func:`~fatiando.gridder.pad_array`.
+        Use the value returned by :func:`~geoist.gridder.pad_array`.
 
     Returns:
 
@@ -224,14 +224,14 @@ def pad_coords(xy, shape, nps):
     """
     Apply padding to coordinate vectors.
 
-    Designed to be used in concert with :func:`~fatiando.gridder.pad_array`,
+    Designed to be used in concert with :func:`~geoist.gridder.pad_array`,
     this function takes a list of coordinate vectors and pads them using the
     same number of elements as the padding of the data array.
 
     .. note::
 
         This function returns a list of arrays in the same format as, for
-        example, :func:`~fatiando.gridder.regular`. It is a list of flattened
+        example, :func:`~geoist.gridder.regular`. It is a list of flattened
         ``np.meshgrid`` for each vector in the same order as was input through
         argument *xy*.
 
@@ -243,7 +243,7 @@ def pad_coords(xy, shape, nps):
         Size of original array
     * nps : list
         List of tuples containing the number of elements padded onto each
-        dimension (use the output from :func:`~fatiando.gridder.pad_array`).
+        dimension (use the output from :func:`~geoist.gridder.pad_array`).
 
     Returns:
 
@@ -253,7 +253,7 @@ def pad_coords(xy, shape, nps):
     Examples:
 
     >>> import numpy as np
-    >>> from fatiando.gridder import regular
+    >>> from geoist.gridder import regular
     >>> shape = (5, 6)
     >>> x, y, z = regular((-10, 10, -20, 0), shape, z=-25)
     >>> gz = np.zeros(shape)

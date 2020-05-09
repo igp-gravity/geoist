@@ -74,9 +74,9 @@ class DipoleMagDir(Misfit):
     Estimation of the total magnetization vector of dipoles with known centers
 
     >>> import numpy as np
-    >>> from fatiando import gridder, utils
-    >>> from fatiando.gravmag import sphere
-    >>> from fatiando.mesher import Sphere, Prism
+    >>> from geoist import gridder, utils
+    >>> from geoist.gravmag import sphere
+    >>> from geoist.mesher import Sphere, Prism
     >>> # Produce some synthetic data
     >>> area = (0, 10000, 0, 10000)
     >>> x, y, z = gridder.scatter(area, 500, z=-150, seed=0)

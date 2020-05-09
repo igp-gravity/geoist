@@ -63,7 +63,7 @@ def tf(xp, yp, zp, spheres, inc, dec, pmag=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the anomaly will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the physical property
         ``'magnetization'``. Spheres that are ``None`` or without
         ``'magnetization'`` will be ignored. The magnetization is the total
@@ -131,7 +131,7 @@ def bx(xp, yp, zp, spheres, pmag=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the anomaly will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the physical property
         ``'magnetization'``. Spheres that are ``None`` or without
         ``'magnetization'`` will be ignored. The magnetization is the total
@@ -193,7 +193,7 @@ def by(xp, yp, zp, spheres, pmag=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the anomaly will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the physical property
         ``'magnetization'``. Spheres that are ``None`` or without
         ``'magnetization'`` will be ignored. The magnetization is the total
@@ -255,7 +255,7 @@ def bz(xp, yp, zp, spheres, pmag=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the anomaly will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the physical property
         ``'magnetization'``. Spheres that are ``None`` or without
         ``'magnetization'`` will be ignored. The magnetization is the total
@@ -324,7 +324,7 @@ def gz(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -385,7 +385,7 @@ def gxx(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -447,7 +447,7 @@ def gxy(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -509,7 +509,7 @@ def gxz(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -571,7 +571,7 @@ def gyy(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -633,7 +633,7 @@ def gyz(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -695,7 +695,7 @@ def gzz(xp, yp, zp, spheres, dens=None):
 
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the field will be calculated
-    * spheres : list of :class:`fatiando.mesher.Sphere`
+    * spheres : list of :class:`geoist.mesher.Sphere`
         The spheres. Spheres must have the property ``'density'``. The ones
         that are ``None`` or without a density will be ignored.
     * dens : float or None
@@ -756,7 +756,7 @@ def kernelxx(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:
@@ -797,7 +797,7 @@ def kernelxy(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:
@@ -838,7 +838,7 @@ def kernelxz(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:
@@ -879,7 +879,7 @@ def kernelyy(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:
@@ -920,7 +920,7 @@ def kernelyz(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:
@@ -961,7 +961,7 @@ def kernelzz(xp, yp, zp, sphere):
     * xp, yp, zp : arrays
         The x, y, and z coordinates where the function will be
         calculated
-    * sphere : :class:`fatiando.mesher.Sphere`
+    * sphere : :class:`geoist.mesher.Sphere`
         The sphere.
 
     Returns:

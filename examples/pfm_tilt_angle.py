@@ -7,7 +7,7 @@ detection. It is commonly used with reduced-to-the-pole total field magnetic
 anomaly data. We'll test the :func:`geoist.pfm.pftrans.tilt` function
 on some synthetic magnetic data. For simplicity here, we'll assume that our
 data is already reduced to the pole. You can use
-:func:`fatiando.gravmag.transform.reduce_to_pole` to reduce your data.
+:func:`geoist.gravmag.transform.reduce_to_pole` to reduce your data.
 
 The zero contour of the tilt is said to outline the body so we've plotted it as
 a dashed line on the tilt map.

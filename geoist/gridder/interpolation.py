@@ -90,8 +90,8 @@ def interp(x, y, v, shape, area=None, algorithm='cubic', extrapolate=False):
     Interpolate spacial data onto a regular grid.
 
     Utility function that generates a regular grid with
-    :func:`~fatiando.gridder.regular` and calls
-    :func:`~fatiando.gridder.interp_at` on the generated points.
+    :func:`~geoist.gridder.regular` and calls
+    :func:`~geoist.gridder.interp_at` on the generated points.
 
     Parameters:
 

@@ -4,7 +4,7 @@ Reduction to the pole
 
 If the direction of magnetization is known, you can reduce a measured total
 field magnetic anomaly to the pole. Function
-:func:`fatiando.gravmag.transform.reduce_to_pole` implements the reduction
+:func:`geoist.gravmag.transform.reduce_to_pole` implements the reduction
 using the FFT and allows using a magnetization direction that is different from
 the geomagnetic field direction. This example shows how to use it in this case.
 Use ``sinc=inc`` and ``sdec=dec`` if there is only induced magnetization.

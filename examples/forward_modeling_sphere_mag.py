@@ -2,7 +2,7 @@
 Forward modeling magnetic data using spheres in Cartesian coordinates
 -----------------------------------------------------------------------
 
-The :mod:`fatiando.gravmag` has many functions for forward modeling gravity and
+The :mod:`geoist.gravmag` has many functions for forward modeling gravity and
 magnetic data. Here we'll show how to build a model out of spheres and
 calculate the total field magnetic anomaly and the 3 components of the magnetic
 induction.
@@ -15,7 +15,7 @@ from geoist import gridder
 from geoist.inversion import geometry
 from geoist.vis import giplt
 
-# Create a model using geometric objects from fatiando.mesher
+# Create a model using geometric objects from geoist.mesher
 # Each model element has a dictionary with its physical properties.
 # The spheres have different total magnetization vectors (total = induced +
 # remanent + any other effects). Notice that the magnetization has to be a

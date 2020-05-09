@@ -119,7 +119,7 @@ class Square(Polygon):
         >>> sq.props['magnetization']
         100
 
-    A square can be used as a :class:`~fatiando.mesher.Polygon`::
+    A square can be used as a :class:`~geoist.mesher.Polygon`::
 
         >>> sq.vertices
         array([[0, 2],
@@ -279,7 +279,7 @@ class Tesseroid(GeometricElement):
 
     Examples:
 
-        >>> from fatiando.mesher import Tesseroid
+        >>> from geoist.mesher import Tesseroid
         >>> t = Tesseroid(1, 2, 3, 4, 6, 5, {'density':200})
         >>> t.props['density']
         200
@@ -548,7 +548,7 @@ class PolygonalPrism(GeometricElement):
 
         Returns:
 
-        * polygon : :func:`fatiando.mesher.Polygon`
+        * polygon : :func:`geoist.mesher.Polygon`
             The polygon
 
         Example:
