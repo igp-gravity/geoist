@@ -202,7 +202,6 @@ class InvModelTS:
         self.orig_data['z'] = 0.0
 
     def set_refer(self,refer_density):
-        self.constraints['refer'] = np.ones(self.nx*self.ny*self.ns)
         self.refer_density = refer_density
 
     def deg2xy(self):
@@ -450,9 +449,11 @@ class InvModelTS:
         return self.calc_log_prior_total_det_quiet(precision)
 
     def calc_log_obs_det_quiet(self):
-        self.log_obs_det_val = np.log(self._weights['obs'])*len(self.orig_data)
-        self.log_obs_det_val = (self.nx*self.ny*self.ns*np.log(self.weights['refer'])
-                                 +np.log(self._weights['obs'])*len(self.orig_data))
+        if 'refer' in self._weights.keys():
+            self.log_obs_det_val = (self.nx*self.ny*self.ns*np.log(self.weights['refer'])
+                                    +np.log(self._weights['obs'])*len(self.orig_data))
+        else:
+            self.log_obs_det_val = np.log(self._weights['obs'])*len(self.orig_data)
         return self.log_obs_det_val
 
     @timeit
