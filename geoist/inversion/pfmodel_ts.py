@@ -87,13 +87,15 @@ class AbicLSQOperatorMS:
         self.smooth_components = smooth_components
         self.smop = SmoothOperator()
         if self.weights is None:
-            self.weights = {'bound':1,'obs':1,'dx':1,'dy':1,'dt':1}
+            self.weights = {'bound':1,'obs':1,'dx':1,'dy':1,'dt':1, 'refer':1}
 
     def matvec(self,v):
         tmp = np.zeros_like(v)
         v = v.reshape(self.ns,-1)
         for i,k in enumerate(self.kernel_matrices):
             tmp[i*self.ny*self.nx:(i+1)*self.ny*self.nx] = self.weights['obs'] * (k.T @ (k @ v[i]))
+        if 'refer' in self.weights.keys():
+            tmp += self.weights['refer']*v.ravel()
         for key in self.smooth_components:
             tmp2 = v.reshape(self.ns,self.nz,self.ny,self.nx)
             tmp2 = self.smop.derivation(tmp2,component=key)
@@ -198,6 +200,10 @@ class InvModelTS:
             orig_data.append(df)
         self.orig_data = pd.concat(orig_data)
         self.orig_data['z'] = 0.0
+
+    def set_refer(self,refer_density):
+        self.constraints['refer'] = np.ones(self.nx*self.ny*self.ns)
+        self.refer_density = refer_density
 
     def deg2xy(self):
         dlon = self.orig_data.groupby('i_survey')['lon'].apply(lambda x: x-x.mean())
@@ -330,6 +336,8 @@ class InvModelTS:
             e = (i+1)*self.ny*self.nx
             g = self.orig_data[self.orig_data['i_survey']==i]['g'].values
             self.rhs[s:e] = self._weights['obs'] * (k.T @ g)
+        if 'refer' in self._weights.keys():
+            self.rhs += (self._weights['refer']*self.refer_density.ravel())
 
     def _gen_btb(self):
         if self._btb_exist:
@@ -384,6 +392,9 @@ class InvModelTS:
             tmp2 = self.smop.derivation(v.reshape(self.ns,self.nz,self.ny,self.nx),
                                         component=key)
             self.min_u_val += self._weights[key]*np.linalg.norm(tmp2.ravel())**2
+        if 'refer' in self._weights.keys():
+            v = x - self.refer_density.ravel()
+            self.min_u_val += self._weights['refer'] * np.linalg.norm(v)**2
         return self.min_u_val
 
     def calc_res(self):
@@ -402,6 +413,11 @@ class InvModelTS:
             tmp2 = self.smop.derivation(tmp2,component=key)
             self.residuals[key] = np.linalg.norm(tmp2.ravel())**2
             self.stds[key] = np.std(tmp2.ravel())
+        if 'refer' in self._weights.keys():
+            self.residuals['refer'] = []
+            self.stds['refer'] = []
+            self.residuals['refer'].append(np.linalg.norm(self.solution.ravel()-self.refer_density.ravel())**2)
+            self.stds['refer'].append(np.std(self.solution.ravel()-self.refer_density.ravel()))
 
     def calc_log_prior_total_det_quiet(self,precision=1.0e-6):
         self._gen_gtg()
@@ -423,6 +439,8 @@ class InvModelTS:
         for i,k in enumerate(self.kernel_matrices):
             tmp_mat[i*self.nx*self.ny:(i+1)*self.nx*self.ny,
                     i*self.nx*self.ny:(i+1)*self.nx*self.ny] += self.weights['obs'] * self._gtg[i]
+        if 'refer' in self._weights.keys():
+            tmp_mat += self._weights['refer']*np.eye(self.nx*self.ny*self.ns)
         total_eigs = np.linalg.eigvalsh(tmp_mat)
         self.log_total_det_val = sum(np.log(total_eigs[total_eigs > precision]))
         self.eigs = {'prior':prior_eigs,'total':total_eigs}
@@ -433,6 +451,8 @@ class InvModelTS:
 
     def calc_log_obs_det_quiet(self):
         self.log_obs_det_val = np.log(self._weights['obs'])*len(self.orig_data)
+        self.log_obs_det_val = (self.nx*self.ny*self.ns*np.log(self.weights['refer'])
+                                 +np.log(self._weights['obs'])*len(self.orig_data))
         return self.log_obs_det_val
 
     @timeit

@@ -28,7 +28,7 @@ extensions = [
     Extension("geoist.inversion._wavefd",
               ["geoist/inversion/_wavefd.pyx"],
               include_dirs=[numpy.get_include()]
-    ),	
+    ),
     Extension(
             'geoist.magmod._pymm',
             sources=[
@@ -85,16 +85,3 @@ setuptools.setup(
     ),
 )
 
-# Fortran extension
-
-from numpy.distutils.core import Extension as npExtension
-from numpy.distutils.core import setup as npsetup
-
-ext_cpwt = npExtension(name='geoist.flex.cpwt',
-                sources=['geoist/flex/cpwt/cpwt.f90', 'geoist/flex/cpwt/cpwt_sub.f90'])
-				
-ext_flex = npExtension(name='geoist.flex.flex',
-                sources=['geoist/flex/flex/flex.f90'])
-npsetup(
-  ext_modules         = [ext_cpwt, ext_flex],
-)
