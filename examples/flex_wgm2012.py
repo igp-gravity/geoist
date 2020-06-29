@@ -66,6 +66,14 @@ project.wlet_admit_coh() #need time
 project.plot_admit_coh(kindex=7, contours=contours, mask=mask)
 # Take random cell value within grid and set as attribute
 
+# adm = project.wl_admit[:,:,7]
+# fig, ax = plt.subplots()
+# ax.imshow(adm)
+# x = [250, 200]
+# y = [100, 80]
+# ax.scatter(x,y)
+# ax.invert_yaxis()
+
 cell = (250, 100)
 
 project.cell = cell
@@ -93,6 +101,8 @@ project.mask = mask
 project.estimate_grid(30, atype='joint')
 project.plot_results(mean_Te=True, mask=True, contours=contours, cmap='Spectral')
 project.plot_results(std_Te=True, mask=True, contours=contours, cmap='magma_r')
+
+
 
 
 eetdict = topo_m.getGeoDict().copy()

@@ -7,7 +7,7 @@ Created on Wed Apr  8 13:40:07 2020
 
 import matplotlib.pyplot as plt
 from geoist.others.gdal import GDALGrid
-from geoist.others.utils import map2DGrid,Grid2xyz
+from geoist.others.utils import map2DGrid, Grid2Xyz
 
 import warnings
 warnings.simplefilter("ignore")
@@ -39,7 +39,7 @@ iso = GDALGrid.load(filename4, samplegeodict = gd1, resample = True)
 
 # 取数据
 topoc = topo.cut(80,90, 30,35, align = True)
-tcx, tcy, tcz = Grid2xyz(topoc) # 位场变换要求x,y,z三列数据格式接口 pftrans
+tcx, tcy, tcz = Grid2Xyz(topoc) # 位场变换要求x,y,z三列数据格式接口 pftrans
 
 p_jw = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 p_merc = "+proj=merc +lon_0=100 +ellps=WGS84 +datum=WGS84 +no_defs +units=km"

@@ -8,7 +8,7 @@ Created on Sat Aug 10 18:25:58 2019
 from tkinter import *
 import os
 #from simpledialog import simpledialog
-import gimodule
+from geoist.vis import gimodule
 
 gimodule.maxwidth  = 140
 # Since the interface now has to columns of buttons this must be wider

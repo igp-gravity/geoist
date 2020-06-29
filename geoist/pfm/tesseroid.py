@@ -5,31 +5,12 @@ Functions in this module calculate the gravitational fields of a tesseroid with
 respect to the local North-oriented coordinate system of the computation point.
 See the figure below.
 
-.. raw:: html
-
-    <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-
-.. figure:: ../_static/images/tesseroid-coord-sys.png
-    :alt: A tesseroid in a geocentric coordinate system
-    :width: 100%
-    :align: center
 
     A tesseroid in a geocentric coordinate system (X, Y, Z). Point P is a
     computation point with associated local North-oriented coordinate system
     (x, y, z).
     Image by L. Uieda (doi:`10.6084/m9.figshare.1495525
     <http://dx.doi.org/10.6084/m9.figshare.1495525>`__).
-
-.. raw:: html
-
-    </div>
-    <div class="col-md-3">
-    </div>
-    </div>
-
 
 .. admonition:: Coordinate systems
 
@@ -83,8 +64,6 @@ References
 Uieda, L., V. Barbosa, and C. Braitenberg (2016), Tesseroids: Forward-modeling
 gravitational fields in spherical coordinates, Geophysics, F41-F48,
 doi:10.1190/geo2015-0204.1
-
-----
 
 """
 

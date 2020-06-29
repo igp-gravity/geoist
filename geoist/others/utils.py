@@ -272,12 +272,14 @@ def grid2Grid(x, y, data):
     return grid
     
 def Grid2Xyz(grid):
-    """
-    Transform grid data object to x,y,z of 1-D array
-    grid is a Grid2D object 
+    """Transform grid data object to x,y,z of 1-D array
+    
+	Parameters:
+		grid is a Grid2D object 
+		
     return:
         x,y : The x and y coordinates of the grid points
-          z : The value at the grid points
+        z : The value at the grid points
     """   
     xmin,xmax,ymin,ymax = grid.getBounds()
     pdata = grid.getData()[::-1]
@@ -297,12 +299,14 @@ def Grid2Xyz(grid):
     return x,y,z
 
 def xyz2Grid(x, y ,z):
-    """
-    Transform x, y,z to grid data object 
+    """Transform x, y,z to grid data object 
+    
+	Parameters:
         x,y : The x and y coordinates of the grid points
-          z : The value at the grid points     
+        z : The value at the grid points     
+		  
     return:
-          grid :grid is a Grid2D object
+        grid :grid is a Grid2D object
     """       
     from geoist.others.geodict import GeoDict
     from geoist.others.grid2d import Grid2D

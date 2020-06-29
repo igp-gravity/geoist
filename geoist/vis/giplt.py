@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
- Name        : giplt.py
- Created on  : 2018/11/24 17.17
- Author      : Steve Chen <chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
- Description : Wrappers for :mod:`matplotlib` functions to facilitate plotting grids,
-               2D objects, etc.
 
+# Name        : giplt.py
+# Created on  : 2018/11/24 17.17
+# Author      : Steve Chen <chenshi@cea-igp.ac.cn>
+# Affiliation : Institute of Geophysics, CEA.
+# Version     : 0.1.0
+# Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
+# License     : Distributed under the MIT License. See LICENSE.txt for more info.
+# Github      : https://igp-gravity.github.io/
+# Description : Wrappers for :mod:`matplotlib` functions to facilitate plotting grids,
+#               2D objects, etc.
+"""
 This module loads all functions from :mod:`matplotlib.pyplot`, adds new
 functions and overwrites some others (like :func:`~geoist.vis.giplt.contour`,
 :func:`~geoist.vis.giplt.pcolor`, etc).
@@ -21,45 +21,6 @@ functions and overwrites some others (like :func:`~geoist.vis.giplt.contour`,
     :mod:`matplotlib.pyplot` module directly. Some of the geoist specific
     functions will remain.
 
-
-**Grids**
-
-* :func:`~geoist.vis.giplt.contour`
-* :func:`~geoist.vis.giplt.contourf`
-* :func:`~geoist.vis.giplt.pcolor`
-
-Grids are automatically reshaped and interpolated if desired or necessary.
-
-**2D objects**
-
-* :func:`~geoist.vis.giplt.points`
-* :func:`~geoist.vis.giplt.paths`
-* :func:`~geoist.vis.giplt.square`
-* :func:`~geoist.vis.giplt.squaremesh`
-* :func:`~geoist.vis.giplt.polygon`
-* :func:`~geoist.vis.giplt.layers`
-* :func:`~geoist.vis.giplt.seismic_image`
-* :func:`~geoist.vis.giplt.seismic_wiggle`
-
-**Interactive**
-
-* :func:`~geoist.vis.giplt.draw_polygon`
-* :func:`~geoist.vis.giplt.draw_layers`
-* :func:`~geoist.vis.giplt.pick_points`
-
-**Basemap (map projections)**
-
-* :func:`~geoist.vis.giplt.basemap`
-* :func:`~geoist.vis.giplt.draw_geolines`
-* :func:`~geoist.vis.giplt.draw_countries`
-* :func:`~geoist.vis.giplt.draw_coastlines`
-
-**Auxiliary**
-
-* :func:`~geoist.vis.giplt.set_area`
-* :func:`~geoist.vis.giplt.m2km`
-
-----
 
 """
 

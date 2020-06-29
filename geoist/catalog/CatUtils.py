@@ -27,6 +27,7 @@ def LocationInit():
        'DepError': None,
        'LocCode': None,
        'Prime': False}
+
   return L
 
 #-----------------------------------------------------------------------------------------
@@ -64,10 +65,8 @@ def CastValue(key, value):
        'MagSize': 'f',
        'MagError': 'f',
        'MagType': 's',
-       'MagCode': 's',
-       'Place': 's',
-       'Type': 's'}
-  
+       'MagCode': 's'}
+
   if not IsEmpty(value):
     if C[key] == 'i':
       value = int(value)
@@ -83,18 +82,6 @@ def CastValue(key, value):
   return value
 
 #-----------------------------------------------------------------------------------------
-def capital_to_lower(dict_info):
-    new_dict = {}
-    for i, j in dict_info.items():
-        new_dict[i.lower()] = j
-    return new_dict
-
-def lower_to_capital(dict_info):
-    new_dict = {}
-    for i, j in dict_info.items():
-        new_dict[i.capitalize()] = j
-    return new_dict
-
 
 def KeyGroup(key):
 
@@ -152,9 +139,9 @@ def IsType(value, dtype):
 #-----------------------------------------------------------------------------------------
 
 def WgsDistance(Lat1, Lon1, Lat2, Lon2):
-  """
-  Author: Salvador Dali
+  """Author: Salvador Dali
   http://stackoverflow.com/users/1090562/salvador-dali
+  
   """
 
   p = 0.017453292519943295
@@ -171,8 +158,8 @@ def WgsDistance(Lat1, Lon1, Lat2, Lon2):
 #-----------------------------------------------------------------------------------------
 
 def WgsToXY (Lat, Lon, Km=True):
-  """
-  Approximate conversion using sinusoidal projection.
+  """Approximate conversion using sinusoidal projection.
+
   """
 
   earth_radius = 6371009. # in meters
@@ -194,8 +181,6 @@ def WgsToXY (Lat, Lon, Km=True):
 #-----------------------------------------------------------------------------------------
 
 def ConcaveHull (X, Y):
-  """
-  """
 
   points = zip(X, Y)
   hull = scp.spatial.ConvexHull(points)
@@ -210,6 +195,7 @@ def SphericalMesh(Delta, Km=False):
   """
   Produce a shperical mesh using golder spiral algorithm.
   Distance is the average beween nearby points (degree by default).
+
   """
 
   if Km:
@@ -237,6 +223,7 @@ def Unwrap(Angle):
   """
   Unwrap phase angle.
   Note: Angle must be a numpy array
+
   """
 
   return Angle-(2.*np.pi)*((Angle+np.pi)//(2*np.pi))
@@ -300,6 +287,7 @@ def WktToXY(WktString):
   NOTE:
   1) Internal polygons are not considered
   2) Multi objects are simply concatenated
+
   """
 
   from array import array
@@ -307,6 +295,7 @@ def WktToXY(WktString):
   def multicoords(WktObj):
     """
     Subfunction to iterate though multi objects
+
     """
     X = array('d', [])
     Y = array('d', [])
@@ -340,8 +329,7 @@ def WktToXY(WktString):
 #---------------------------------------------------------------------------------------
 
 def XYToWkt(X, Y):
-  """
-  """
+
   WktString = 'POLYGON (('
 
   Data = []
@@ -365,12 +353,14 @@ class Polygon():
   #---------------------------------------------------------------------------------------
 
   def Load(self, XY):
-    """
-    Input polygon can be defined in two possible ways:
+    """Input polygon can be defined in two possible ways:
+	
     1) list of x-y float pairs, e.g.
         [[22.0, -15.0],[24.0, -15.0],[24.0, -10.0],[22.0, -15.0]]
+		
     2) wkt formatted string, e.g.
         'POLYGON((22. -15.,24. -15.,24. -10.,22. -15.))'
+
     """
 
     if type(XY) == list:
@@ -426,6 +416,7 @@ class Polygon():
     TO DO:
     Tempory implementation using Shapely.
     In the future, all Polygon objects will be defined this way
+
     """
 
     P = geometry.Polygon(zip(self.x, self.y))
@@ -466,6 +457,7 @@ class Polygon():
     Using Shoelace formula to compute area.
     Optionally, Wgs coordinates can be approximated to Km using
     sinusoidal projection (default).
+
     """
 
     if Wgs:
@@ -487,6 +479,7 @@ class Polygon():
     Produce a lat/lon cartesian grid.
     Dx and Dy distances are degrees (area is not preserved).
     Bounds are [MinX, MinY, MaxX, MaxY]
+
     """
 
     if Bounds:
@@ -517,6 +510,7 @@ class Polygon():
     """
     Distance between nearby points (in degree) is an approximated value.
     Bounds are [MinX, MinY, MaxX, MaxY]
+
     """
 
     X, Y = SphericalMesh(Delta)
@@ -560,11 +554,14 @@ class Trace():
   def Load(self, XY):
     """
     Input trace line can be defined in two possible ways:
+	
     1) list of x-y float pairs, e.g.
         [[22.0, -15.0],[24.0, -15.0],[24.0, -10.0],[22.0, -15.0]]
+		
     2) wkt formatted string, e.g.
         'LINESTRING((22. -15.,24. -15.,24. -10.,22. -15.))'
-    """
+
+	"""
 
     if type(XY) == list:
       # List of coordinate pairs
@@ -583,6 +580,7 @@ class Trace():
   def Buffer(self, Delta):
     """
     Return a polygon object containing the buffer area
+
     """
 
     L = geometry.LineString(zip(self.x, self.y))

@@ -1,17 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
- Name        : igrf.py
- Created on  : 2018/09/11 17:00
- Author      : Steve Chen <chenshi@cea-igp.ac.cn>
- Affiliation : Institute of Geophysics, CEA.
- Version     : 0.1.0
- Copyright   : Copyright (C) 2018-2020 GEOIST Development Team. All Rights Reserved.
- License     : Distributed under the MIT License. See LICENSE.txt for more info.
- Github      : https://igp-gravity.github.io/
- Description : Application for ***.
-"""
-
-
 #This code is based on the Geomag software, with information given below. It was
 #translated into Python from the Geomag code.
 """
@@ -21,7 +8,6 @@
 |                and
 |                S.R.C. Malin & D.R. Barraclough
 |                Institute of Geological Sciences, United Kingdom.
-
 | Translated
 | into C by    : Craig H. Shaffer
 |                29 July, 1988
