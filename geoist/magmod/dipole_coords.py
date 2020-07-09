@@ -13,7 +13,7 @@
 
 from math import pi, sin, cos
 from numpy import array, dot
-from magmod._pymm import (
+from geoist.magmod._pymm import (
     convert, vrot_sph2cart, vrot_cart2sph,
     GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN,
 )

@@ -11,9 +11,9 @@
 #-------------------------------------------------------------------------------
 
 from numpy import asarray, empty, full, nan, nditer, ndim
-from magmod._pymm import GRADIENT, GEOCENTRIC_SPHERICAL, sheval
-from magmod.sheval_dipole import rotate_vectors_from_dipole
-from magmod.dipole_coords import convert_to_dipole
+from geoist.magmod._pymm import GRADIENT, GEOCENTRIC_SPHERICAL, sheval
+from geoist.magmod.sheval_dipole import rotate_vectors_from_dipole
+from geoist.magmod.dipole_coords import convert_to_dipole
 
 
 class GeomagneticModel(object):

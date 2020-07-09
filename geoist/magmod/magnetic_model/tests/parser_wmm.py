@@ -21,10 +21,10 @@ except ImportError:
 
 from numpy.testing import assert_allclose
 from numpy import abs as aabs
-from magmod.magnetic_model.parser_wmm import (
+from geoist.magmod.magnetic_model.parser_wmm import (
     parse_wmm_file, WMM_VALIDITY_PERIOD,
 )
-from magmod.data import WMM_2015
+from geoist.magmod.data import WMM_2015
 
 
 class TestWMMParser(TestCase):

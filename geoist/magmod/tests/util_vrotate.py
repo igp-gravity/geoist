@@ -17,8 +17,8 @@ from unittest import TestCase, main
 from numpy import zeros, meshgrid, linspace
 from numpy.random import random
 from numpy.testing import assert_allclose
-from magmod.util import vrotate
-from magmod import (
+from geoist.magmod.util import vrotate
+from geoist.magmod import (
     GEODETIC_ABOVE_WGS84, GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN,
     convert, vrot_sph2geod, vrot_sph2cart, vrot_cart2sph,
 )

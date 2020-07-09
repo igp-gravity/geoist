@@ -20,8 +20,8 @@ except ImportError:
 from itertools import product
 from numpy import array, vectorize
 from numpy.random import uniform
-from magmod import mjd2000_to_decimal_year
-from magmod.quasi_dipole_coordinates import (
+from geoist.magmod import mjd2000_to_decimal_year
+from geoist.magmod.quasi_dipole_coordinates import (
     eval_mlt, eval_subsol, eval_qdlatlon_with_base_vectors,
 )
 

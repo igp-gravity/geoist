@@ -17,11 +17,11 @@ from math import pi
 from numpy import array, asarray, zeros, linspace, meshgrid, sin, cos, dot
 from numpy.random import random
 from numpy.testing import assert_allclose
-from magmod._pymm import (
+from geoist.magmod._pymm import (
     convert, vrot_sph2cart, vrot_cart2sph,
     GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN, GEODETIC_ABOVE_WGS84,
 )
-from magmod.dipole_coords import (
+from geoist.magmod.dipole_coords import (
     get_dipole_rotation_matrix,
     convert_to_dipole,
     vrot_from_dipole,

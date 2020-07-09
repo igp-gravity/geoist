@@ -16,15 +16,15 @@ from itertools import product
 from random import random
 from numpy import array, empty, nditer
 from numpy.testing import assert_allclose
-from magmod._pymm import (
+from geoist.magmod._pymm import (
     POTENTIAL, GRADIENT, POTENTIAL_AND_GRADIENT,
     GEODETIC_ABOVE_WGS84, GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN,
     convert, vrot_sph2geod, vrot_sph2cart,
     relradpow, lonsincos, legendre,
     spharpot, sphargrd, sheval,
 )
-from magmod.tests.data import sifm
-from magmod.tests.data import mma_external
+from geoist.magmod.tests.data import sifm
+from geoist.magmod.tests.data import mma_external
 
 
 class SphericalHarmonicsMixIn(object):

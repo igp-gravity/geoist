@@ -15,11 +15,11 @@ from unittest import TestCase, main
 from io import open
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod.quasi_dipole_coordinates import (
+from geoist.magmod.quasi_dipole_coordinates import (
     eval_qdlatlon, eval_mlt, eval_subsol,
     eval_qdlatlon_with_base_vectors,
 )
-from magmod.tests.data import QUASI_DIPOLE_TEST_DATA
+from geoist.magmod.tests.data import QUASI_DIPOLE_TEST_DATA
 
 
 def load_test_data(filename):

@@ -14,7 +14,7 @@
 from unittest import TestCase, main
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod._pymm import relradpow
+from geoist.magmod._pymm import relradpow
 
 
 class TestRadialPowerSeries(TestCase):

@@ -13,13 +13,13 @@
 from unittest import TestCase, main
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod import (
+from geoist.magmod import (
     decimal_year_to_mjd2000,
     GEODETIC_ABOVE_WGS84, GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN, convert
 )
-from magmod.data import IGRF12
-from magmod.magnetic_model.loader_shc import load_model_shc
-from magmod.magnetic_model.field_lines import trace_field_line
+from geoist.magmod.data import IGRF12
+from geoist.magmod.magnetic_model.loader_shc import load_model_shc
+from geoist.magmod.magnetic_model.field_lines import trace_field_line
 
 
 START_POINT = (45, 30, 400)

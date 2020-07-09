@@ -16,7 +16,7 @@ from numpy import array, vectorize, inf, nan
 from numpy.random import uniform
 from numpy.testing import assert_allclose
 from unittest import TestCase, main
-from magmod._pytimeconv import (
+from geoist.magmod._pytimeconv import (
     decimal_year_to_mjd2000, mjd2000_to_decimal_year,
     mjd2000_to_year_fraction,
 )

@@ -15,7 +15,7 @@ from unittest import main, TestCase
 from datetime import date, datetime
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod.util import vnorm, vincdecnorm, datetime_to_decimal_year
+from geoist.magmod.util import vnorm, vincdecnorm, datetime_to_decimal_year
 
 
 class FunctionTestMixIn(object):

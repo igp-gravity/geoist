@@ -15,7 +15,7 @@ from unittest import TestCase, main
 from math import pi, sin, cos
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod._pymm import lonsincos
+from geoist.magmod._pymm import lonsincos
 
 
 class TestLongitudialSinCosSeries(TestCase):

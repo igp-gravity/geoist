@@ -15,8 +15,8 @@
 
 from unittest import TestCase, main
 from numpy import abs as aabs
-from magmod.magnetic_model.parser_igrf import parse_igrf_file
-from magmod.data import IGRF11
+from geoist.magmod.magnetic_model.parser_igrf import parse_igrf_file
+from geoist.magmod.data import IGRF11
 
 
 class TestIGRFParser(TestCase):

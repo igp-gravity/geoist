@@ -15,11 +15,11 @@ from unittest import TestCase, main
 from io import open
 from numpy import inf, nan
 from numpy.testing import assert_allclose
-from magmod.time_util import decimal_year_to_mjd2000
-from magmod.magnetic_time import mjd2000_to_magnetic_universal_time
-from magmod.magnetic_model.coefficients_mio import SparseSHCoefficientsMIO
-from magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
-from magmod.magnetic_model.parser_mio import parse_swarm_mio_file
+from geoist.magmod.time_util import decimal_year_to_mjd2000
+from geoist.magmod.magnetic_time import mjd2000_to_magnetic_universal_time
+from geoist.magmod.magnetic_model.coefficients_mio import SparseSHCoefficientsMIO
+from geoist.magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
+from geoist.magmod.magnetic_model.parser_mio import parse_swarm_mio_file
 
 
 class MIOSHCoeffMixIn(object):

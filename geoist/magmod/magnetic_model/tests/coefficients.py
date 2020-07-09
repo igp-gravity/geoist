@@ -14,8 +14,8 @@
 from unittest import TestCase, main
 from numpy import nan, inf, isinf, array, dot
 from numpy.testing import assert_allclose
-from magmod import decimal_year_to_mjd2000
-from magmod.magnetic_model.coefficients import (
+from geoist.magmod import decimal_year_to_mjd2000
+from geoist.magmod.magnetic_model.coefficients import (
     SparseSHCoefficientsTimeDependent,
     SparseSHCoefficientsTimeDependentDecimalYear,
     SparseSHCoefficientsConstant,

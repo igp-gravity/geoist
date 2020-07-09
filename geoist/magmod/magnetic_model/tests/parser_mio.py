@@ -14,8 +14,8 @@
 from unittest import TestCase, main
 from numpy.testing import assert_allclose
 from numpy import abs as aabs
-from magmod.magnetic_model.parser_mio import parse_swarm_mio_file
-from magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
+from geoist.magmod.magnetic_model.parser_mio import parse_swarm_mio_file
+from geoist.magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
 
 
 class TestSwarmMIOParser(TestCase):

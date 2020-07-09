@@ -17,17 +17,17 @@ from itertools import product
 from numpy import nan, inf, isinf, array, empty, full, nditer, asarray
 from numpy.random import uniform
 from numpy.testing import assert_allclose
-from magmod.magnetic_time import mjd2000_to_magnetic_universal_time
-from magmod.time_util import (
+from geoist.magmod.magnetic_time import mjd2000_to_magnetic_universal_time
+from geoist.magmod.time_util import (
     decimal_year_to_mjd2000, decimal_year_to_mjd2000_simple,
 )
-from magmod.magnetic_model.loader_shc import (
+from geoist.magmod.magnetic_model.loader_shc import (
     load_model_shc, load_model_shc_combined,
 )
-from magmod.magnetic_model.loader_igrf import load_model_igrf
-from magmod.magnetic_model.loader_wmm import load_model_wmm
-from magmod.magnetic_model.loader_emm import load_model_emm
-from magmod.magnetic_model.loader_mma import (
+from geoist.magmod.magnetic_model.loader_igrf import load_model_igrf
+from geoist.magmod.magnetic_model.loader_wmm import load_model_wmm
+from geoist.magmod.magnetic_model.loader_emm import load_model_emm
+from geoist.magmod.magnetic_model.loader_mma import (
     load_model_swarm_mma_2c_internal,
     load_model_swarm_mma_2c_external,
     load_model_swarm_mma_2f_geo_internal,
@@ -35,37 +35,37 @@ from magmod.magnetic_model.loader_mma import (
     load_model_swarm_mma_2f_sm_internal,
     load_model_swarm_mma_2f_sm_external,
 )
-from magmod.magnetic_model.loader_mio import (
+from geoist.magmod.magnetic_model.loader_mio import (
     load_model_swarm_mio_internal,
     load_model_swarm_mio_external,
 )
-from magmod.data import (
+from geoist.magmod.data import (
     EMM_2010_STATIC, EMM_2010_SECVAR, WMM_2015,
     CHAOS6_CORE_LATEST, CHAOS6_STATIC,
     IGRF11, IGRF12, SIFM, LCS1, MF7,
 )
-from magmod.magnetic_model.tests.data import (
+from geoist.magmod.magnetic_model.tests.data import (
     SWARM_MMA_SHA_2C_TEST_DATA,
     SWARM_MMA_SHA_2F_TEST_DATA,
     SWARM_MIO_SHA_2_TEST_DATA,
     CHAOS_MMA_TEST_DATA,
 )
-from magmod.magnetic_model.model import (
+from geoist.magmod.magnetic_model.model import (
     SphericalHarmomicGeomagneticModel,
     DipoleSphericalHarmomicGeomagneticModel,
 )
-from magmod.magnetic_model.model_mio import (
+from geoist.magmod.magnetic_model.model_mio import (
     DipoleMIOPrimaryGeomagneticModel,
     DipoleMIOGeomagneticModel,
 )
-from magmod.magnetic_model.model_composed import (
+from geoist.magmod.magnetic_model.model_composed import (
     ComposedGeomagneticModel,
 )
-from magmod._pymm import (
+from geoist.magmod._pymm import (
     GEOCENTRIC_CARTESIAN, GEODETIC_ABOVE_WGS84, GEOCENTRIC_SPHERICAL, convert,
     GRADIENT, sheval,
 )
-from magmod.sheval_dipole import sheval_dipole
+from geoist.magmod.sheval_dipole import sheval_dipole
 
 
 class SHModelTestMixIn(object):

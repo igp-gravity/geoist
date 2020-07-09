@@ -15,10 +15,10 @@ from unittest import TestCase, main
 from numpy import asarray, empty, nditer
 from numpy.random import uniform
 from numpy.testing import assert_allclose
-from magmod.time_util import decimal_year_to_mjd2000
-from magmod.solar_position import sunpos
-from magmod.dipole_coords import convert_to_dipole
-from magmod.magnetic_time import mjd2000_to_magnetic_universal_time
+from geoist.magmod.time_util import decimal_year_to_mjd2000
+from geoist.magmod.solar_position import sunpos
+from geoist.magmod.dipole_coords import convert_to_dipole
+from geoist.magmod.magnetic_time import mjd2000_to_magnetic_universal_time
 
 
 class TestMjd200ToMagneticUniversalTime(TestCase):

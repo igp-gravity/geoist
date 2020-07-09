@@ -15,9 +15,9 @@ from unittest import TestCase, main
 from io import open
 from numpy import array
 from numpy.testing import assert_allclose
-from magmod.quasi_dipole_coordinates import eval_subsol
-from magmod.solar_position import sunpos, sunpos_original
-from magmod.tests.data import SUN_POSITION_TEST_DATA
+from geoist.magmod.quasi_dipole_coordinates import eval_subsol
+from geoist.magmod.solar_position import sunpos, sunpos_original
+from geoist.magmod.tests.data import SUN_POSITION_TEST_DATA
 
 
 def load_test_data(filename):

@@ -14,8 +14,8 @@
 from unittest import TestCase, main
 from numpy import abs as aabs
 from numpy.testing import assert_equal
-from magmod.magnetic_model.parser_shc import parse_shc_file, parse_shc_header
-from magmod.data import (
+from geoist.magmod.magnetic_model.parser_shc import parse_shc_file, parse_shc_header
+from geoist.magmod.data import (
     CHAOS6_CORE_LATEST, CHAOS6_STATIC,
     IGRF12, SIFM, LCS1, MF7,
 )

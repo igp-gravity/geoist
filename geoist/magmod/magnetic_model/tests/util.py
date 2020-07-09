@@ -14,8 +14,8 @@
 from unittest import TestCase, main
 from io import open
 from hashlib import md5
-from magmod.magnetic_model.util import parse_file
-from magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
+from geoist.magmod.magnetic_model.util import parse_file
+from geoist.magmod.magnetic_model.tests.data import SWARM_MIO_SHA_2_TEST_DATA
 
 
 class TestUtil(TestCase):

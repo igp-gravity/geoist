@@ -14,11 +14,11 @@
 from unittest import TestCase, main
 from numpy import abs as aabs
 from spacepy import pycdf
-from magmod.magnetic_model.tests.data import (
+from geoist.magmod.magnetic_model.tests.data import (
     SWARM_MMA_SHA_2C_TEST_DATA, SWARM_MMA_SHA_2F_TEST_DATA,
     CHAOS_MMA_TEST_DATA,
 )
-from magmod.magnetic_model.parser_mma import (
+from geoist.magmod.magnetic_model.parser_mma import (
     read_swarm_mma_2c_internal, read_swarm_mma_2c_external,
     read_swarm_mma_2f_geo_internal, read_swarm_mma_2f_geo_external,
     read_swarm_mma_2f_sm_internal, read_swarm_mma_2f_sm_external,

@@ -20,7 +20,7 @@ except ImportError:
 from itertools import product
 from numpy import array
 from numpy.random import uniform
-from magmod.solar_position import sunpos
+from geoist.magmod.solar_position import sunpos
 
 EARTH_RADIUS = 6371.2   # km
 START_TIME = -10957.0   # MJD2000 / 1970-01-01T00:00:00Z

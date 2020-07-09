@@ -16,17 +16,17 @@ from itertools import product
 from random import random
 from numpy import array, empty, nditer
 from numpy.testing import assert_allclose
-from magmod._pymm import (
+from geoist.magmod._pymm import (
     POTENTIAL, GRADIENT, POTENTIAL_AND_GRADIENT,
     GEODETIC_ABOVE_WGS84, GEOCENTRIC_SPHERICAL, GEOCENTRIC_CARTESIAN,
     convert,
     relradpow, lonsincos, legendre,
     spharpot, sphargrd,
 )
-from magmod.dipole_coords import convert_to_dipole, vrot_from_dipole
-from magmod.sheval_dipole import sheval_dipole
-from magmod.tests.data import mma_external
-from magmod.tests.data import mma_internal
+from geoist.magmod.dipole_coords import convert_to_dipole, vrot_from_dipole
+from geoist.magmod.sheval_dipole import sheval_dipole
+from geoist.magmod.tests.data import mma_external
+from geoist.magmod.tests.data import mma_internal
 
 
 class DipoleSphericalHarmonicsMixIn(object):

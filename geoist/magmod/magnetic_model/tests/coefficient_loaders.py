@@ -14,42 +14,42 @@
 from unittest import TestCase, main
 from numpy import inf
 from numpy.testing import assert_allclose
-from magmod.time_util import (
+from geoist.magmod.time_util import (
     decimal_year_to_mjd2000, decimal_year_to_mjd2000_simple,
 )
-from magmod.data import (
+from geoist.magmod.data import (
     CHAOS6_CORE_LATEST, CHAOS6_STATIC,
     IGRF11, IGRF12, SIFM, WMM_2015,
     EMM_2010_STATIC, EMM_2010_SECVAR,
     LCS1, MF7,
 )
-from magmod.magnetic_model.tests.data import (
+from geoist.magmod.magnetic_model.tests.data import (
     SWARM_MMA_SHA_2C_TEST_DATA,
     SWARM_MMA_SHA_2F_TEST_DATA,
     SWARM_MIO_SHA_2_TEST_DATA,
     CHAOS_MMA_TEST_DATA,
 )
-from magmod.magnetic_model.coefficients import (
+from geoist.magmod.magnetic_model.coefficients import (
     SparseSHCoefficientsTimeDependent,
     SparseSHCoefficientsTimeDependentDecimalYear,
     SparseSHCoefficientsConstant,
     CombinedSHCoefficients,
 )
-from magmod.magnetic_model.coefficients_mio import (
+from geoist.magmod.magnetic_model.coefficients_mio import (
     SparseSHCoefficientsMIO,
 )
-from magmod.magnetic_model.loader_shc import (
+from geoist.magmod.magnetic_model.loader_shc import (
     load_coeff_shc, load_coeff_shc_combined,
 )
-from magmod.magnetic_model.loader_igrf import load_coeff_igrf
-from magmod.magnetic_model.loader_wmm import load_coeff_wmm
-from magmod.magnetic_model.loader_emm import load_coeff_emm
-from magmod.magnetic_model.loader_mma import (
+from geoist.magmod.magnetic_model.loader_igrf import load_coeff_igrf
+from geoist.magmod.magnetic_model.loader_wmm import load_coeff_wmm
+from geoist.magmod.magnetic_model.loader_emm import load_coeff_emm
+from geoist.magmod.magnetic_model.loader_mma import (
     load_coeff_swarm_mma_2c_internal, load_coeff_swarm_mma_2c_external,
     load_coeff_swarm_mma_2f_geo_internal, load_coeff_swarm_mma_2f_geo_external,
     load_coeff_swarm_mma_2f_sm_internal, load_coeff_swarm_mma_2f_sm_external,
 )
-from magmod.magnetic_model.loader_mio import (
+from geoist.magmod.magnetic_model.loader_mio import (
     load_coeff_swarm_mio_internal, load_coeff_swarm_mio_external
 )
 

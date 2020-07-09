@@ -15,7 +15,7 @@ from unittest import TestCase, main
 from numpy import vectorize, inf, nan
 from numpy.random import uniform
 from numpy.testing import assert_allclose
-from magmod.time_util import (
+from geoist.magmod.time_util import (
     decimal_year_to_mjd2000_simple,
     mjd2000_to_decimal_year_simple,
     mjd2000_to_year_fraction_simple,

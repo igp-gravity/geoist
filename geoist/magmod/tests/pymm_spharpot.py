@@ -16,9 +16,9 @@ from itertools import chain, product
 from random import random
 from numpy import array, zeros
 from numpy.testing import assert_allclose
-from magmod._pymm import legendre, lonsincos, relradpow, spharpot
-from magmod.tests.data import sifm
-from magmod.tests.data import mma_external
+from geoist.magmod._pymm import legendre, lonsincos, relradpow, spharpot
+from geoist.magmod.tests.data import sifm
+from geoist.magmod.tests.data import mma_external
 
 
 class SphericalHarmonicsCommonMixIn(object):

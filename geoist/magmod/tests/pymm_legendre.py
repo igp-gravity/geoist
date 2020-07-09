@@ -17,7 +17,7 @@ from math import pi, sin, sqrt
 from numpy import array
 from numpy.testing import assert_allclose
 from scipy.special import legendre as legendre_polynomial
-from magmod._pymm import legendre
+from geoist.magmod._pymm import legendre
 
 
 class TestLegendreFunctions(TestCase):

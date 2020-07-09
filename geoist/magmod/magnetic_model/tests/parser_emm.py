@@ -14,11 +14,11 @@
 from unittest import TestCase, main
 from numpy.testing import assert_allclose
 from numpy import abs as aabs
-from magmod import decimal_year_to_mjd2000
-from magmod.magnetic_model.parser_emm import (
+from geoist.magmod import decimal_year_to_mjd2000
+from geoist.magmod.magnetic_model.parser_emm import (
     combine_emm_coefficients, parse_emm_file, EMM_VALIDITY_PERIOD,
 )
-from magmod.data import EMM_2010_STATIC, EMM_2010_SECVAR
+from geoist.magmod.data import EMM_2010_STATIC, EMM_2010_SECVAR
 
 
 class TestEMMParser(TestCase):
