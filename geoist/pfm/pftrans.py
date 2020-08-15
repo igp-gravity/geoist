@@ -8,7 +8,7 @@ import warnings
 import numpy
 
 from . import giutils
-
+from .giconstants import G, SI2MGAL
 
 def reduce_to_pole(x, y, data, shape, inc, dec, sinc, sdec):
     r"""
@@ -166,6 +166,89 @@ def upcontinue(x, y, data, shape, height):
     cont = cont[padx: padx + nx, pady: pady + ny].ravel()
     return cont
 
+def gzfreq(xp, yp, zp, shape, prisms, dens=None, gtype = 'z'):
+    """
+    Calculates the :math:`g_z` gravity acceleration component in frequency domain.
+    Returns:
+
+    * res : array
+        The field calculated on xp, yp, zp
+
+    """
+
+    if xp.shape != yp.shape or xp.shape != zp.shape:
+        raise ValueError("Input arrays xp, yp, and zp must have same length!")
+    size = len(xp)
+    res = numpy.zeros(size, dtype=numpy.float)
+    for prism in prisms:
+        if prism is None or ('density' not in prism.props and dens is None):
+            continue
+        if dens is None:
+            density = prism.props['density']
+        else:
+            density = dens
+        x1, x2 = prism.x1, prism.x2
+        y1, y2 = prism.y1, prism.y2
+        z1, z2 = prism.z1, prism.z2
+        r1 = _gzfreq(xp, yp, zp, x1, x2, y1, y2, z1, z2, shape, gtype)
+        res = res + r1 *2*numpy.pi*G *density* SI2MGAL
+    #res *= 
+    return res
+
+def _gzfreq(x, y, data, x1, x2, y1, y2, z1, z2, shape, gtype):
+    
+    x0 = (x1+x2)/2.0
+    y0 = (y1+y2)/2.0
+    a = numpy.abs(x1-x2)/2.0
+    b = numpy.abs(y1-y2)/2.0
+    nx, ny = shape
+    dx = (x.max() - x.min())/(nx - 1)
+    dy = (y.max() - y.min())/(ny - 1)
+    
+    nx, ny = shape
+    # Pad the array with the edge values to avoid instability
+    padded, padx, pady = _pad_data(data, shape)
+    kx, ky = _fftfreqs(x, y, shape, padded.shape)
+    kz = numpy.sqrt(kx**2 + ky**2)
+    kxm = numpy.ma.array(kx, mask= kx==0)
+    kym = numpy.ma.array(ky, mask= ky==0)
+    kzm = numpy.ma.array(kz, mask= kz==0)    
+
+    complex1 = 0+1j
+    ker1 = (numpy.exp(-kz*z2)-numpy.exp(-kz*z1))/kzm
+    ker2 = numpy.sin(ky*b)/kym
+    ker3 = numpy.sin(kx*a)/kxm
+    keruv = -4*ker1*ker2*ker3
+    
+    keruv[kxm.mask] = -4*a*numpy.sin(ky[kxm.mask]*b)*ker1[kxm.mask]/ky[kxm.mask]
+    keruv[kym.mask] = -4*b*numpy.sin(kx[kym.mask]*a)*ker1[kym.mask]/kx[kym.mask]
+    keruv[kzm.mask] = 4*a*b*(z2-z1)
+    nxe, nye = padded.shape
+    
+    M_left=(nxe-nx)/2+1
+    M_right=M_left+nx-1
+    N_down=(nye-ny)/2+1
+    N_up=N_down+ny-1    
+    
+    XXmin=x.min()-dx*(M_left-1)
+    XXmax=x.max()+dx*(nxe-M_right)
+    YYmin=y.min()-dy*(N_down-1)
+    YYmax=y.max()+dy*(nye-N_up)    
+    
+    keruv = keruv*numpy.exp(-ky*y0*complex1)*numpy.exp(-kx*x0*complex1)*numpy.exp(kz*data[0])
+    ## scale transform, can be transformed before inversion    
+    keruv = keruv*numpy.exp(complex1*((x.max()+x.min())*kx/2+(y.max()+y.min())*ky/2))*numpy.exp(complex1*((XXmin-XXmax)*kx/2+(YYmin-YYmax)*ky/2))/dx/dy
+    if gtype == 'zz':
+        keruv = kz * keruv 
+    elif gtype == 'zx':
+        keruv = complex1 * kx * keruv 
+    elif gtype == 'zy':
+        keruv = complex1 * ky * keruv 
+    
+    res = numpy.real(numpy.fft.ifft2(keruv))
+    res0 = res[padx: padx + nx, pady: pady + ny].ravel()
+    return res0
+ 
 
 def _upcontinue_space(x, y, data, shape, height):
     """
