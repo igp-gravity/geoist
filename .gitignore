@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# tags
+geoist/GTAGS
+geoist/GRTAGS
+geoist/GPATH

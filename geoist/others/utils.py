@@ -9,7 +9,7 @@ from scipy.sparse import csr_matrix
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid1 import ImageGrid
-from mpl_toolkits.basemap import Basemap
+#from mpl_toolkits.basemap import Basemap
 import pyproj
 from typing import Tuple, Any
 import numpy as np
@@ -255,6 +255,33 @@ def plot_matrix(A,cbar_location='right',figsize=(18,18),cmap='coolwarm',fname=No
         plt.savefig(fname)
     return fig,axes
 
+def kron_matvec(t, V):
+    '''matrix M multiply vectors V where M is kronecker product of A and B,
+    i.e. M = A\otimes B.
+    Args:
+        t (list of ndarray): M = tds[0] \otimes t[1] \otimes t[2] ...
+        V (ndarray): vectors to be multiplied.
+    Returns:
+        res (ndarray): results.
+    '''
+    shapes = [m.shape[1] for m in t]
+    if V.ndim == 1:
+        tmp = V.reshape(1,*shapes)
+    else:
+        tmp = V.reshape(V.shape[0],*shapes)
+    n = len(t)
+    params = []
+    for i,m in enumerate(t):
+        params.append(m)
+        params.append([i,n+i])
+    params.append(tmp)
+    params.append([2*n]+list(range(n,2*n)))
+    params.append([2*n]+list(range(n)))
+    path = np.einsum_path(*params,optimize='optimal')
+    res = np.einsum(*params,optimize=path[0])
+    res = res.reshape(res.shape[0],-1)
+    return res.squeeze()
+
 def grid2Grid(x, y, data):
     from geoist.others.geodict import GeoDict
     from geoist.others.grid2d import Grid2D
@@ -265,22 +292,22 @@ def grid2Grid(x, y, data):
     nx = len(x)
     ny = len(y)
     dx = (xmax-xmin)/(nx-1)
-    dy = (ymax-ymin)/(ny-1)    
+    dy = (ymax-ymin)/(ny-1)
     geodict = {'xmin':xmin,'xmax':xmax,'ymin':ymin,'ymax':ymax,'dx':dx,'dy':dy,'nx':nx,'ny':ny}
     gd = GeoDict(geodict ,adjust = 'res')
     grid = Grid2D(data[::-1], gd)
     return grid
-    
+
 def Grid2Xyz(grid):
     """Transform grid data object to x,y,z of 1-D array
-    
+
 	Parameters:
-		grid is a Grid2D object 
-		
+		grid is a Grid2D object
+
     return:
         x,y : The x and y coordinates of the grid points
         z : The value at the grid points
-    """   
+    """
     xmin,xmax,ymin,ymax = grid.getBounds()
     pdata = grid.getData()[::-1]
     nr,nc = pdata.shape
@@ -293,21 +320,21 @@ def Grid2Xyz(grid):
     k = 0
     for j in range(len(xrange)):
         for i in range(len(yrange)):
-            x[k] = xrange[j] 
+            x[k] = xrange[j]
             y[k] = yrange[i]
             k += 1
     return x,y,z
 
 def xyz2Grid(x, y ,z):
-    """Transform x, y,z to grid data object 
-    
+    """Transform x, y,z to grid data object
+
 	Parameters:
         x,y : The x and y coordinates of the grid points
-        z : The value at the grid points     
-		  
+        z : The value at the grid points
+
     return:
         grid :grid is a Grid2D object
-    """       
+    """
     from geoist.others.geodict import GeoDict
     from geoist.others.grid2d import Grid2D
     xmin = np.min(x)
@@ -317,7 +344,7 @@ def xyz2Grid(x, y ,z):
     nx = len(set(x))
     ny = len(set(y))
     dx = (xmax-xmin)/(nx-1)
-    dy = (ymax-ymin)/(ny-1)      
+    dy = (ymax-ymin)/(ny-1)
     geodict = {'xmin':xmin,'xmax':xmax,'ymin':ymin,'ymax':ymax,'dx':dx,'dy':dy,'nx':nx,'ny':ny}
     gd = GeoDict(geodict, adjust = 'res')
     data = z.reshape(nx,ny).T[::-1]
@@ -328,7 +355,7 @@ def grid2srf(grid, filename='outsrf.grd', fformat = 'asc'): # bin
     """
      grid is a Grid2D object
     """
-    from geoist import DATA_PATH 
+    from geoist import DATA_PATH
     from geoist.pfm.grdio import grddata
     import numpy.ma as ma
     g1out = grddata()
@@ -347,80 +374,80 @@ def grid2srf(grid, filename='outsrf.grd', fformat = 'asc'): # bin
     else:
         g1out.export_surfer(Path(DATA_PATH, filename), True, 'binary')
     return g1out
-   
-def map2DGrid(ax, grid, tstr, xlen=1.0, ylen=1.0, isLeft=False, 
-              prj = 'lcc', bous = 0, gmap = 0, xinc = None, yinc = None, 
-              pnts = None, cmap='gist_earth'):
-    """
-    grid is a Grid2D object 
-    prj : lcc / merc
-    """
-    xmin,xmax,ymin,ymax = grid.getBounds()
-    pdata = grid.getData()
-    nr,nc = pdata.shape
-    lonrange = np.linspace(xmin,xmax,num=nc)
-    latrange = np.linspace(ymin,ymax,num=nr)
-    lon,lat = np.meshgrid(lonrange,latrange)
-    
-    if xinc != None:
-        xmax = xmax + xinc
-    if yinc != None:
-        ymax = ymax + yinc
 
-    latmean = np.mean([ymin,ymax])
-    lonmean = np.mean([xmin,xmax])
-    
-    #"Lambert Conformal Conic",lcc 'merc': "Mercator",
-    if gmap == 1:
-        m = Basemap(projection='robin',ellps='WGS84',\
-                resolution='c',area_thresh=1000.,\
-                lat_0 = latmean, lon_0=lonmean, ax=ax)    
-    elif gmap == 2:
-        m = Basemap(projection='hammer',ellps='WGS84',\
-                resolution='c',area_thresh=1000.,\
-                lat_0 = latmean, lon_0=lonmean, ax=ax)            
-    else:
-        #print(xmin,xmax,ymin,ymax, latmean, lonmean)
-        m = Basemap(llcrnrlon=xmin,llcrnrlat=ymin,urcrnrlon=xmax,urcrnrlat=ymax,\
-                ellps='WGS84',\
-                resolution='c',area_thresh=1000.,projection=prj,\
-                lat_0 = latmean, lon_0=lonmean,ax=ax)
+#def map2DGrid(ax, grid, tstr, xlen=1.0, ylen=1.0, isLeft=False,
+#              prj = 'lcc', bous = 0, gmap = 0, xinc = None, yinc = None,
+#              pnts = None, cmap='gist_earth'):
+#    """
+#    grid is a Grid2D object
+#    prj : lcc / merc
+#    """
+#    xmin,xmax,ymin,ymax = grid.getBounds()
+#    pdata = grid.getData()
+#    nr,nc = pdata.shape
+#    lonrange = np.linspace(xmin,xmax,num=nc)
+#    latrange = np.linspace(ymin,ymax,num=nr)
+#    lon,lat = np.meshgrid(lonrange,latrange)
+#
+#    if xinc != None:
+#        xmax = xmax + xinc
+#    if yinc != None:
+#        ymax = ymax + yinc
+#
+#    latmean = np.mean([ymin,ymax])
+#    lonmean = np.mean([xmin,xmax])
+#
+#    #"Lambert Conformal Conic",lcc 'merc': "Mercator",
+#    if gmap == 1:
+#        m = Basemap(projection='robin',ellps='WGS84',\
+#                resolution='c',area_thresh=1000.,\
+#                lat_0 = latmean, lon_0=lonmean, ax=ax)
+#    elif gmap == 2:
+#        m = Basemap(projection='hammer',ellps='WGS84',\
+#                resolution='c',area_thresh=1000.,\
+#                lat_0 = latmean, lon_0=lonmean, ax=ax)
+#    else:
+#        #print(xmin,xmax,ymin,ymax, latmean, lonmean)
+#        m = Basemap(llcrnrlon=xmin,llcrnrlat=ymin,urcrnrlon=xmax,urcrnrlat=ymax,\
+#                ellps='WGS84',\
+#                resolution='c',area_thresh=1000.,projection=prj,\
+#                lat_0 = latmean, lon_0=lonmean,ax=ax)
+#
+#        # #print('else')
+#        # m = Basemap(llcrnrlon=xmin,llcrnrlat=ymin,urcrnrlon=xmax,urcrnrlat=ymax,\
+#        #         rsphere=(6378137.00,6356752.3142),\
+#        #         resolution='c',area_thresh=1000.,projection= prj,\
+#        #         lat_1=latmean,lon_0=lonmean,ax=ax)
+#    # draw coastlines and political boundaries.
+#    m.drawcoastlines()
+#    if bous == 1:
+#        m.drawcountries()
+#    elif bous == 2:
+#        m.drawcountries()
+#        m.drawstates()
+#
+#    lons = np.arange(xmin,xmax,xlen)
+#    lats = np.arange(ymin,ymax,ylen)
+#
+#
+#    if isLeft:
+#        labels = labels=[1,0,0,0]
+#    else:
+#        labels = labels=[0,0,0,0]
+#
+#    if not gmap:
+#        m.drawparallels(lats,labels=labels,color='white',fmt='%.1f') # draw parallels
+#        m.drawmeridians(lons,labels=[0,0,0,1],color='white',fmt='%.1f') # draw meridians
+#    pmesh = m.pcolormesh(lon,lat,np.flipud(grid.getData()),latlon=True, cmap = cmap)
+#
+#    if pnts != None:
+#        x, y = m(*np.meshgrid(pnts[0], pnts[1])) #(lons,lats))
+#        m.scatter(x, y, marker = 'o', color = 'm')
+#
+#    if ax is not None:
+#        ax.set_title(tstr)
+#    m.colorbar(pmesh)
 
-        # #print('else')
-        # m = Basemap(llcrnrlon=xmin,llcrnrlat=ymin,urcrnrlon=xmax,urcrnrlat=ymax,\
-        #         rsphere=(6378137.00,6356752.3142),\
-        #         resolution='c',area_thresh=1000.,projection= prj,\
-        #         lat_1=latmean,lon_0=lonmean,ax=ax)        
-    # draw coastlines and political boundaries.
-    m.drawcoastlines()
-    if bous == 1:
-        m.drawcountries()
-    elif bous == 2:
-        m.drawcountries()
-        m.drawstates()
-        
-    lons = np.arange(xmin,xmax,xlen)
-    lats = np.arange(ymin,ymax,ylen)
-
-
-    if isLeft:
-        labels = labels=[1,0,0,0]
-    else:
-        labels = labels=[0,0,0,0]
-    
-    if not gmap:    
-        m.drawparallels(lats,labels=labels,color='white',fmt='%.1f') # draw parallels
-        m.drawmeridians(lons,labels=[0,0,0,1],color='white',fmt='%.1f') # draw meridians  
-    pmesh = m.pcolormesh(lon,lat,np.flipud(grid.getData()),latlon=True, cmap = cmap)
-    
-    if pnts != None:
-        x, y = m(*np.meshgrid(pnts[0], pnts[1])) #(lons,lats))        
-        m.scatter(x, y, marker = 'o', color = 'm')
-
-    if ax is not None:
-        ax.set_title(tstr)
-    m.colorbar(pmesh)
-    
 def find_nearest(x, x0) -> Tuple[int, Any]:
     """
     This find_nearest function does NOT assume sorted input
