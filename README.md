@@ -26,6 +26,11 @@ An Open-Source Geophysical Python Library for Geoscience Prototype Research
 
 > Our Missions
 
+## Acknowledgements
+ * The part of code, which related the potential model forward and analytical continuation in frequency modified from the project of Fatiando a Terra, more information: https://www.fatiando.org/
+ * The gridding functions modified from the Verde repository, https://github.com/fatiando/verde
+
+
 License
 -------
 
