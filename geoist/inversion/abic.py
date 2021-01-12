@@ -298,7 +298,7 @@ class GravInvAbicModel:
     @smooth_components.setter
     def smooth_components(self,values):
         self._smooth_components = values
-        self.confs['smooth_components'] = _smooth_components
+        self.confs['smooth_components'] = self._smooth_components
 
 
     @property
@@ -1030,8 +1030,7 @@ class GravInvAbicModel:
         message printed out.
         '''
         self.log_obs_det_val = (4*sum(np.log(self.constraints['depth']))
-                                +np.prod(self.nzyx)*(np.log(self.weights['refers'][0])
-                                                +np.log(self.weights['refers'][1]))
+                                +np.prod(self.nzyx)*np.sum(np.log(self.weights['refers']))
                                  +np.log(self._weights['obs'])*len(self.obs_data))
         return self.log_obs_det_val
 
