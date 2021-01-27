@@ -16,20 +16,28 @@ __version__ = _get_versions()["version"]
 __commit__ = _get_versions()["full-revisionid"]
 
 USER_DATA_PATH = appdirs.user_data_dir('geoist')
-if not os.path.exists(USER_DATA_PATH):
+try:
     os.makedirs(USER_DATA_PATH)
+except FileExistsError as error:
+    print(error)
 
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, 'examples')
-if not os.path.exists(EXAMPLES_PATH):
+try:
     os.makedirs(EXAMPLES_PATH)
+except FileExistsError as error:
+    print(error)
 	
 TEMP_PATH = os.path.join(USER_DATA_PATH, 'temp')
-if not os.path.exists(TEMP_PATH):
+try:
     os.makedirs(TEMP_PATH)
+except FileExistsError as error:
+    print(error)
 
 DATA_PATH = os.path.join(USER_DATA_PATH, 'data')
-if not os.path.exists(DATA_PATH):
+try:
     os.makedirs(DATA_PATH)
+except FileExistsError as error:
+    print(error)
 	
 # Set a parameter to control default print format for floats
 FLOAT_FORMAT = "{:.3e}"
